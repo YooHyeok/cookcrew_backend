@@ -1,4 +1,6 @@
 package kfq.cookcrew.diet;
 
-public class DietRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DietRepository extends JpaRepository<Diet,String> {
 }

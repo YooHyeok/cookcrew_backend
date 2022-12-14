@@ -1,4 +1,4 @@
 package kfq.cookcrew.rank;
 
-public class RankRepository {
+public interface RankRepository {
 }

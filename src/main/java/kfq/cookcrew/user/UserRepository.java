@@ -1,4 +1,4 @@
 package kfq.cookcrew.user;
 
-public class UserRepository {
+public interface UserRepository {
 }
