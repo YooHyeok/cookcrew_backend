@@ -1,4 +1,6 @@
 package kfq.cookcrew.reciepe;
 
-public interface RecipeRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
 }
