@@ -1,7 +1,13 @@
 package kfq.cookcrew.reciepe;
 
 import kfq.cookcrew.common.BaseController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * *****************************************************<p>
@@ -15,4 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class RecipeController extends BaseController {
+    @Autowired
+        RecipeService recipeService;
+    @GetMapping("/recipelist")
+    public ResponseEntity<List<Recipe>> recipeList(){
+        ResponseEntity<List<Recipe>> res = null;
+        try{
+            List<Recipe> recipes = recipeService.recipeList();
+            res = new ResponseEntity<List<Recipe>>(recipes, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            res = new ResponseEntity<List<Recipe>>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+
+
+
 }
