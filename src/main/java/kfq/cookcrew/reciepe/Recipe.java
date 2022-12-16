@@ -30,9 +30,9 @@ public class Recipe {
     private String title; //레시피 제목
     @Column
     private String content; //레시피 내용
-    @Column
+    @Column(columnDefinition = "int default 0") //default 0
     private Integer cnt; // 조회수
-    @Column
+    @Column(columnDefinition = "char default 'y'") // default 'y'
     private Character enabled; // 삭제여부
     @Column
     private LocalDate regDate; // 등록일자
@@ -43,6 +43,9 @@ public class Recipe {
     @Column
     private String thumbPath; //썸네일경로
 
+
+//    @OneToOne -- Diet테이블과 양방향으로 지정
+//    private Diet diet;
 }
 
     //Database Table 생성 쿼리문
