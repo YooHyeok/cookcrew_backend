@@ -30,7 +30,7 @@ public class Recipe {
     @Column
     private String content;
     @Column(columnDefinition = "int default 0") //default 0
-    private String cnt;
+    private Integer cnt;
     @Column
     private Character enabled;
     @Column
