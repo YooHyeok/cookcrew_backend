@@ -13,6 +13,10 @@ public class RecipeService {
     @Autowired
     RecipeRepository recipeRepository;
 
+    public List<Recipe> searchByTitleLike(String searchParam) {
+        return recipeRepository.searchByTitleLike(searchParam);
+    }
+
     //레시피 작성
     public void writeRecipe(Recipe recipe, MultipartFile thumbFile) throws Exception {
         String filename = null;
