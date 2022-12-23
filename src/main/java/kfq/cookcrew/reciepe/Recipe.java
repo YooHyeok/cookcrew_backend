@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Entity
-@Table(name = "recipe")
+@Table
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,13 +35,22 @@ public class Recipe {
     @Column(columnDefinition = "char default 'y'") // default 'y'
     private Character enabled; // 삭제여부
     @Column
-    private LocalDate regDate; // 등록일자
+    private Date regDate; // 등록일자
     @Column
     private Date modDate; // 수정일자
     @Column
     private Float rKcal; //칼로리
     @Column
     private String thumbPath; //썸네일경로
+    @Column
+    private String sTitle; //상세설명
+    @Column
+    private String mat;//핵심재료
+    @Column
+    private String source;//양념
+    @Column
+    private Double rating;//별점
+
 
 
 //    @OneToOne -- Diet테이블과 양방향으로 지정
