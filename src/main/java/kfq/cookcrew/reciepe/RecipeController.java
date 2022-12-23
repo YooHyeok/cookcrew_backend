@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +30,11 @@ public class RecipeController extends BaseController {
         ResponseEntity<List<Recipe>> res = null;
         try{
             List<Recipe> recipes = recipeService.recipeList();
-            res = new ResponseEntity<List<Recipe>>(recipes, HttpStatus.OK);
+            List<Recipe> resarr = new ArrayList<>();
+            for(int i=0; i<50; i++) {
+                resarr.add(recipes.get(i));
+            }
+            res = new ResponseEntity<List<Recipe>>(resarr, HttpStatus.OK);
         }catch(Exception e){
             e.printStackTrace();
             res = new ResponseEntity<List<Recipe>>(HttpStatus.BAD_REQUEST);
@@ -36,6 +42,19 @@ public class RecipeController extends BaseController {
         return res;
     }
 
+    @GetMapping(value = {"/recipes/{rNo}"})
+    public ResponseEntity<Recipe> recipeDetail(@PathVariable Integer rNo){
+        ResponseEntity<Recipe> res = null;
+        try{
+            Recipe recipe = recipeService.detailRecipe(rNo);
+            res = new ResponseEntity<Recipe>(recipe,HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            res = new ResponseEntity<Recipe>(HttpStatus.BAD_REQUEST);
+
+        }
+        return res;
+    }
 
 
 }

@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Entity
-@Table(name = "dbRecipe")
+@Table(name = "recipe")
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
