@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.LocalDate;
 
 /**
  * *****************************************************<p>
@@ -19,7 +18,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Entity
-@Table(name = "dbRecipe")
+@Table
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,7 @@ public class Recipe {
     @Column(columnDefinition = "char default 'y'") // default 'y'
     private Character enabled; // 삭제여부
     @Column
-    private LocalDate regDate; // 등록일자
+    private Date regDate; // 등록일자
     @Column
     private Date modDate; // 수정일자
     @Column

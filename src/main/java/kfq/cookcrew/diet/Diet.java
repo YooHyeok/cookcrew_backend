@@ -34,7 +34,7 @@ public class Diet {
     @Column(columnDefinition = "char default '1' constraint meal_div check(meal_div in('1','2','3'))")
     private Character mealDiv; //식사분류 (default 1 도메인 : 아침,점심,저녁 = 1,2,3)
 
-    @Column(columnDefinition = "char default 'y' constraint achieve check(achieve in('y','n'))")
+    @Column(columnDefinition = "char default 'n' constraint achieve check(achieve in('y','n'))")
     private Character achieve;
 
     @Column
