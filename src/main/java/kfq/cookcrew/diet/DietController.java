@@ -44,6 +44,7 @@ public class DietController extends BaseController {
         for(Map<String,Object> data : dietList) {
             for(String key : data.keySet()) {
                 String value = data.get(key).toString();
+
 //                System.out.println("{" + key + " : " + value+"}");
                 resList.add(i++, "{" + key + " : " + value+"}");
             }
@@ -53,7 +54,6 @@ public class DietController extends BaseController {
         }catch (Exception e) {
             result = new ResponseEntity<>(dietList, HttpStatus.BAD_REQUEST);
         }
-//        System.out.println(result);
         return result;
     }
     @GetMapping("/dietSearch")
@@ -70,14 +70,12 @@ public class DietController extends BaseController {
         }catch (Exception e) {
             result = new ResponseEntity<>(dietListBy, HttpStatus.BAD_REQUEST);
         }
-//        System.out.println(result);
         return result;
     }
     @PostMapping("/dietAdd")
     public ResponseEntity<String> dietSave(@RequestBody Map<String,String> param) {
         LOGGER.info("saveParameter : {}", param);
         ResponseEntity<String> result = null;
-//        System.out.println(param.get("rNo"));
         try {
 //            Diet diet = new Diet(0, "userexample"
 //                    , Date.valueOf(param.get("dietDate"))
@@ -97,8 +95,6 @@ public class DietController extends BaseController {
 //            );
 //            System.out.println("즐 : "+diet);
 //            dietService.save(diet);
-
-
         }catch (Exception e){
             e.printStackTrace();
         }

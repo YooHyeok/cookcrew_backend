@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Entity
-@Table(name = "dbRecipe")
+@Table
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +50,7 @@ public class Recipe {
     private String source;//양념
     @Column
     private Double rating;//별점
+
 
 
 //    @OneToOne -- Diet테이블과 양방향으로 지정

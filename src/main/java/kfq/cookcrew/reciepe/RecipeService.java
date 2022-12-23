@@ -53,8 +53,6 @@ public class RecipeService {
         throw new Exception("글 번호 오류");
 
     }
-
-
     //레시피 리스트
     //페이징처리 추가 필요
     public List<Recipe> recipeList() throws Exception {
