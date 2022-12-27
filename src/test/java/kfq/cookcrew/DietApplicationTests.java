@@ -80,7 +80,7 @@ class DietApplicationTests extends BaseController {
 				,"user"
 				, Date.valueOf("2022-12-15")
 				,'2'
-				,'y'
+				,null
 				, 400
 				,recipe);
 		dietRepository.save(diet);
@@ -113,7 +113,7 @@ class DietApplicationTests extends BaseController {
 								,"user"
 								, Date.valueOf("2022-12-15")
 								,'2'
-								,'y'
+								,null
 								, 400
 								,recipe);
 			dietRepository.save(diet);

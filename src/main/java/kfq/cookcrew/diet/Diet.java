@@ -34,8 +34,8 @@ public class Diet {
     @Column(columnDefinition = "char default '1' constraint meal_div check(meal_div in('1','2','3'))")
     private Character mealDiv; //식사분류 (default 1 도메인 : 아침,점심,저녁 = 1,2,3)
 
-    @Column(columnDefinition = "char default 'n' constraint achieve check(achieve in('y','n'))")
-    private Character achieve;
+    @Column(columnDefinition = "boolean default FALSE constraint achieve check(achieve in(TRUE,FALSE))")
+    private Boolean achieve;
 
     @Column
     private Integer targetKcal; //목표 칼로리
@@ -48,7 +48,7 @@ public class Diet {
 
     //    @OneToOne(mappedBy = "diet", targetEntity = Recipe.class, fetch = FetchType.LAZY) //양방향일경우에 사용
     @OneToOne
-    @JoinColumn(name = "rNo")
+    @JoinColumn(name = "rno")
     /**
      * 쿼리 : LEFT OUTER JOIN diet_recipe dr ON d.d_no = dr.d_no ;
      */
