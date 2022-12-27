@@ -39,7 +39,7 @@ public class Recipe {
     @Column
     private Date modDate; // 수정일자
     @Column
-    private Float rKcal; //칼로리
+    private Double kcal; //칼로리
     @Column
     private String thumbPath; //썸네일경로
     @Column

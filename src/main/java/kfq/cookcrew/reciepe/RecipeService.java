@@ -19,7 +19,7 @@ public class RecipeService {
     }
 
     //레시피 작성
-    public void rcpReg(String regId, String title , String sTitle, String mat, String source, String toastHtml, String toastMarkdown,
+    public void rcpReg(String regId, String title , String sTitle, String mat, String source,Double kcal, String toastHtml, String toastMarkdown,
                        MultipartFile file )
             throws Exception{
         Recipe r = new Recipe();
@@ -32,9 +32,10 @@ public class RecipeService {
         r.setMat(mat);
         r.setSource(source);
         r.setCnt(0);
+        r.setKcal(kcal);
         String filename = null;
         if(file!=null && !file.isEmpty()) {
-            String path = "C:/jhb/upload/";
+            String path = "C:/cookcrew_temp/recipe_thumbnail/";
             filename = file.getOriginalFilename();
             File dFile = new File(path + filename);
             file.transferTo(dFile);

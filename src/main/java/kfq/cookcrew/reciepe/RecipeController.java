@@ -50,6 +50,7 @@ public class RecipeController extends BaseController {
             String sTitle,
             String mat,
             String source,
+            Double kcal,
             String toastHtml,
             String toastMarkdown) {
 //        System.out.println(title);
@@ -57,7 +58,7 @@ public class RecipeController extends BaseController {
 
         ResponseEntity<String> res = null;
         try {
-            recipeService.rcpReg(regId, title, sTitle, mat, source, toastHtml, toastMarkdown,file);
+            recipeService.rcpReg(regId, title, sTitle, mat, source,kcal, toastHtml, toastMarkdown,file);
             res = new ResponseEntity<String>("게시글 저장성공", HttpStatus.OK);
             System.out.println(res);
         }catch (Exception e) {
