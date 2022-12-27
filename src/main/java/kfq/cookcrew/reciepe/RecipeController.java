@@ -103,4 +103,18 @@ public class RecipeController extends BaseController {
             e.printStackTrace();
         }
     }
+    @GetMapping("/cnt/{rNo}")
+    public ResponseEntity<Integer> cnt(@PathVariable Integer rNo) {
+        ResponseEntity<Integer> res = null;
+//        System.out.println(rNo);
+        try {
+            Integer rcpCnt = recipeService.updateCnt(rNo);
+            res = new ResponseEntity<Integer>(rcpCnt, HttpStatus.OK);
+            //System.out.println(res);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        } return res;
+
+    }
 }

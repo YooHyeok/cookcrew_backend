@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +31,7 @@ public class RecipeService {
         r.setSTitle(sTitle);
         r.setMat(mat);
         r.setSource(source);
+        r.setCnt(0);
         String filename = null;
         if(file!=null && !file.isEmpty()) {
             String path = "C:/jhb/upload/";
@@ -58,6 +57,23 @@ public class RecipeService {
     public List<Recipe> recipeList() throws Exception {
         List<Recipe> recipes = recipeRepository.findAll();
         return recipes;
+    }
+
+    public Integer updateCnt(Integer rNo) throws Exception {
+
+        //Integer orecipe = recipeRepository.getCntByRno(rNo);
+
+//        if(!orecipe.isPresent()) throw new Exception("조회수 오류");
+        //Recipe recipe = new Recipe();
+        Optional<Recipe> orecipe = recipeRepository.findById(rNo);
+        if(orecipe.isEmpty()) {
+            throw new Exception("레시프 조회 오류");
+        }
+        Recipe recipe = orecipe.get();
+        System.out.println(recipe.getCnt());
+        recipe.incrementCnt();
+        recipeRepository.save(recipe);
+        return recipe.getCnt();
     }
 
 
