@@ -5,7 +5,7 @@ public class Path {
     private Path() {
     }
 
-    public static final String RECIPEIMAGE = "C:/cookCrewTemp/recipe_image/";
-    public static final String RECIPETHUMBNAIL = "C:/cookCrewTemp/recipe_thumbnail/";
-    public static final String USERPROFILE = "C:/cookCrewTemp/user_profile/";
+    public static final String RECIPEIMAGE = "C:/cookcrew_temp/recipe_image/";
+    public static final String RECIPETHUMBNAIL = "C:/cookcrew_temp/recipe_thumbnail/";
+    public static final String USERPROFILE = "C:/cookcrew_temp/user_profile/";
 }

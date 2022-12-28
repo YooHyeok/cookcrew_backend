@@ -26,6 +26,7 @@ import java.util.List;
  * 프로그램 설명 : 레시피 리스트, 레시피등록, 레시피 상세, 레시피수정, 레시피삭제 <p>
  * 연관테이블 : recipe
  * 담당 : 이규희, 유재혁, 조현빈<p>
+ * 담당 : 이규희, 유재혁, 조현빈<p>
  * *****************************************************<p>
  */
 @RestController
@@ -34,14 +35,14 @@ public class RecipeController extends BaseController {
         RecipeService recipeService;
     @GetMapping("/recipelist")
     public ResponseEntity<List<Recipe>> recipeList(){
+        System.out.println("dldld");
         ResponseEntity<List<Recipe>> res = null;
         try{
             List<Recipe> recipes = recipeService.recipeList();
-            List<Recipe> resarr = new ArrayList<>();
-            for(int i=0; i<50; i++) {
-                resarr.add(recipes.get(i));
+            for(Recipe recipe : recipes) {
+                System.out.println(recipe);
             }
-            res = new ResponseEntity<List<Recipe>>(resarr, HttpStatus.OK);
+            res = new ResponseEntity<List<Recipe>>(recipes, HttpStatus.OK);
         }catch(Exception e){
             e.printStackTrace();
             res = new ResponseEntity<List<Recipe>>(HttpStatus.BAD_REQUEST);

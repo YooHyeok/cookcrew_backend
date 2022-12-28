@@ -23,7 +23,7 @@ import java.time.LocalDate;
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer rNo; // 레시피 번호
+    private Integer rno; // 레시피 번호 r_no rno
     @Column
     private String regId; // 작성자 아이디
     @Column
