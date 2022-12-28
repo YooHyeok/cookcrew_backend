@@ -42,13 +42,17 @@ public class Recipe {
     @Column
     private String thumbPath; //썸네일경로
     @Column
-    private String sTitle; //상세설명
+    private String stitle; //상세설명
     @Column
     private String mat;//핵심재료
     @Column
     private String source;//양념
     @Column
     private Double rating;//별점
+
+    public void incrementCnt() {
+        this.cnt ++ ;
+    }
 
 
 

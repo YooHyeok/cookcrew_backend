@@ -1,4 +1,4 @@
-package kfq.cookcrew.reciepe;
+package kfq.cookcrew.rating;
 import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -7,7 +7,6 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity(name="rating")
 public class Rating implements Serializable {
     @Id

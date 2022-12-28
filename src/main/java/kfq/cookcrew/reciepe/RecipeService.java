@@ -24,34 +24,60 @@ public class RecipeService {
     }
 
     //레시피 작성
-    public void rcpReg(String regId, String title , String sTitle, String mat, String source, String toastHtml, String toastMarkdown,
-                       MultipartFile file )
-            throws Exception{
+    public void rcpReg(String regId, String title, String sTitle, String mat, String source, Double kcal, String toastHtml, String toastMarkdown,
+                       MultipartFile file)
+            throws Exception {
         Recipe r = new Recipe();
+        System.out.println(r);
         r.setTitle(title);
         r.setRegId(regId);
         r.setContent(toastHtml);
-//        r.setKcal(0);
         r.setRegDate(new Date(System.currentTimeMillis()));
-        r.setSTitle(sTitle);
+        r.setStitle(sTitle);
         r.setMat(mat);
         r.setSource(source);
+        r.setCnt(0);
+        r.setKcal(kcal);
         String filename = null;
-        if(file!=null && !file.isEmpty()) {
-            String path = "C:/jhb/upload/";
+        if (file != null && !file.isEmpty()) {
+            String path = "C:/cookcrew_temp/recipe_thumbnail/";
             filename = file.getOriginalFilename();
             File dFile = new File(path + filename);
             file.transferTo(dFile);
         }
         r.setThumbPath(filename);
         Recipe save = recipeRepository.save(r);
-        System.out.println("##############"+save+"##############");
-        System.out.println(filename);
+//        System.out.println("##############"+save+"##############");
+//        System.out.println(filename);
     }
+    public void rcpModReg(MultipartFile file, Recipe recipe)
+            throws Exception {
+        recipe.setRating(0.0);
+        recipe.setModDate(new Date(System.currentTimeMillis()));
+        String filename = null;
+        if (file != null && !file.isEmpty()) {
+            String path = "C:/cookcrew_temp/recipe_thumbnail/";
+            filename = file.getOriginalFilename();
+            File dFile = new File(path + filename);
+            file.transferTo(dFile);
+        }
+        recipe.setThumbPath(filename);
+        recipeRepository.save(recipe);
+    }
+
+    public Recipe rcpMod(Integer rNo) throws Exception {
+        Optional<Recipe> orecipe = recipeRepository.findById(rNo);
+        if(orecipe.isPresent())
+            return orecipe.get();
+        throw new Exception("글 번호 오류");
+
+}
 
     //레시피 상세보기
     public Recipe rcpRef(Integer rNo) throws Exception {
         Optional<Recipe> orecipe = recipeRepository.findById(rNo);
+        System.out.println(orecipe.get());
+
         if(orecipe.isPresent())
             return orecipe.get();
         throw new Exception("글 번호 오류");
@@ -64,4 +90,22 @@ public class RecipeService {
         List<Recipe> recipes = recipeRepository.findAll();
         return recipes;
     }
+
+    public Integer updateCnt(Integer rNo) throws Exception {
+
+        //Integer orecipe = recipeRepository.getCntByRno(rNo);
+
+//        if(!orecipe.isPresent()) throw new Exception("조회수 오류");
+        //Recipe recipe = new Recipe();
+        Optional<Recipe> orecipe = recipeRepository.findById(rNo);
+        if(orecipe.isEmpty()) {
+            throw new Exception("레시프 조회 오류");
+        }
+        Recipe recipe = orecipe.get();
+        System.out.println(recipe.getCnt());
+        recipe.incrementCnt();
+        recipeRepository.save(recipe);
+        return recipe.getCnt();
+    }
+    
 }
