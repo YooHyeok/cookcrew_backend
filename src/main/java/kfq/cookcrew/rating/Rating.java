@@ -7,7 +7,6 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity(name="rating")
 public class Rating implements Serializable {
     @Id

@@ -67,6 +67,39 @@ public class RecipeController extends BaseController {
         }
         return res;
     }
+
+    @PostMapping("/rcpmodreg") //레시피
+    public ResponseEntity<String> rcpmodreg(
+            @RequestParam(name = "file", required = false) MultipartFile file, @ModelAttribute(name="recipe") Recipe recipe) {
+        System.out.println(recipe);
+
+        ResponseEntity<String> res = null;
+        try {
+            recipeService.rcpModReg(file, recipe);
+            res = new ResponseEntity<String>("게시글 저장성공", HttpStatus.OK);
+            System.out.println(res);
+        }catch (Exception e) {
+            e.printStackTrace();
+            res = new ResponseEntity<String>("게시글 저장실패", HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+
+//    @PutMapping("/rcpmod/{rNo}")
+//    public ResponseEntity<Recipe> rcpMod(@PathVariable Integer rNo) {
+//        System.out.println("rNo는" + rNo);
+//        ResponseEntity<Recipe> res = null;
+//        try {
+//            Recipe recipe = recipeService.rcpRef(rNo);
+//            res = new ResponseEntity<Recipe>(recipe, HttpStatus.OK);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            res = new ResponseEntity<Recipe>(HttpStatus.BAD_REQUEST);
+//        }
+//        return res;
+//    }
+
+
     @GetMapping("/rcpref/{rNo}") //레시피 상세조회 내용x
     public ResponseEntity<Recipe> rcpRef(@PathVariable Integer rNo) {
 //        System.out.println("rNo는" + rNo);

@@ -43,7 +43,7 @@ public class Recipe {
     @Column
     private String thumbPath; //썸네일경로
     @Column
-    private String sTitle; //상세설명
+    private String stitle; //상세설명
     @Column
     private String mat;//핵심재료
     @Column
