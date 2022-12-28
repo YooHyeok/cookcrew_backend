@@ -14,16 +14,22 @@ import java.util.Map;
 public interface DietRepository extends JpaRepository<Diet,Integer> {
 
 
-    @Query(value = "SELECT DISTINCT" +
-            " CASE WHEN d.meal_div = 1 THEN '아침'" +
+    @Query(value = "SELECT DISTINCT " +
+            "CASE WHEN d.meal_div = 1 THEN '아침' " +
             "WHEN d.meal_div = 2 THEN '점심' " +
-            "ELSE '저녁'" +
+            "ELSE '저녁' " +
             "END as title" +
+            ", CASE WHEN d.meal_div = 1 THEN 'lightblue' " +
+            "WHEN d.meal_div = 2 THEN 'lightnavy' " +
+            "ELSE 'darkgray' " +
+            "END as color" +
             ", d.diet_date as date " +
             ", d.meal_div as mealDiv " +
-            "FROM diet d ORDER BY date ASC"
+            "FROM diet d " +
+            "WHERE user_id = :userId " +
+            "ORDER BY date ASC"
             ,nativeQuery = true) // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
-    List<Map<String,Object>> findDistinctDietDate();
+    List<Map<String,Object>> findDistinctDietDate(@Param("userId") String userId);
     /**
      * @Query SELECT dr.r_no FROM diet d WHERE meal_div = '1' AND user_id = 'user' AND diet_date = '지정날짜'
      * @param mealDiv
@@ -33,7 +39,7 @@ public interface DietRepository extends JpaRepository<Diet,Integer> {
      */
     List<Diet> findByMealDivAndUserIdAndDietDate(char mealDiv, String id, Date date);
 
-    List<Diet> findByDietDateAndMealDiv(Date stringToSqlDateFormat, Character mealDiv);
+    List<Diet> findByUserIdAndDietDateAndMealDiv(String userId, Date stringToSqlDateFormat, Character mealDiv);
 
     @Modifying
     @Query(value = "UPDATE diet d " +

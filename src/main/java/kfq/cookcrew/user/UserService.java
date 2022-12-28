@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService {
 
     public Boolean existByNn(String nickname) throws Exception {
 
-        boolean checkNn = userRepository.existsById(nickname);
+        boolean checkNn = userRepository.existsByNickname(nickname);
         System.out.println(checkNn);
 
         return checkNn;
@@ -47,4 +47,9 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findById(username).get();
     }
+
+    public User myInfo(String id) {
+        return userRepository.findById(id).get();
+    }
+
 }

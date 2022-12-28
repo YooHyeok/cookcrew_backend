@@ -24,11 +24,11 @@ public class DietService {
     public List<Diet> findAll() {
         return dietRepository.findAll();
     }
-    public List<Map<String,Object>> findDistinctDietDate() {
-        return dietRepository.findDistinctDietDate();
+    public List<Map<String,Object>> findDistinctDietDate(String userId) {
+        return dietRepository.findDistinctDietDate(userId);
     }
-    public List<Diet> findByDietDateAndMealDiv(Date stringToSqlDateFormat, Character mealDiv) {
-        return dietRepository.findByDietDateAndMealDiv(stringToSqlDateFormat, mealDiv);
+    public List<Diet> findByUserIdAndDietDateAndMealDiv(String userId, Date stringToSqlDateFormat, Character mealDiv) {
+        return dietRepository.findByUserIdAndDietDateAndMealDiv(userId, stringToSqlDateFormat, mealDiv);
     }
 
     @Transactional(readOnly = false)

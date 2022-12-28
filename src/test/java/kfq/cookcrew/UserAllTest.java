@@ -51,9 +51,10 @@ public class UserAllTest {
 						, "박지혜짱짱걸"
 						, "user1234"
 						, "주소"
+						, null
 						, "상세주소"
 						, "이메일!"
-						, "인증번호"
+						, true
 						, new Date(System.currentTimeMillis())
 						, null
 				)
