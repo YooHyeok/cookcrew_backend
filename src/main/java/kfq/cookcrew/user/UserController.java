@@ -111,7 +111,7 @@ public class UserController extends BaseController {
         if(user!=null && pwResult) {
             String accessToken = jwtTokenProvider.createToken(user.getUsername());
             String refreshToken =jwtTokenProvider.refreshToken(user.getUsername());
-            res.put("userid",user.getUsername() );
+            res.put("userId",user.getUsername() );
             res.put("accessToken", accessToken);
             res.put("refreshToken", refreshToken);
             return new ResponseEntity<Map<String, String>>(res, HttpStatus.OK);
