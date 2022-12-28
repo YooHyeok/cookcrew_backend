@@ -3,7 +3,6 @@ package kfq.cookcrew.reciepe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.sql.Date;
 import java.util.List;
@@ -14,6 +13,12 @@ public class RecipeService {
     @Autowired
     RecipeRepository recipeRepository;
 
+    /**
+     * 작성자 : 유재혁
+     * 검색어 포함 SELECT 함수
+     * @param searchParam
+     * @return
+     */
     public List<Recipe> searchByTitleLike(String searchParam) {
         return recipeRepository.searchByTitleLike(searchParam);
     }
@@ -46,7 +51,6 @@ public class RecipeService {
 //        System.out.println("##############"+save+"##############");
 //        System.out.println(filename);
     }
-
     public void rcpModReg(MultipartFile file, Recipe recipe)
             throws Exception {
         recipe.setRating(0.0);
@@ -70,8 +74,6 @@ public class RecipeService {
 
 }
 
-
-
     //레시피 상세보기
     public Recipe rcpRef(Integer rNo) throws Exception {
         Optional<Recipe> orecipe = recipeRepository.findById(rNo);
@@ -82,6 +84,7 @@ public class RecipeService {
         throw new Exception("글 번호 오류");
 
     }
+
     //레시피 리스트
     //페이징처리 추가 필요
     public List<Recipe> recipeList() throws Exception {
@@ -105,6 +108,5 @@ public class RecipeService {
         recipeRepository.save(recipe);
         return recipe.getCnt();
     }
-
-
+    
 }
