@@ -128,7 +128,7 @@ public class RecipeController extends BaseController {
     @GetMapping("/img/{filename}")//상세조회 첨부파일
     public void imageView(@PathVariable String filename, HttpServletResponse response) {
         try {
-            String path = "C:/jhb/upload/";
+            String path = "C:/cookcrew_temp/recipe_thumbnail/";
             FileInputStream fis = new FileInputStream(path + filename);
             OutputStream out = response.getOutputStream();
             FileCopyUtils.copy(fis, out);
