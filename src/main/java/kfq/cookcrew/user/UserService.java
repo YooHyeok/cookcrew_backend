@@ -7,6 +7,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.OptionalInt;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -37,7 +40,7 @@ public class UserService implements UserDetailsService {
 
     public Boolean existByNn(String nickname) throws Exception {
 
-        boolean checkNn = userRepository.existsById(nickname);
+        boolean checkNn = userRepository.existsByNickname(nickname);
         System.out.println(checkNn);
 
         return checkNn;
@@ -47,4 +50,19 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findById(username).get();
     }
+
+//    public User myInfo2(User user) throws Exception{
+//        Optional<User> userByOptionalList = userRepository.findById(user.getId()); //id에 해당하는 정보의 jpa 반환타입은 Optional이라는 리스트형태의 인터페이스이다.
+//        User userObject = userByOptionalList.get(); //리스트 형태에서 .get() 하면 Generic User타입의 객체로 반환을 받는다.
+//        return userObject;
+//    }
+//        public Optional<User> myInfo2(User user) throws Exception{
+//        Optional<User> userByOptionalList = userRepository.findById(user.getId()); //id에 해당하는 정보의 jpa 반환타입은 Optional이라는 리스트형태의 인터페이스이다.
+//        return userByOptionalList;
+//    }
+
+    public User myInfo(String id) {
+        return userRepository.findById(id).get();
+    }
+
 }

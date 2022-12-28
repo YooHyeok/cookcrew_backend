@@ -31,16 +31,22 @@ public class User implements UserDetails{
     private String address;
 
     @Column
-    private String detailaddress;
+    private String postcode;
+
+    @Column // 상세주소 -> addr_detail
+    private String addrDetail;
 
     @Column
     private String email;
 
-    @Column
-    private String checked;
+    @Column(columnDefinition = "boolean default TRUE constraint enabled check(enabled in(TRUE,FALSE))") // default 'y'
+    private Boolean enabled; // 회원 ID 사용 여부
+
+//    @Column
+//    private String checked;
 
     @Column
-    private Date created;
+    private Date regDate;
 
     @Column
     @Nullable

@@ -5,10 +5,9 @@ import kfq.cookcrew.common.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -29,7 +28,9 @@ import java.util.Map;
 public class UserController extends BaseController {
 
     private final UserService userService;
+    private final UserRepository userrepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 회원가입
@@ -37,9 +38,8 @@ public class UserController extends BaseController {
      * @return ResponseEntity 결과 객체
      */
     @PostMapping("/join")
-    public ResponseEntity<Boolean> userJoin(@ModelAttribute User user) {
-
-
+    public ResponseEntity<Boolean> userJoin(@RequestBody User user) {
+        System.out.println(user);
         ResponseEntity<Boolean> res = null;
         try{
             Boolean result = userService.userJoin(user);
@@ -83,6 +83,7 @@ public class UserController extends BaseController {
 
     @PostMapping("/exsitByNn")
     public ResponseEntity<Boolean> isExistByNn(String nickname) {
+        System.out.println(nickname);
         ResponseEntity<Boolean> res = null;
         try{
             Boolean result = userService.existByNn(nickname);
@@ -102,11 +103,12 @@ public class UserController extends BaseController {
     public ResponseEntity<Map<String, String>> login(@RequestParam("id") String id,
                                                      @RequestParam("password") String password,
                                                      HttpServletRequest request){
+        System.out.println(id);
+        System.out.println(password);
         Map<String, String> res = new HashMap<>();
         User user = (User)userService.loadUserByUsername(id);
-
-        if(user!=null && user.getPassword().equals(password)) {
-
+        Boolean pwResult = passwordEncoder.matches(password, user.getPassword());
+        if(user!=null && pwResult) {
             String accessToken = jwtTokenProvider.createToken(user.getUsername());
             String refreshToken =jwtTokenProvider.refreshToken(user.getUsername());
             res.put("userid",user.getUsername() );
@@ -121,7 +123,20 @@ public class UserController extends BaseController {
      * 마이페이지
      */
     // TODO 여기에 메소드 선언
+    @GetMapping("/mypage")
+    public ResponseEntity<User> myInfo(@RequestParam("id") String id) {
+        ResponseEntity<User> result = null;
+        try {
 
+            User user = userService.myInfo(id);
+            System.out.println(user);
+            result = new ResponseEntity<User>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            result = new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+        }
+        System.out.println(result);
+        return result;
+    }
     /**
      * 로그아웃
      */
