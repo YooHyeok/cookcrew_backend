@@ -38,7 +38,7 @@ public class RecipeService {
         r.setSource(source);
         r.setCnt(0);
         r.setKcal(kcal);
-        r.setEnabled('y');
+        r.setEnabled(true);
         String filename = null;
         if (file != null && !file.isEmpty()) {
             String path = "C:/cookcrew_temp/recipe_thumbnail/";
