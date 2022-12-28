@@ -23,7 +23,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // TODO Auto-generated method stub
-        //	csrf라는 방어하겠다는 의미. 이쪽으로 들어오는것은 막겠다.
+        //	csrf라는 공격을 방어하겠다는 의미. 이쪽으로 들어오는것은 막겠다.
         http.csrf().disable();
         http.httpBasic().disable().authorizeHttpRequests()
                 .antMatchers("/**/*").permitAll()
