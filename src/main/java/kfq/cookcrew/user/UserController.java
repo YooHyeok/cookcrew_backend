@@ -5,7 +5,6 @@ import kfq.cookcrew.common.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -111,7 +110,7 @@ public class UserController extends BaseController {
         if(user!=null && pwResult) {
             String accessToken = jwtTokenProvider.createToken(user.getUsername());
             String refreshToken =jwtTokenProvider.refreshToken(user.getUsername());
-            res.put("userid",user.getUsername() );
+            res.put("userId",user.getUsername() );
             res.put("accessToken", accessToken);
             res.put("refreshToken", refreshToken);
             return new ResponseEntity<Map<String, String>>(res, HttpStatus.OK);
@@ -127,7 +126,6 @@ public class UserController extends BaseController {
     public ResponseEntity<User> myInfo(@RequestParam("id") String id) {
         ResponseEntity<User> result = null;
         try {
-
             User user = userService.myInfo(id);
             System.out.println(user);
             result = new ResponseEntity<User>(user, HttpStatus.OK);
@@ -143,6 +141,3 @@ public class UserController extends BaseController {
     // TODO 여기에 메소드 선언
 
 }
-
-
-

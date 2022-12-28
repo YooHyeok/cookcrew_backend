@@ -33,12 +33,11 @@ public class DietController extends BaseController {
      * @return List<Map<String,Object>>
      */
     @GetMapping("/dietSearchMonthAll")
-    public ResponseEntity<List<Map<String,Object>>> dietList() {
+    public ResponseEntity<List<Map<String,Object>>> dietList(String userId) {
 
         ResponseEntity <List<Map<String,Object>>> result = null;
-
         try {
-            List<Map<String,Object>> dietList = dietService.findDistinctDietDate();
+            List<Map<String,Object>> dietList = dietService.findDistinctDietDate(userId);
             List<String> resList = new ArrayList();
             int i = 0;
             for(Map<String,Object> data : dietList) {
@@ -55,16 +54,15 @@ public class DietController extends BaseController {
         return result;
     }
     @GetMapping("/dietSearch")
-    public ResponseEntity<List<Diet>> dietSearchByEvent(String dietDate, Character mealDiv) {
+    public ResponseEntity<List<Diet>> dietSearchByEvent(String userId, String dietDate, Character mealDiv) {
 
-        LOGGER.info("dietDate : {}, mealDiv : {}", dietDate, mealDiv);
+        LOGGER.info("userId : {}, dietDate : {}, mealDiv : {}",userId, dietDate, mealDiv);
 
         Date StringToSqlDateFormat = Date.valueOf(dietDate);
         ResponseEntity <List<Diet>> result = null;
-
-
         try {
-            List<Diet> dietListBy = dietService.findByDietDateAndMealDiv(StringToSqlDateFormat, mealDiv);
+            List<Diet> dietListBy =
+            dietService.findByUserIdAndDietDateAndMealDiv(userId, StringToSqlDateFormat, mealDiv);
             for(Diet diet : dietListBy) {
                 LOGGER.info(diet.toString());
             }
@@ -80,17 +78,18 @@ public class DietController extends BaseController {
         LOGGER.info("AddParameter : {}", param);
         ResponseEntity<String> result = null;
 
-//=======
-        System.out.println(Date.valueOf(param.get("dietDate")));
-        System.out.println(Integer.parseInt(param.get("rno")));
+        String userId = param.get("userId");
+        Date dietDate = Date.valueOf(param.get("dietDate"));
+        Character mealDiv = param.get("mealDiv").charAt(0);
+        Integer rno = Integer.parseInt(param.get("rno"));
 
         try {
-            Diet diet = new Diet(0, "userexample"
-                    , Date.valueOf(param.get("dietDate"))
-                    , param.get("mealDiv").charAt(0)
+            Diet diet = new Diet(0, userId
+                    , dietDate
+                    , mealDiv
                     , null
                     , 0
-                    , new Recipe(Integer.parseInt(param.get("rno"))
+                    , new Recipe(rno
                         , ""
                         , ""
                         , ""
