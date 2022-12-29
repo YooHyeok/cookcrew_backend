@@ -2,6 +2,7 @@ package kfq.cookcrew.reciepe;
 
 import kfq.cookcrew.common.Path;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +24,7 @@ public class RecipeService {
 
     //레시피 작성
     public void rcpReg(String regId, String title , String sTitle, String mat, String source, String toastHtml, String toastMarkdown,
-                       MultipartFile file )
+                       MultipartFile file, Double kcal )
             throws Exception{
         Recipe r = new Recipe();
         r.setTitle(title);
@@ -43,6 +44,7 @@ public class RecipeService {
             file.transferTo(dFile);
         }
         r.setThumbPath(filename);
+        r.setKcal(kcal);
         Recipe save = recipeRepository.save(r);
         System.out.println("##############"+save+"##############");
         System.out.println(filename);
@@ -58,9 +60,13 @@ public class RecipeService {
     //레시피 리스트
     //페이징처리 추가 필요
     public List<Recipe> recipeList() throws Exception {
-        List<Recipe> recipes = recipeRepository.findAll();
+        List<Recipe> recipes = recipeRepository.findAll(Sort.by(Sort.Direction.DESC, "rno"));
         return recipes;
     }
 
+    public List<Recipe> popRecipes() throws  Exception {
+        List<Recipe> popRecipes = recipeRepository.findAll(Sort.by(Sort.Direction.DESC, "cnt"));
+        return popRecipes;
+    }
 
 }

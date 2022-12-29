@@ -49,6 +49,43 @@ public class RecipeController extends BaseController {
         }
         return res;
     }
+    @GetMapping("/poplist")
+    public ResponseEntity<List<Recipe>> popList(){
+        System.out.println("인기레시피");
+        ResponseEntity<List<Recipe>> res = null;
+        try{
+            List<Recipe> recipes = recipeService.popRecipes();
+            for(Recipe recipe : recipes) {
+                System.out.println(recipe);
+            }
+            res = new ResponseEntity<List<Recipe>>(recipes, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            res = new ResponseEntity<List<Recipe>>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+
+    @GetMapping("/popmain")
+    public ResponseEntity<List<Recipe>> popMain(){
+        System.out.println("인기레시피5개조회순");
+        ResponseEntity<List<Recipe>> res = null;
+        try{
+            List<Recipe> recipes = recipeService.popRecipes();
+            ArrayList<Recipe> popRecipes = new ArrayList<Recipe>();
+
+            for (Recipe recipe : recipes) {
+                popRecipes.add(recipe);
+                System.out.println(recipe);
+            }
+
+            res = new ResponseEntity<List<Recipe>>(popRecipes, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            res = new ResponseEntity<List<Recipe>>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
     @PostMapping("/rcpreg") //레시피 등록
     public ResponseEntity<String> rcpReg(
             @RequestParam(name = "file", required = false) MultipartFile file,
@@ -58,13 +95,15 @@ public class RecipeController extends BaseController {
             String mat,
             String source,
             String toastHtml,
-            String toastMarkdown) {
+            String toastMarkdown,
+            Double kcal
+            ) {
 //        System.out.println(title);
 //        System.out.println(file);
 
         ResponseEntity<String> res = null;
         try {
-            recipeService.rcpReg(regId, title, sTitle, mat, source, toastHtml, toastMarkdown,file);
+            recipeService.rcpReg(regId, title, sTitle, mat, source, toastHtml, toastMarkdown,file, kcal);
             res = new ResponseEntity<String>("게시글 저장성공", HttpStatus.OK);
             System.out.println(res);
         }catch (Exception e) {

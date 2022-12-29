@@ -33,13 +33,13 @@ public class Recipe {
     @Column(columnDefinition = "int default 0") //default 0
     private Integer cnt; // 조회수
     @Column(columnDefinition = "char default 'y'") // default 'y'
-    private Character enabled; // 삭제여부
+    private Boolean enabled; // 삭제여부
     @Column
     private Date regDate; // 등록일자
     @Column
     private Date modDate; // 수정일자
     @Column
-    private Float rKcal; //칼로리
+    private Double kcal; //칼로리
     @Column
     private String thumbPath; //썸네일경로
     @Column
