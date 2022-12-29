@@ -57,6 +57,7 @@ public class RecipeController extends BaseController {
             String sTitle,
             String mat,
             String source,
+            Double kcal,
             String toastHtml,
             String toastMarkdown) {
 //        System.out.println(title);
@@ -64,7 +65,7 @@ public class RecipeController extends BaseController {
 
         ResponseEntity<String> res = null;
         try {
-            recipeService.rcpReg(regId, title, sTitle, mat, source, toastHtml, toastMarkdown,file);
+            recipeService.rcpReg(regId, title, sTitle, mat, source,kcal, toastHtml, toastMarkdown,file);
             res = new ResponseEntity<String>("게시글 저장성공", HttpStatus.OK);
             System.out.println(res);
         }catch (Exception e) {
@@ -73,6 +74,39 @@ public class RecipeController extends BaseController {
         }
         return res;
     }
+
+    @PostMapping("/rcpmodreg") //레시피
+    public ResponseEntity<String> rcpmodreg(
+            @RequestParam(name = "file", required = false) MultipartFile file, @ModelAttribute(name="recipe") Recipe recipe) {
+        System.out.println(recipe);
+
+        ResponseEntity<String> res = null;
+        try {
+            recipeService.rcpModReg(file, recipe);
+            res = new ResponseEntity<String>("게시글 저장성공", HttpStatus.OK);
+            System.out.println(res);
+        }catch (Exception e) {
+            e.printStackTrace();
+            res = new ResponseEntity<String>("게시글 저장실패", HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+
+//    @PutMapping("/rcpmod/{rNo}")
+//    public ResponseEntity<Recipe> rcpMod(@PathVariable Integer rNo) {
+//        System.out.println("rNo는" + rNo);
+//        ResponseEntity<Recipe> res = null;
+//        try {
+//            Recipe recipe = recipeService.rcpRef(rNo);
+//            res = new ResponseEntity<Recipe>(recipe, HttpStatus.OK);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            res = new ResponseEntity<Recipe>(HttpStatus.BAD_REQUEST);
+//        }
+//        return res;
+//    }
+
+
     @GetMapping("/rcpref/{rNo}") //레시피 상세조회 내용x
     public ResponseEntity<Recipe> rcpRef(@PathVariable Integer rNo) {
 //        System.out.println("rNo는" + rNo);
@@ -101,7 +135,7 @@ public class RecipeController extends BaseController {
     @GetMapping("/img/{filename}")//상세조회 첨부파일
     public void imageView(@PathVariable String filename, HttpServletResponse response) {
         try {
-            String path = "C:/jhb/upload/";
+            String path = "C:/cookcrew_temp/recipe_thumbnail/";
             FileInputStream fis = new FileInputStream(path + filename);
             OutputStream out = response.getOutputStream();
             FileCopyUtils.copy(fis, out);
@@ -109,5 +143,19 @@ public class RecipeController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    @GetMapping("/cnt/{rNo}")
+    public ResponseEntity<Integer> cnt(@PathVariable Integer rNo) {
+        ResponseEntity<Integer> res = null;
+//        System.out.println(rNo);
+        try {
+            Integer rcpCnt = recipeService.updateCnt(rNo);
+            res = new ResponseEntity<Integer>(rcpCnt, HttpStatus.OK);
+            //System.out.println(res);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        } return res;
+
     }
 }

@@ -1,7 +1,5 @@
-package kfq.cookcrew.reciepe;
+package kfq.cookcrew.rating;
 
-import kfq.cookcrew.reciepe.Rating;
-import kfq.cookcrew.reciepe.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

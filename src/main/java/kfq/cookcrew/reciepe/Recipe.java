@@ -31,7 +31,7 @@ public class Recipe {
     private String content; //레시피 내용
     @Column(columnDefinition = "int default 0") //default 0
     private Integer cnt; // 조회수
-    @Column(columnDefinition = "boolean default TRUE constraint achieve check(achieve in(TRUE,FALSE))") // default 'y'
+    @Column(columnDefinition = "boolean default TRUE constraint enabled check(enabled in(TRUE,FALSE))") // default 'y'
     private Boolean enabled; // 삭제여부
     @Column
     private Date regDate; // 등록일자
@@ -42,13 +42,17 @@ public class Recipe {
     @Column
     private String thumbPath; //썸네일경로
     @Column
-    private String sTitle; //상세설명
+    private String stitle; //상세설명
     @Column
     private String mat;//핵심재료
     @Column
     private String source;//양념
     @Column
     private Double rating;//별점
+
+    public void incrementCnt() {
+        this.cnt ++ ;
+    }
 
 
 

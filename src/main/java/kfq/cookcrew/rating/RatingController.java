@@ -1,4 +1,4 @@
-package kfq.cookcrew.reciepe;
+package kfq.cookcrew.rating;
 
 
 import lombok.RequiredArgsConstructor;

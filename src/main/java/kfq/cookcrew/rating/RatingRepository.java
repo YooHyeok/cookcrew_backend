@@ -1,6 +1,5 @@
-package kfq.cookcrew.reciepe;
+package kfq.cookcrew.rating;
 
-import kfq.cookcrew.reciepe.Rating;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
