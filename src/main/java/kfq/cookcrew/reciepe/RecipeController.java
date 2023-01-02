@@ -148,8 +148,8 @@ public class RecipeController extends BaseController {
     @PostMapping("/rcpreg") //레시피 등록
     public ResponseEntity<String> rcpReg(
             @RequestParam(name = "file", required = false) MultipartFile file,
+            String userId,
             String title,
-            String regId ,
             String sTitle,
             String mat,
             String source,
@@ -157,14 +157,11 @@ public class RecipeController extends BaseController {
             String toastHtml,
             String toastMarkdown
             ) {
-//        System.out.println(title);
-//        System.out.println(file);
-
         ResponseEntity<String> res = null;
         try {
-            recipeService.rcpReg(regId, title, sTitle, mat, source, kcal, toastHtml, toastMarkdown,file);
+            recipeService.rcpReg( userId,title, sTitle, mat, source,kcal, toastHtml, toastMarkdown,file);
             res = new ResponseEntity<String>("게시글 저장성공", HttpStatus.OK);
-            System.out.println(res);
+//            System.out.println(res);
         }catch (Exception e) {
             e.printStackTrace();
             res = new ResponseEntity<String>("게시글 저장실패", HttpStatus.BAD_REQUEST);
@@ -175,13 +172,13 @@ public class RecipeController extends BaseController {
     @PostMapping("/rcpmodreg") //레시피
     public ResponseEntity<String> rcpmodreg(
             @RequestParam(name = "file", required = false) MultipartFile file, @ModelAttribute(name="recipe") Recipe recipe) {
-        System.out.println(recipe);
+//        System.out.println(file);
 
         ResponseEntity<String> res = null;
         try {
             recipeService.rcpModReg(file, recipe);
             res = new ResponseEntity<String>("게시글 저장성공", HttpStatus.OK);
-            System.out.println(res);
+//            System.out.println(res);
         }catch (Exception e) {
             e.printStackTrace();
             res = new ResponseEntity<String>("게시글 저장실패", HttpStatus.BAD_REQUEST);
@@ -253,6 +250,29 @@ public class RecipeController extends BaseController {
         catch (Exception e) {
             e.printStackTrace();
         } return res;
-
+    }
+    @PostMapping("/recipedelete")
+    public void recipedelete(Integer rNo) {
+//        System.out.println(id);
+//        System.out.println(rNo);
+        try {
+            recipeService.deleteRecipe(rNo);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @GetMapping("/myrecipe/{userId}")
+    public ResponseEntity<List<Map<String,Recipe>>> myRecipe(@PathVariable String userId) {
+//        System.out.println(userId);
+        ResponseEntity<List<Map<String,Recipe>>> res = null;
+        try{
+           List<Map<String,Recipe>>myRecipe = recipeService.myRecipe(userId);
+           res = new ResponseEntity<>(myRecipe,HttpStatus.OK);
+            System.out.println(res);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        } return res;
     }
 }
