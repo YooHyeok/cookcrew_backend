@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -29,15 +30,16 @@ public class RecipeService {
 
     //레시피 작성
 
-    public void rcpReg(String regId, String title, String sTitle, String mat, String source, Double kcal, String toastHtml, String toastMarkdown,
+    public void rcpReg( String userId,String title, String sTitle, String mat, String source, Double kcal, String toastHtml, String toastMarkdown,
                        MultipartFile file)
             throws Exception {
         Recipe r = new Recipe();
-        System.out.println(r);
+//        System.out.println(r);
         r.setTitle(title);
-        r.setRegId(regId);
+        r.setRegId(userId);
         r.setContent(toastHtml);
         r.setRegDate(new Date(System.currentTimeMillis()));
+        r.setModDate(new Date(System.currentTimeMillis()));
         r.setStitle(sTitle);
         r.setMat(mat);
         r.setSource(source);
@@ -61,6 +63,7 @@ public class RecipeService {
     public void rcpModReg(MultipartFile file, Recipe recipe)
             throws Exception {
         recipe.setRating(0.0);
+        recipe.setEnabled(true);
         recipe.setModDate(new Date(System.currentTimeMillis()));
         String filename = null;
         if (file != null && !file.isEmpty()) {
@@ -68,28 +71,21 @@ public class RecipeService {
             filename = file.getOriginalFilename();
             File dFile = new File(path + filename);
             file.transferTo(dFile);
+            recipe.setThumbPath(filename);
         }
-        recipe.setThumbPath(filename);
-        recipeRepository.save(recipe);
+
+        Recipe save = recipeRepository.save(recipe);
     }
-
-    public Recipe rcpMod(Integer rNo) throws Exception {
-        Optional<Recipe> orecipe = recipeRepository.findById(rNo);
-        if(orecipe.isPresent())
-            return orecipe.get();
-        throw new Exception("글 번호 오류");
-
-}
 
     //레시피 상세보기
     public Recipe rcpRef(Integer rNo) throws Exception {
         Optional<Recipe> orecipe = recipeRepository.findById(rNo);
-        System.out.println(orecipe.get());
+//        System.out.println(orecipe.get());
 
-        if(orecipe.isPresent())
-            return orecipe.get();
-        throw new Exception("글 번호 오류");
-
+        if(!orecipe.isPresent() && !orecipe.get().getEnabled()) {
+            throw new Exception("삭제된 글입니다.");
+        }
+        return orecipe.get();
     }
 
     //레시피 리스트
@@ -116,7 +112,7 @@ public class RecipeService {
             throw new Exception("레시프 조회 오류");
         }
         Recipe recipe = orecipe.get();
-        System.out.println(recipe.getCnt());
+//        System.out.println(recipe.getCnt());
         recipe.incrementCnt();
         recipeRepository.save(recipe);
         return recipe.getCnt();
@@ -154,6 +150,20 @@ public class RecipeService {
         pageInfo.setEndPage(endPage);
 
         return pages.getContent();
+    }
+
+    public void deleteRecipe(Integer rNo) throws Exception{
+        recipeRepository.deleteByRno(rNo);
+        }
+    public List<Map<String,Recipe>> myRecipe(String userId) throws Exception {
+        Optional<List<Map<String, Recipe>>> mreipe = recipeRepository.findMyRecipe(userId);
+
+        if (mreipe.isEmpty()) {
+            throw new Exception("레시피 정보 없음");
+        }
+        List<Map<String,Recipe>> recipe = mreipe.get();
+//        System.out.println("왓다팍  :"+recipe);
+        return recipe;
     }
 
 }

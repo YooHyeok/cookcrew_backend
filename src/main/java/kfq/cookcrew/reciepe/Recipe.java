@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Map;
 
 /**
  * *****************************************************<p>
@@ -54,9 +55,15 @@ public class Recipe {
         this.cnt ++ ;
     }
 
+
     public Recipe(Integer rno) {
         this.rno = rno;
     }
+
+
+
+
+
 //    @OneToOne -- Diet테이블과 양방향으로 지정
 //    private Diet diet;
 }
