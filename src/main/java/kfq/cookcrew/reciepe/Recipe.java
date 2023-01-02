@@ -31,7 +31,7 @@ public class Recipe {
     private String content; //레시피 내용
     @Column(columnDefinition = "int default 0") //default 0
     private Integer cnt; // 조회수
-    @Column(columnDefinition = "boolean default TRUE constraint enabled check(enabled in(TRUE,FALSE))") // default 'y'
+    @Column(columnDefinition = "boolean default 1 constraint enabled check(enabled in(1,0))") // default 'y'
     private Boolean enabled; // 삭제여부
     @Column
     private Date regDate; // 등록일자
@@ -54,8 +54,9 @@ public class Recipe {
         this.cnt ++ ;
     }
 
-
-
+    public Recipe(Integer rno) {
+        this.rno = rno;
+    }
 //    @OneToOne -- Diet테이블과 양방향으로 지정
 //    private Diet diet;
 }
