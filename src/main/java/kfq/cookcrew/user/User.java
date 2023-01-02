@@ -53,6 +53,9 @@ public class User implements UserDetails{
     @Nullable
     private String profilePath;
 
+    @Column
+    private String Filename;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

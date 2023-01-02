@@ -1,8 +1,12 @@
 package kfq.cookcrew.diet;
+
+import kfq.cookcrew.common.DateUtill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.Date;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +34,6 @@ public class DietService {
     public List<Diet> findByUserIdAndDietDateAndMealDiv(String userId, Date stringToSqlDateFormat, Character mealDiv) {
         return dietRepository.findByUserIdAndDietDateAndMealDiv(userId, stringToSqlDateFormat, mealDiv);
     }
-
     @Transactional(readOnly = false)
     public void save(Diet diet) {
         dietRepository.save(diet);
@@ -42,10 +45,10 @@ public class DietService {
     }
 
     @Transactional(readOnly = false)
-    public void updateDietSave(Date dietDate, char mealDiv, Boolean achieve, int targetKcal) {
-        dietRepository.updateDietSave(dietDate,mealDiv,achieve,targetKcal);
+    public void updateDietSave(String dietDate, Boolean achieve, Character mealDiv, Integer targetKcal) throws ParseException {
+        // dietDate 날짜를 기준으로 이번주의 일요일, 토요일 값을 계산하는 로직 구현.
+        Date startDate = DateUtill.SundayToSqlDate(String.valueOf(dietDate));
+        Date endDate = DateUtill.SaturdayToSqlDate(String.valueOf(dietDate));
+        dietRepository.updateDietSave(startDate, endDate, achieve, mealDiv, targetKcal);
     }
-//    public List<Map<String,Object>> kcalRank(Character mealDiv, Boolean achieve, Date startDate, Date endDate) {
-//        return dietRepository.kcalRank(mealDiv, achieve, startDate, endDate);
-//    }
 }

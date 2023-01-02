@@ -2,6 +2,8 @@ package kfq.cookcrew.diet;
 
 import kfq.cookcrew.reciepe.Recipe;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -19,6 +21,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @ToString
 @Entity
+@DynamicInsert
 public class Diet {
 
     @Id
@@ -31,10 +34,12 @@ public class Diet {
     @Column
     private Date dietDate; //날짜
 
-    @Column(columnDefinition = "char default '1' constraint meal_div check(meal_div in('1','2','3'))")
+//    @Column(columnDefinition = "char default '1' constraint meal_div check(meal_div in('1','2','3'))")
+    @ColumnDefault("1")
     private Character mealDiv; //식사분류 (default 1 도메인 : 아침,점심,저녁 = 1,2,3)
 
-    @Column(columnDefinition = "boolean default FALSE constraint achieve check(achieve in(TRUE,FALSE))")
+//    @Column(columnDefinition = "tinyint default 0 constraint achieve check(achieve in(1,0))")
+    @ColumnDefault("false")
     private Boolean achieve;
 
     @Column
