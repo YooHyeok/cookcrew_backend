@@ -7,8 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.parser.Entity;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,7 +83,7 @@ public class UserController extends BaseController {
      * @return ResponseEntity 결과 객체
      */
 
-    @PostMapping("/exsitByNn")
+    @PostMapping("/existByNn")
     public ResponseEntity<Boolean> isExistByNn(String nickname) {
         System.out.println(nickname);
         ResponseEntity<Boolean> res = null;
@@ -125,19 +128,29 @@ public class UserController extends BaseController {
     @GetMapping("/mypage")
     public ResponseEntity<User> myInfo(@RequestParam("id") String id) {
         ResponseEntity<User> result = null;
+        User user = userService.myInfo(id);
         try {
-            User user = userService.myInfo(id);
-            System.out.println(user);
             result = new ResponseEntity<User>(user, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             result = new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
         }
-        System.out.println(result);
         return result;
     }
-    /**
-     * 로그아웃
-     */
-    // TODO 여기에 메소드 선언
 
+    @PostMapping("/mypagemod")
+    public ResponseEntity<User> myInfoMod(@RequestBody User user,
+                                             @RequestParam(name="file", required = false)MultipartFile file)
+    throws Exception{
+        System.out.println(user);
+        ResponseEntity<User> res = null;
+        User usermod = userService.myInfoMod(user, file);
+        try{
+            res = new ResponseEntity<User>(usermod, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            res = new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
 }
