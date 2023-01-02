@@ -2,6 +2,8 @@ package kfq.cookcrew.reciepe;
 
 import kfq.cookcrew.common.Path;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -119,5 +121,39 @@ public class RecipeService {
         recipeRepository.save(recipe);
         return recipe.getCnt();
     }
-    
+
+    // 최신 순 정렬 페이지네이션
+    public List<Recipe> recipePage(PageInfo pageInfo) throws Exception {
+        PageRequest pageRequest = PageRequest.of(pageInfo.getCurPage()-1, 12,
+                Sort.by(Sort.Direction.DESC,"rno"));
+        Page<Recipe> pages = recipeRepository.findAll(pageRequest);
+        int maxPage = pages.getTotalPages();
+        int startPage = pageInfo.getCurPage()/10*10+1;  //1, 11, 21, 31...
+        int endPage = startPage+10 -1;	//10, 20, 30, 40
+        if(endPage>maxPage) endPage = maxPage;
+
+        pageInfo.setAllPage(maxPage);
+        pageInfo.setStartPage(startPage);
+        pageInfo.setEndPage(endPage);
+
+        return pages.getContent();
+    }
+
+    // 조회 순 정렬 페이지네이션
+    public List<Recipe> popRecipePage(PageInfo pageInfo) throws Exception {
+        PageRequest pageRequest = PageRequest.of(pageInfo.getCurPage()-1, 12,
+                Sort.by(Sort.Direction.DESC,"cnt"));
+        Page<Recipe> pages = recipeRepository.findAll(pageRequest);
+        int maxPage = pages.getTotalPages();
+        int startPage = pageInfo.getCurPage()/10*10+1;  //1, 11, 21, 31...
+        int endPage = startPage+10 -1;	//10, 20, 30, 40
+        if(endPage>maxPage) endPage = maxPage;
+
+        pageInfo.setAllPage(maxPage);
+        pageInfo.setStartPage(startPage);
+        pageInfo.setEndPage(endPage);
+
+        return pages.getContent();
+    }
+
 }

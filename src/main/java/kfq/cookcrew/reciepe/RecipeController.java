@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * *****************************************************<p>
@@ -40,7 +42,6 @@ public class RecipeController extends BaseController {
         try{
             List<Recipe> recipes = recipeService.recipeList();
             for(Recipe recipe : recipes) {
-                System.out.println(recipe);
             }
             res = new ResponseEntity<List<Recipe>>(recipes, HttpStatus.OK);
         }catch(Exception e){
@@ -49,9 +50,48 @@ public class RecipeController extends BaseController {
         }
         return res;
     }
+
+    @GetMapping(value={"/recipepage/{page}","/recipes"}) // 전체레시피(최신순) Pagination
+    public ResponseEntity<Map<String, Object>> recipePage(@PathVariable(required=false) Integer page){
+        if(page == null) page=1;
+        ResponseEntity<Map<String, Object>> res = null;
+        try {
+            PageInfo pageInfo = new PageInfo();
+            pageInfo.setCurPage(page);
+            List<Recipe> recipes = recipeService.recipePage(pageInfo);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("pageInfo",pageInfo);
+            map.put("recipes",recipes);
+            res = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            res = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+
+    @GetMapping(value={"/poprecipepage/{page}","/poprecipes"})  // 전체레시피 (조회순) pagination
+    public ResponseEntity<Map<String, Object>> popRecipePage(@PathVariable(required=false) Integer page){
+        if(page == null) page=1;
+        System.out.println(page);
+        ResponseEntity<Map<String, Object>> res = null;
+        try {
+            PageInfo pageInfo = new PageInfo();
+            pageInfo.setCurPage(page);
+            List<Recipe> recipes = recipeService.popRecipePage(pageInfo);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("pageInfo",pageInfo);
+            map.put("recipes",recipes);
+            res = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            res = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+
     @GetMapping("/poplist")
     public ResponseEntity<List<Recipe>> popList(){
-        System.out.println("인기레시피");
         ResponseEntity<List<Recipe>> res = null;
         try{
             List<Recipe> recipes = recipeService.popRecipes();
@@ -66,26 +106,45 @@ public class RecipeController extends BaseController {
         return res;
     }
 
-    @GetMapping("/popmain")
+
+    @GetMapping("/popmain")  // 메인화면에 조회수 best 5
     public ResponseEntity<List<Recipe>> popMain(){
-        System.out.println("인기레시피5개조회순");
         ResponseEntity<List<Recipe>> res = null;
         try{
             List<Recipe> recipes = recipeService.popRecipes();
-            ArrayList<Recipe> popRecipes = new ArrayList<Recipe>();
+            ArrayList<Recipe> mainPop = new ArrayList<Recipe>();
 
-            for (Recipe recipe : recipes) {
-                popRecipes.add(recipe);
-                System.out.println(recipe);
+            for (int i = 0 ; i< 5; i++) {
+                mainPop.add(recipes.get(i));
             }
 
-            res = new ResponseEntity<List<Recipe>>(popRecipes, HttpStatus.OK);
+            res = new ResponseEntity<List<Recipe>>(mainPop, HttpStatus.OK);
         }catch(Exception e){
             e.printStackTrace();
             res = new ResponseEntity<List<Recipe>>(HttpStatus.BAD_REQUEST);
         }
         return res;
     }
+
+
+    @GetMapping("/listmain")  // 메인 페이지에 최신레시피 5개
+    public ResponseEntity<List<Recipe>> listMain(){
+        System.out.println("dldld");
+        ResponseEntity<List<Recipe>> res = null;
+        try{
+            List<Recipe> recipes = recipeService.recipeList();
+            ArrayList<Recipe> mainList = new ArrayList<Recipe>();
+            for(int i = 0 ; i< 5; i++) {
+                mainList.add(recipes.get(i));
+            }
+            res = new ResponseEntity<List<Recipe>>(mainList, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            res = new ResponseEntity<List<Recipe>>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+
     @PostMapping("/rcpreg") //레시피 등록
     public ResponseEntity<String> rcpReg(
             @RequestParam(name = "file", required = false) MultipartFile file,
@@ -103,7 +162,7 @@ public class RecipeController extends BaseController {
 
         ResponseEntity<String> res = null;
         try {
-            recipeService.rcpReg(regId, title, sTitle, mat, source,kcal, toastHtml, toastMarkdown,file);
+            recipeService.rcpReg(regId, title, sTitle, mat, source, kcal, toastHtml, toastMarkdown,file);
             res = new ResponseEntity<String>("게시글 저장성공", HttpStatus.OK);
             System.out.println(res);
         }catch (Exception e) {

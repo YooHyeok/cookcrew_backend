@@ -22,7 +22,7 @@ public class RecipeDBController {
 
     final String serviceKey = "9bf066dd90674a4e8702";
     @Autowired
-    RecipeRepository RecipeRepository;
+    RecipeRepository recipeRepository;
 
     @GetMapping("/recipedb")
     public String recipe() {
@@ -117,7 +117,7 @@ public class RecipeDBController {
                     String[] taggedManual = new String[6];
 
                     for (int j = 0 ; j< 6 ; j++) {
-                        taggedManualImg[j] = "<img src =" + manualImg[j] + ">";
+                        taggedManualImg[j] = "<img src =" + "\""+ manualImg[j] +"\"" + "/>";
                         taggedManual[j] = "<p>" + manual[j] + "</p>";
                     }
 
@@ -137,7 +137,7 @@ public class RecipeDBController {
 //    					manual06+"<br><br><br><br><br>";
                     Date regDate = new Date(System.currentTimeMillis());
 
-                    RecipeRepository.save(new Recipe(null,"조리식품의 레시피 DB",recipeName,wholeRecipe,0,false,new Date(System.currentTimeMillis()),null,infoEng,attFileNoMain1,null,mat,null,0d));
+                    recipeRepository.save(new Recipe(null,"조리식품의 레시피 DB",recipeName,wholeRecipe,0,true,new Date(System.currentTimeMillis()),null,infoEng,attFileNoMain1,null,mat,null,0d));
                     //System.out.println(wholeRecipe1);
                     //System.out.println(attFileNoMain1);
                     //System.out.println(numInfo);
