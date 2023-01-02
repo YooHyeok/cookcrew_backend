@@ -1,6 +1,10 @@
 package kfq.cookcrew.reciepe;
 
+import kfq.cookcrew.common.Path;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
@@ -24,6 +28,7 @@ public class RecipeService {
     }
 
     //레시피 작성
+
     public void rcpReg(String regId, String title, String sTitle, String mat, String source, Double kcal, String toastHtml, String toastMarkdown,
                        MultipartFile file)
             throws Exception {
@@ -38,7 +43,9 @@ public class RecipeService {
         r.setSource(source);
         r.setCnt(0);
         r.setKcal(kcal);
+        r.setEnabled(true);
         String filename = null;
+
         if (file != null && !file.isEmpty()) {
             String path = "C:/cookcrew_temp/recipe_thumbnail/";
             filename = file.getOriginalFilename();
@@ -46,6 +53,7 @@ public class RecipeService {
             file.transferTo(dFile);
         }
         r.setThumbPath(filename);
+        r.setKcal(kcal);
         Recipe save = recipeRepository.save(r);
 //        System.out.println("##############"+save+"##############");
 //        System.out.println(filename);
@@ -87,11 +95,17 @@ public class RecipeService {
     //레시피 리스트
     //페이징처리 추가 필요
     public List<Recipe> recipeList() throws Exception {
-        List<Recipe> recipes = recipeRepository.findAll();
+        List<Recipe> recipes = recipeRepository.findAll(Sort.by(Sort.Direction.DESC, "rno"));
         return recipes;
     }
 
+    public List<Recipe> popRecipes() throws  Exception {
+        List<Recipe> popRecipes = recipeRepository.findAll(Sort.by(Sort.Direction.DESC, "cnt"));
+        return popRecipes;
+    }
+
     public Integer updateCnt(Integer rNo) throws Exception {
+
 
         //Integer orecipe = recipeRepository.getCntByRno(rNo);
 
@@ -107,5 +121,39 @@ public class RecipeService {
         recipeRepository.save(recipe);
         return recipe.getCnt();
     }
-    
+
+    // 최신 순 정렬 페이지네이션
+    public List<Recipe> recipePage(PageInfo pageInfo) throws Exception {
+        PageRequest pageRequest = PageRequest.of(pageInfo.getCurPage()-1, 12,
+                Sort.by(Sort.Direction.DESC,"rno"));
+        Page<Recipe> pages = recipeRepository.findAll(pageRequest);
+        int maxPage = pages.getTotalPages();
+        int startPage = pageInfo.getCurPage()/10*10+1;  //1, 11, 21, 31...
+        int endPage = startPage+10 -1;	//10, 20, 30, 40
+        if(endPage>maxPage) endPage = maxPage;
+
+        pageInfo.setAllPage(maxPage);
+        pageInfo.setStartPage(startPage);
+        pageInfo.setEndPage(endPage);
+
+        return pages.getContent();
+    }
+
+    // 조회 순 정렬 페이지네이션
+    public List<Recipe> popRecipePage(PageInfo pageInfo) throws Exception {
+        PageRequest pageRequest = PageRequest.of(pageInfo.getCurPage()-1, 12,
+                Sort.by(Sort.Direction.DESC,"cnt"));
+        Page<Recipe> pages = recipeRepository.findAll(pageRequest);
+        int maxPage = pages.getTotalPages();
+        int startPage = pageInfo.getCurPage()/10*10+1;  //1, 11, 21, 31...
+        int endPage = startPage+10 -1;	//10, 20, 30, 40
+        if(endPage>maxPage) endPage = maxPage;
+
+        pageInfo.setAllPage(maxPage);
+        pageInfo.setStartPage(startPage);
+        pageInfo.setEndPage(endPage);
+
+        return pages.getContent();
+    }
+
 }

@@ -21,8 +21,8 @@ public class JobSetting {
         JobDetail jobDetail = buildJobDetail(DietJob.class, new HashMap());
 
         try{
-            // 0 0 * * 1 매주 월요일 자정 12시 1분에 작업 실행
-            scheduler.scheduleJob(jobDetail, buildJobTrigger("0 0 * * 1 ?"));
+            // 0 0 * * 1 매주 일요일 자정 12시 1분에 작업 실행
+            scheduler.scheduleJob(jobDetail, buildJobTrigger("0 0 * * 7 ?"));
             
         } catch(SchedulerException e){
             e.printStackTrace();

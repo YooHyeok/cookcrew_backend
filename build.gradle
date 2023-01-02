@@ -29,8 +29,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 //	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat' //오류발생 주석처리
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
 
-	/* 자동반영 */
+    /* 자동반영 */
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	/* mysql */
@@ -42,9 +43,14 @@ dependencies {
 
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 
+
 	/* Quartz 라이브러리 */
 //	implementation 'org.quartz-scheduler:quartz:2.3.2'
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
+
+	//레시피 db 가져오기 위함 gson
+	implementation 'com.google.code.gson:gson:2.8.8'
+
 
 
 	/* Security 오류 발생 임시 주석처리 */

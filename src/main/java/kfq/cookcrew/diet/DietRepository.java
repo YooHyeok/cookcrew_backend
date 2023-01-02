@@ -13,7 +13,12 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public interface DietRepository extends JpaRepository<Diet,Integer> {
 
-
+    /**
+     * 캘린더 첫 진입 페이지
+     * 각 날짜에 해당하는 이벤트 정보 조회 쿼리 메소드
+     * @param userId
+     * @return
+     */
     @Query(value = "SELECT DISTINCT " +
             "CASE WHEN d.meal_div = 1 THEN '아침' " +
             "WHEN d.meal_div = 2 THEN '점심' " +
@@ -28,8 +33,9 @@ public interface DietRepository extends JpaRepository<Diet,Integer> {
             "FROM diet d " +
             "WHERE user_id = :userId " +
             "ORDER BY date ASC"
-            ,nativeQuery = true) // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
+            ,nativeQuery = true)
     List<Map<String,Object>> findDistinctDietDate(@Param("userId") String userId);
+    
     /**
      * @Query SELECT dr.r_no FROM diet d WHERE meal_div = '1' AND user_id = 'user' AND diet_date = '지정날짜'
      * @param mealDiv
@@ -43,46 +49,14 @@ public interface DietRepository extends JpaRepository<Diet,Integer> {
 
     @Modifying
     @Query(value = "UPDATE diet d " +
-            "SET d.achieve = :achieve " +
-            ", d.target_kcal = :targetKcal " +
-            "WHERE d.diet_date = :dietDate " +
-            "AND d.meal_div = :mealDiv"
+                    "SET d.achieve = :achieve " +
+                    ", d.target_kcal = :targetKcal " +
+                    "WHERE d.meal_div = :mealDiv " +
+                    "AND d.diet_date BETWEEN :startDate AND :endDate"
             , nativeQuery = true)
-    void updateDietSave(@Param("dietDate") Date dietDate
-            , @Param("mealDiv") char mealDiv
+    void updateDietSave(@Param("startDate") Date startDate
+            , @Param("endDate") Date endDate
             , @Param("achieve") Boolean achieve
+            , @Param("mealDiv") Character mealDiv
             , @Param("targetKcal") int targetKcal);
-
-    /**
-     * 칼로리 랭킹
-     * @param mealDiv
-     * @param achieve
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-
-    String commonState = "FROM diet d LEFT OUTER JOIN recipe r on r.r_no = d.r_no WHERE achieve= 1 AND d.diet_date BETWEEN :startDate AND :endDate ";
-
-    //AND d.meal_div = :mealDiv
-
-//    String mealDiv1Avg = "SELECT (AVG(r.kcal)/d.target_kcal) as meal_div1 ";
-//    String mealDiv2Avg = "SELECT (AVG(r.kcal)/d.target_kcal) as meal_div2 ";
-//    String mealDiv3Avg = "SELECT (AVG(r.kcal)/d.target_kcal) as meal_div3 ";
-//    String avgQuery = "SELECT avg("+ mealDiv1Avg + commonState + "AND d.meal_div = '1' +"
-//                                + mealDiv2Avg + commonState + "AND d.meal_div = '2' +"
-//                                + mealDiv3Avg + commonState + "AND d.meal_div = '3') FROM Diet";
-//    @Query(value = "SELECT d.user_id as id" +
-//                ", (AVG(r.kcal)/d.target_kcal)*100 FROM diet d AS rate " +
-//                ", ROW_NUMBER() OVER(ORDER BY (AVG(r.kcal)/d.target_kcal)*100 DESC) AS rateRank " +
-//                "FROM diet d "+
-//                "LEFT OUTER JOIN recipe r "+
-//                "ON r.r_no = d.r_no "+
-//                "WHERE d.meal_div = :mealDiv " +
-//                "  AND achieve = :achieve " +
-//                "  AND d.diet_date BETWEEN :startDate AND :endDate "
-//                , nativeQuery = true)
-//    List<Map<String,Object>> kcalRank(
-//            ,@Param("startDate") Date startDate
-//            , @Param("endDate") Date endDate );
 }
