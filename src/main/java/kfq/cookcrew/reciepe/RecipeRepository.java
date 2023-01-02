@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
@@ -28,5 +29,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     @Transactional
     @Query("UPDATE Recipe r SET r.enabled=false WHERE r.rno=:rno")
     public void deleteByRno(@Param("rno") Integer rno);
+
+    @Query("SELECT r from Recipe r WHERE r.regId=:userId")
+    public Optional<List<Map<String ,Recipe>>> findMyRecipe(@Param("userId") String userId);
 
 }

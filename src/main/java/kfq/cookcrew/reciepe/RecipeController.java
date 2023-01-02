@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * *****************************************************<p>
@@ -159,5 +160,18 @@ public class RecipeController extends BaseController {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    @GetMapping("/myrecipe/{userId}")
+    public ResponseEntity<List<Map<String,Recipe>>> myRecipe(@PathVariable String userId) {
+//        System.out.println(userId);
+        ResponseEntity<List<Map<String,Recipe>>> res = null;
+        try{
+           List<Map<String,Recipe>>myRecipe = recipeService.myRecipe(userId);
+           res = new ResponseEntity<>(myRecipe,HttpStatus.OK);
+            System.out.println(res);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        } return res;
     }
 }

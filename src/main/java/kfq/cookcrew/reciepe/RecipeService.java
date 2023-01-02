@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -106,5 +107,14 @@ public class RecipeService {
     public void deleteRecipe(Integer rNo) throws Exception{
         recipeRepository.deleteByRno(rNo);
         }
+    public List<Map<String,Recipe>> myRecipe(String userId) throws Exception {
+        Optional<List<Map<String, Recipe>>> mreipe = recipeRepository.findMyRecipe(userId);
 
+        if (mreipe.isEmpty()) {
+            throw new Exception("레시피 정보 없음");
+        }
+        List<Map<String,Recipe>> recipe = mreipe.get();
+//        System.out.println("왓다팍  :"+recipe);
+        return recipe;
+    }
 }
