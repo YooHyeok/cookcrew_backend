@@ -79,7 +79,6 @@ public class UserController extends BaseController {
      * @param nickname
      * @return ResponseEntity 결과 객체
      */
-
     @PostMapping("/exsitByNn")
     public ResponseEntity<Boolean> isExistByNn(String nickname) {
         System.out.println(nickname);
@@ -118,10 +117,10 @@ public class UserController extends BaseController {
         return new ResponseEntity<Map<String, String>>(HttpStatus.BAD_REQUEST);
 
     }
+
     /**
      * 마이페이지
      */
-    // TODO 여기에 메소드 선언
     @GetMapping("/mypage")
     public ResponseEntity<User> myInfo(@RequestParam("id") String id) {
         ResponseEntity<User> result = null;
@@ -135,9 +134,4 @@ public class UserController extends BaseController {
         System.out.println(result);
         return result;
     }
-    /**
-     * 로그아웃
-     */
-    // TODO 여기에 메소드 선언
-
 }
