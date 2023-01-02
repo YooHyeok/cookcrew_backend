@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.LocalDate;
 
 /**
  * *****************************************************<p>
@@ -32,7 +31,7 @@ public class Recipe {
     private String content; //레시피 내용
     @Column(columnDefinition = "int default 0") //default 0
     private Integer cnt; // 조회수
-    @Column(columnDefinition = "char default 'y'") // default 'y'
+    @Column(columnDefinition = "boolean default TRUE constraint enabled check(enabled in(TRUE,FALSE))")
     private Boolean enabled; // 삭제여부
     @Column
     private Date regDate; // 등록일자
@@ -43,7 +42,7 @@ public class Recipe {
     @Column
     private String thumbPath; //썸네일경로
     @Column
-    private String sTitle; //상세설명
+    private String stitle; //상세설명
     @Column
     private String mat;//핵심재료
     @Column
@@ -51,24 +50,12 @@ public class Recipe {
     @Column
     private Double rating;//별점
 
+    public void incrementCnt() {
+        this.cnt ++ ;
+    }
+
 
 
 //    @OneToOne -- Diet테이블과 양방향으로 지정
 //    private Diet diet;
 }
-
-    //Database Table 생성 쿼리문
-
-    /*create table dbRecipe (
-            r_no int primary key auto_increment,
-            reg_id varchar(45) not null,
-    title varchar(45) not null,
-    content longtext not null,
-    cnt int default 0,
-    reg_date date,
-    mod_date date,
-    ednabled char default 'y',
-    r_kcal float default 0,
-    thumb_path text(1000) default null
-            );*/
-

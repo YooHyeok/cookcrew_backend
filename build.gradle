@@ -29,8 +29,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 //	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat' //오류발생 주석처리
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
 
-	/* 자동반영 */
+    /* 자동반영 */
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	/* mysql */
