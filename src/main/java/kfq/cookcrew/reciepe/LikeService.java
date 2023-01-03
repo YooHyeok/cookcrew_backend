@@ -32,11 +32,11 @@ public class LikeService {
         LikeID likeID = new LikeID(rno,userId);
         Optional<Like> like = likeRepository.findById(likeID);
         if(like.isEmpty()){
-            likeService.saveLike(likeID);
+            likeRepository.save(new Like(rno, userId, true));
         } else {
-            Boolean curLike = like.get().getIsliked();
-            like.get().setIsliked(!curLike);
+            likeRepository.save(new Like(rno, userId, !(like.get().getIsliked())));
         }
 
     }
+    
 }

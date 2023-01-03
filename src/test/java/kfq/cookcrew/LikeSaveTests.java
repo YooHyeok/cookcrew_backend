@@ -20,6 +20,7 @@ import java.util.Optional;
 class LikeSaveTests extends BaseController{
     @Autowired
     LikeRepository likeRepository;
+    LikeService likeService;
     @Test
     public void likeTest() {
         log.info(likeRepository.findAll().toString());
@@ -29,6 +30,26 @@ class LikeSaveTests extends BaseController{
     public void saveLikeTest() {
         Like like = new Like(12, "user12", true);
         likeRepository.save(like);
+    }
+
+    @Test
+    public void toggleLikeTest() {
+        LikeService likeService = new LikeService();
+        Integer rno = 44;
+        String userId = "user44";
+        LikeID likeID = new LikeID(rno,userId);
+        Optional<Like> like = likeRepository.findById(likeID);
+        if(like.isEmpty()){
+            likeRepository.save(new Like(rno, userId, true));
+        } else {
+              likeRepository.save(new Like(rno, userId, !(like.get().getIsliked())));
+//            Boolean curLike = like.get().getIsliked();
+//            System.out.println(curLike);
+//            like.get().setIsliked(!curLike);
+//            curLike = like.get().getIsliked();
+//            System.out.println(curLike);
+//            System.out.println(like.get().getIsliked()
+        }
     }
 
 
