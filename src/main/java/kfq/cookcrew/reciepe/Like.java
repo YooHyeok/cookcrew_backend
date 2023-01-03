@@ -23,7 +23,5 @@ public class Like implements Serializable {
     @Id
     @Column(name = "user_id")
     private String userId;
-    
-    @Column(name = "isliked")
-    private Boolean isliked;
+
 }

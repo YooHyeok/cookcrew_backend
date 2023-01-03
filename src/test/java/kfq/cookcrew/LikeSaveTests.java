@@ -52,6 +52,15 @@ class LikeSaveTests extends BaseController{
         }
     }
 
+    @Test
+    public void isLikedTest() {
+        Optional<Like> like = likeRepository.findLike("user1", 2);
+        if(like.isEmpty()) {
+            System.out.println("none");
+        } else {
+            System.out.println(like.get());
+        }
+    }
 
 
 }

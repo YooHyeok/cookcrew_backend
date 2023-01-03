@@ -35,6 +35,9 @@ import java.util.Map;
 public class RecipeController extends BaseController {
     @Autowired
         RecipeService recipeService;
+
+    @Autowired
+    LikeService likeService;
     @GetMapping("/recipelist")
     public ResponseEntity<List<Recipe>> recipeList(){
         System.out.println("dldld");
@@ -52,16 +55,21 @@ public class RecipeController extends BaseController {
     }
 
     @GetMapping(value={"/recipepage/{page}","/recipes"}) // 전체레시피(최신순) Pagination
-    public ResponseEntity<Map<String, Object>> recipePage(@PathVariable(required=false) Integer page){
+    public ResponseEntity<Map<String, Object>> recipePage(@PathVariable(required=false) Integer page,
+                   @RequestParam(defaultValue = "guest", required = false) String userId){
         if(page == null) page=1;
         ResponseEntity<Map<String, Object>> res = null;
         try {
+            System.out.println("userId:"+userId);
             PageInfo pageInfo = new PageInfo();
             pageInfo.setCurPage(page);
             List<Recipe> recipes = recipeService.recipePage(pageInfo);
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("pageInfo",pageInfo);
             map.put("recipes",recipes);
+            List<Boolean> isLikedList = likeService.isLikedList(recipes, userId);
+            map.put("isLikeds",isLikedList);
+            System.out.println(isLikedList);
             res = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
@@ -71,9 +79,10 @@ public class RecipeController extends BaseController {
     }
 
     @GetMapping(value={"/poprecipepage/{page}","/poprecipes"})  // 전체레시피 (조회순) pagination
-    public ResponseEntity<Map<String, Object>> popRecipePage(@PathVariable(required=false) Integer page){
+    public ResponseEntity<Map<String, Object>> popRecipePage(@PathVariable(required=false) Integer page,
+            @RequestParam(name="userId", defaultValue = "guest", required = false) String userId){
         if(page == null) page=1;
-        System.out.println(page);
+//        System.out.println(page);
         ResponseEntity<Map<String, Object>> res = null;
         try {
             PageInfo pageInfo = new PageInfo();
@@ -82,6 +91,10 @@ public class RecipeController extends BaseController {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("pageInfo",pageInfo);
             map.put("recipes",recipes);
+            System.out.println(recipes);
+            List<Boolean> isLikedList = likeService.isLikedList(recipes, userId);
+            map.put("isLikeds",isLikedList);
+
             res = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
