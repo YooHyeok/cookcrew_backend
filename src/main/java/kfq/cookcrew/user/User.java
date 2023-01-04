@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.sql.Blob;
 import java.sql.Date;
 import java.util.Collection;
 
@@ -40,7 +41,7 @@ public class User implements UserDetails{
     @Column
     private String email;
 
-    @Column(columnDefinition = "boolean default TRUE constraint enabled check(enabled in(TRUE,FALSE))") // default 'y'
+    @Column(columnDefinition = "boolean default TRUE constraint enabled_user check(enabled in(TRUE,FALSE))") // default 'y'
     private Boolean enabled; // 회원 ID 사용 여부
 
 //    @Column
@@ -51,10 +52,11 @@ public class User implements UserDetails{
 
     @Column
     @Nullable
-    private String profilePath;
+    private byte[] thumbnail;
 
     @Column
     private String Filename;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
