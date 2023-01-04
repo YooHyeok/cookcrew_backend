@@ -3,7 +3,6 @@ package kfq.cookcrew.rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +29,9 @@ public class RatingService {
         Double orating = ratingRepository.getRatingValue(rNo);
         if(orating != null)
             return  orating;
+        else if (orating == null) {
+            return 0d;
+        }
         throw new Exception("별점 정보없음");
     }
 }
