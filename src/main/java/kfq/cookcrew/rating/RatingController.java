@@ -33,15 +33,15 @@ public class RatingController {
     }
     //별점뿌리기
     @GetMapping("/ratingvalue/{rNo}")
-    public ResponseEntity<List<Integer>> ratingValue(@PathVariable Integer rNo) {
-        ResponseEntity<List<Integer>> res = null;
+    public ResponseEntity<Double> ratingValue(@PathVariable Integer rNo) {
+        ResponseEntity<Double> res = null;
         try{
-            List<Integer> rating = ratingService.requestRatingValue(rNo);
-            System.out.println(rating);
-            res = new ResponseEntity<List<Integer>>(rating,HttpStatus.OK);
+            Double rating = ratingService.requestRatingValue(rNo);
+            System.out.println("asdasdsad ::::::::> "+rating);
+            res = new ResponseEntity<Double>(rating,HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            res = new ResponseEntity<List<Integer>>(HttpStatus.BAD_REQUEST);
+            res = new ResponseEntity<Double>(HttpStatus.BAD_REQUEST);
         }
         return res;
     }

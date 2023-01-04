@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * *****************************************************<p>
@@ -263,16 +260,48 @@ public class RecipeController extends BaseController {
         }
     }
     @GetMapping("/myrecipe/{userId}")
-    public ResponseEntity<List<Map<String,Recipe>>> myRecipe(@PathVariable String userId) {
+    public ResponseEntity<List<Recipe>> myRecipe(@PathVariable String userId) {
 //        System.out.println(userId);
-        ResponseEntity<List<Map<String,Recipe>>> res = null;
+        ResponseEntity<List<Recipe>> res = null;
         try{
-           List<Map<String,Recipe>>myRecipe = recipeService.myRecipe(userId);
+           List<Recipe> myRecipe = recipeService.myRecipe(userId);
+           System.out.println(myRecipe);
            res = new ResponseEntity<>(myRecipe,HttpStatus.OK);
-            System.out.println(res);
+//            System.out.println(res);
         }
         catch (Exception e) {
             e.printStackTrace();
-        } return res;
+            res = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
     }
+    @GetMapping("mylikelist/{userId}")
+    public ResponseEntity <List<Recipe>> likelist(@PathVariable String userId
+                                                ) {
+//        System.out.println(userId);
+        ResponseEntity<List<Recipe>> res = null;
+        try {
+            List<Recipe> myLikelist = recipeService.likelist(userId);
+
+            res = new ResponseEntity<>(myLikelist,HttpStatus.OK);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            res = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+//    @GetMapping("mylikelist/{userId}")
+//    public ResponseEntity<Optional<List<Map<Integer,Recipe>>>>myLikelist(@PathVariable String userId){
+//        System.out.println(userId);
+//        ResponseEntity<Optional<List<Map<Integer,Recipe>>>> res = null;
+//        try {
+//            Optional<List<Map<String,Recipe>>>olike = recipeService.myLikelist(userId);
+//            res = new ResponseEntity<>(olike,HttpStatus.OK);
+//            System.out.println(res);
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }return res;
+//    }
 }
