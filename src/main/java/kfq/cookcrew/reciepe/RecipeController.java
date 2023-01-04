@@ -11,11 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.OutputStream;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * *****************************************************<p>
@@ -32,9 +31,6 @@ import java.util.*;
 public class RecipeController extends BaseController {
     @Autowired
         RecipeService recipeService;
-
-    @Autowired
-    LikeService likeService;
     @GetMapping("/recipelist")
     public ResponseEntity<List<Recipe>> recipeList(){
         System.out.println("dldld");
@@ -52,21 +48,16 @@ public class RecipeController extends BaseController {
     }
 
     @GetMapping(value={"/recipepage/{page}","/recipes"}) // 전체레시피(최신순) Pagination
-    public ResponseEntity<Map<String, Object>> recipePage(@PathVariable(required=false) Integer page,
-                   @RequestParam(name = "userId", defaultValue = "guest", required = false) String userId){
+    public ResponseEntity<Map<String, Object>> recipePage(@PathVariable(required=false) Integer page){
         if(page == null) page=1;
         ResponseEntity<Map<String, Object>> res = null;
         try {
-            System.out.println("userId:"+userId);
             PageInfo pageInfo = new PageInfo();
             pageInfo.setCurPage(page);
             List<Recipe> recipes = recipeService.recipePage(pageInfo);
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("pageInfo",pageInfo);
             map.put("recipes",recipes);
-            List<Boolean> isLikedList = likeService.isLikedList(recipes, userId);
-            map.put("isLikeds",isLikedList);
-            System.out.println(isLikedList);
             res = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
@@ -76,10 +67,9 @@ public class RecipeController extends BaseController {
     }
 
     @GetMapping(value={"/poprecipepage/{page}","/poprecipes"})  // 전체레시피 (조회순) pagination
-    public ResponseEntity<Map<String, Object>> popRecipePage(@PathVariable(required=false) Integer page,
-            @RequestParam(name="userId", defaultValue = "guest", required = false) String userId){
+    public ResponseEntity<Map<String, Object>> popRecipePage(@PathVariable(required=false) Integer page){
         if(page == null) page=1;
-//        System.out.println(page);
+        System.out.println(page);
         ResponseEntity<Map<String, Object>> res = null;
         try {
             PageInfo pageInfo = new PageInfo();
@@ -88,10 +78,6 @@ public class RecipeController extends BaseController {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("pageInfo",pageInfo);
             map.put("recipes",recipes);
-            System.out.println(recipes);
-            List<Boolean> isLikedList = likeService.isLikedList(recipes, userId);
-            map.put("isLikeds",isLikedList);
-
             res = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
@@ -158,8 +144,8 @@ public class RecipeController extends BaseController {
     @PostMapping("/rcpreg") //레시피 등록
     public ResponseEntity<String> rcpReg(
             @RequestParam(name = "file", required = false) MultipartFile file,
-            String userId,
             String title,
+            String regId ,
             String sTitle,
             String mat,
             String source,
@@ -167,11 +153,14 @@ public class RecipeController extends BaseController {
             String toastHtml,
             String toastMarkdown
             ) {
+//        System.out.println(title);
+//        System.out.println(file);
+
         ResponseEntity<String> res = null;
         try {
-            recipeService.rcpReg( userId,title, sTitle, mat, source,kcal, toastHtml, toastMarkdown,file);
+            recipeService.rcpReg(regId, title, sTitle, mat, source, kcal, toastHtml, toastMarkdown,file);
             res = new ResponseEntity<String>("게시글 저장성공", HttpStatus.OK);
-//            System.out.println(res);
+            System.out.println(res);
         }catch (Exception e) {
             e.printStackTrace();
             res = new ResponseEntity<String>("게시글 저장실패", HttpStatus.BAD_REQUEST);
@@ -182,13 +171,13 @@ public class RecipeController extends BaseController {
     @PostMapping("/rcpmodreg") //레시피
     public ResponseEntity<String> rcpmodreg(
             @RequestParam(name = "file", required = false) MultipartFile file, @ModelAttribute(name="recipe") Recipe recipe) {
-//        System.out.println(file);
+        System.out.println(recipe);
 
         ResponseEntity<String> res = null;
         try {
             recipeService.rcpModReg(file, recipe);
             res = new ResponseEntity<String>("게시글 저장성공", HttpStatus.OK);
-//            System.out.println(res);
+            System.out.println(res);
         }catch (Exception e) {
             e.printStackTrace();
             res = new ResponseEntity<String>("게시글 저장실패", HttpStatus.BAD_REQUEST);
@@ -261,60 +250,4 @@ public class RecipeController extends BaseController {
             e.printStackTrace();
         } return res;
     }
-    @PostMapping("/recipedelete")
-    public void recipedelete(Integer rNo) {
-//        System.out.println(id);
-//        System.out.println(rNo);
-        try {
-            recipeService.deleteRecipe(rNo);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @GetMapping("/myrecipe/{userId}")
-    public ResponseEntity<List<Recipe>> myRecipe(@PathVariable String userId) {
-//        System.out.println(userId);
-        ResponseEntity<List<Recipe>> res = null;
-        try{
-           List<Recipe> myRecipe = recipeService.myRecipe(userId);
-           System.out.println(myRecipe);
-           res = new ResponseEntity<>(myRecipe,HttpStatus.OK);
-//            System.out.println(res);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            res = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return res;
-    }
-    @GetMapping("mylikelist/{userId}")
-    public ResponseEntity <List<Recipe>> likelist(@PathVariable String userId
-                                                ) {
-//        System.out.println(userId);
-        ResponseEntity<List<Recipe>> res = null;
-        try {
-            List<Recipe> myLikelist = recipeService.likelist(userId);
-
-            res = new ResponseEntity<>(myLikelist,HttpStatus.OK);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            res = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return res;
-    }
-//    @GetMapping("mylikelist/{userId}")
-//    public ResponseEntity<Optional<List<Map<Integer,Recipe>>>>myLikelist(@PathVariable String userId){
-//        System.out.println(userId);
-//        ResponseEntity<Optional<List<Map<Integer,Recipe>>>> res = null;
-//        try {
-//            Optional<List<Map<String,Recipe>>>olike = recipeService.myLikelist(userId);
-//            res = new ResponseEntity<>(olike,HttpStatus.OK);
-//            System.out.println(res);
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }return res;
-//    }
 }

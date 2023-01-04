@@ -1,12 +1,14 @@
 package kfq.cookcrew.rank.diet;
 
-import kfq.cookcrew.common.DateUtill;
+import kfq.cookcrew.common.util.DateUtill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,5 +31,28 @@ public class DietRankService {
     public void challengeRank(Date startDate, Date endDate, Date regDate) {
         dietRankRepository.challengeRankDesc(startDate, endDate, regDate, 1);
         dietRankRepository.challengeRankAsc(startDate, endDate, regDate, 2);
+    }
+
+    public void saveValidate(Boolean challenge, String userId) throws ParseException {
+        Date today = new Date(System.currentTimeMillis());
+        Date startDate = DateUtill.SundayToSqlDate(String.valueOf(today));
+        Date endDate = DateUtill.SaturdayToSqlDate(String.valueOf(today));
+        dietRankRepository.save(
+                new Challenge(
+                        new ChallengeId(userId, startDate, endDate)
+                        , challenge
+                )
+        );
+    }
+    public Challenge searchValidate(String userId) throws Exception {
+        Date today = new Date(System.currentTimeMillis());
+        Date startDate = DateUtill.SundayToSqlDate(String.valueOf(today));
+        Date endDate = DateUtill.SaturdayToSqlDate(String.valueOf(today));
+        Optional<Challenge> byId = dietRankRepository.findById(
+                new ChallengeId(userId, startDate, endDate));
+            if(!byId.isPresent()) {
+                throw new Exception("null");
+            }
+        return byId.get();
     }
 }

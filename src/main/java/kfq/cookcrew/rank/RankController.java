@@ -1,12 +1,15 @@
 package kfq.cookcrew.rank;
 
 import kfq.cookcrew.common.BaseController;
+import kfq.cookcrew.rank.diet.Challenge;
 import kfq.cookcrew.rank.diet.DietRank;
 import kfq.cookcrew.rank.diet.DietRankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -51,6 +54,47 @@ public class RankController extends BaseController {
                 return new ResponseEntity<>(e.getMessage(),HttpStatus.OK);
             }
             res = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+
+    /**
+     * 챌린지 랭킹 참여 여부
+     * @param userId
+     * @return
+     */
+    @GetMapping("/searchValidate")
+    public ResponseEntity<Object> searchValidate(String userId) {
+        ResponseEntity<Object> res = null;
+        try {
+            Challenge challenge = dietRankService.searchValidate(userId);
+            System.out.println(challenge);
+            res = new ResponseEntity<>(challenge, HttpStatus.OK);
+        }catch (Exception e) {
+            if (e.getMessage() == "null") {
+                return new ResponseEntity<>(e.getMessage(),HttpStatus.OK);
+            }
+            res = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
+    /**
+     * 챌린지 랭킹 참여 여부
+     * @param param
+     * @return
+     */
+    @PutMapping("/saveValidate")
+    public ResponseEntity<String> saveValidate(@RequestBody Map<String,String> param) {
+        ResponseEntity<String> res = null;
+        System.out.println(param);
+        System.out.println(param.get("challenge"));
+        try {
+            dietRankService.saveValidate(
+                    Boolean.parseBoolean(param.get("challenge"))
+                    ,param.get("userId")
+            );
+        }catch (Exception e) {
+
         }
         return res;
     }

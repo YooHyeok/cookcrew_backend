@@ -1,17 +1,18 @@
 package kfq.cookcrew.reciepe;
 
-import kfq.cookcrew.common.Path;
+import kfq.cookcrew.reciepe.like.Like;
+import kfq.cookcrew.reciepe.like.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
