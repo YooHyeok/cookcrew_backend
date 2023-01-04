@@ -1,6 +1,7 @@
 package kfq.cookcrew.reciepe;
 
 import kfq.cookcrew.common.BaseController;
+import kfq.cookcrew.rating.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Array;
 import java.util.*;
 
 /**
@@ -35,6 +37,8 @@ public class RecipeController extends BaseController {
 
     @Autowired
     LikeService likeService;
+    @Autowired
+    RatingService ratingService;
     @GetMapping("/recipelist")
     public ResponseEntity<List<Recipe>> recipeList(){
         System.out.println("dldld");
@@ -65,9 +69,14 @@ public class RecipeController extends BaseController {
             map.put("pageInfo",pageInfo);
             map.put("recipes",recipes);
             List<Boolean> isLikedList = likeService.isLikedList(recipes, userId);
+
+            List<Double> scoreList = ratingService.ratingList(recipes);
+
             map.put("isLikeds",isLikedList);
+            map.put("scoreList",scoreList);
+
             System.out.println(isLikedList);
-            System.out.println("머지반영바람");
+            System.out.println("scoreList");
             res = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
