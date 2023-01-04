@@ -6,6 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +60,27 @@ public class UserService implements UserDetailsService {
 //        Optional<User> userByOptionalList = userRepository.findById(user.getId()); //id에 해당하는 정보의 jpa 반환타입은 Optional이라는 리스트형태의 인터페이스이다.
 //        return userByOptionalList;
 //    }
-    public User myInfo(String id) {
-        return userRepository.findById(id).get();
+    public User myInfo(String id) {return userRepository.findById(id).get();}
+
+
+    public User myInfoMod(User user, MultipartFile file) throws Exception {
+        String filename = null;
+        User result = userRepository.save(user);
+        if (result.getId() != user.getId()) { //저장 실패
+            throw new Exception();}
+        // 파일을 첨부하지 않아도 String 변수를 받아서 뿌리고 오류 발생을 예방하기 위해 && IsEmpty 해준거임
+        else if (result.getId() == user.getId()) {
+            if (file != null && !file.isEmpty()) {
+                String path = "D:\\FinishProject\\ImageFile";
+                filename = file.getOriginalFilename();
+                File dFile = new File(path + filename);
+                file.transferTo(dFile);
+//            user = userRepository.findById(user.getId()).get();
+                user.setFilename(filename);
+            }
+        }
+        return user;
+        }
+//        return userRepository.findById(id).get();
     }
-}
+

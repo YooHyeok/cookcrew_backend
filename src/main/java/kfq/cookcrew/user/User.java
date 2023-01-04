@@ -40,7 +40,7 @@ public class User implements UserDetails{
     @Column
     private String email;
 
-    @Column(columnDefinition = "boolean default TRUE constraint enabled check(enabled in(TRUE,FALSE))") // default 'y'
+    @Column(columnDefinition = "boolean default TRUE constraint enabled_user check(enabled in(TRUE,FALSE))") // default 'y'
     private Boolean enabled; // 회원 ID 사용 여부
 
 //    @Column
@@ -52,6 +52,9 @@ public class User implements UserDetails{
     @Column
     @Nullable
     private String profilePath;
+
+    @Column
+    private String Filename;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

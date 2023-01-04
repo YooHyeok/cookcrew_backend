@@ -1,11 +1,14 @@
 package kfq.cookcrew.reciepe;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
@@ -22,12 +25,22 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     @Query("SELECT CASE WHEN r.cnt = null THEN 0 END as cnt FROM Recipe r WHERE r.rno=:rno")
     public Integer getCntByRno(@Param("rno") Integer rno);
 
-//    @Query("UPDATE Recipe r SET r.content=:content, r.mat=:mat, r.modDate=:modDate, r.sTitle=:sTitle, r.source=:source, r.thumbPath=:thumbPath,r.title=:title WHERE r.rno=:rno")
-//    public Recipe updateByRno(@Param("title") String title,
-//                              @Param("regId") String regId,
-//                              @Param("toastHtml") String toastHtml,
-//                              @Param("modDate") Date modDate,
-//                              @Param("sTitle") String sTitle,
-//                              @Param("mat") String mat,
-//                              @Param("source") String source);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Recipe r SET r.enabled=false WHERE r.rno=:rno")
+    public void deleteByRno(@Param("rno") Integer rno);
+
+    @Query("SELECT r from Recipe r WHERE r.regId=:userId")
+    public List<Recipe> findMyRecipe(@Param("userId") String userId);
+
+    @Query(value = "SELECT rno" +
+                    "FROM like_list" +
+                    "WHERE userId=:userId"
+                ,nativeQuery = true)
+    public List<Integer> myLike(@Param("userId") String userId);
+
+    @Query("SELECT r FROM Recipe r WHERE r.rno=:rno")
+    public List<Map<String,Recipe>> findMyLike(@Param("rno") Integer rno);
+
+
 }
