@@ -67,6 +67,7 @@ public class RecipeController extends BaseController {
             List<Boolean> isLikedList = likeService.isLikedList(recipes, userId);
             map.put("isLikeds",isLikedList);
             System.out.println(isLikedList);
+            System.out.println("머지반영바람");
             res = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
