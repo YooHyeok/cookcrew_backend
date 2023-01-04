@@ -1,6 +1,7 @@
 package kfq.cookcrew.reciepe;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -12,4 +13,5 @@ public interface LikeRepository extends JpaRepository<Like, LikeID> {
 
     @Query(value="select l from likeList l where userId=:userId and rno=:rno")
     public Optional<Like> findLike(@Param("userId") String userId, @Param("rno") Integer rno);
+
 }

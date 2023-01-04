@@ -31,6 +31,16 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     public void deleteByRno(@Param("rno") Integer rno);
 
     @Query("SELECT r from Recipe r WHERE r.regId=:userId")
-    public Optional<List<Map<String ,Recipe>>> findMyRecipe(@Param("userId") String userId);
+    public List<Recipe> findMyRecipe(@Param("userId") String userId);
+
+    @Query(value = "SELECT rno" +
+                    "FROM like_list" +
+                    "WHERE userId=:userId"
+                ,nativeQuery = true)
+    public List<Integer> myLike(@Param("userId") String userId);
+
+    @Query("SELECT r FROM Recipe r WHERE r.rno=:rno")
+    public List<Map<String,Recipe>> findMyLike(@Param("rno") Integer rno);
+
 
 }
