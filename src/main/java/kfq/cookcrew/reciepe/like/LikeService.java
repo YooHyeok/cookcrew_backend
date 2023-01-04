@@ -1,9 +1,8 @@
-package kfq.cookcrew.reciepe;
+package kfq.cookcrew.reciepe.like;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.annotation.WebFilter;
 import java.util.Optional;
 
 @Service

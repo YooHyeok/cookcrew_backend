@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+
 @Transactional(readOnly = true)
 public interface DietRepository extends JpaRepository<Diet,Integer> {
 
@@ -35,7 +36,7 @@ public interface DietRepository extends JpaRepository<Diet,Integer> {
             "ORDER BY date ASC"
             ,nativeQuery = true)
     List<Map<String,Object>> findDistinctDietDate(@Param("userId") String userId);
-    
+
     /**
      * @Query SELECT dr.r_no FROM diet d WHERE meal_div = '1' AND user_id = 'user' AND diet_date = '지정날짜'
      * @param mealDiv
@@ -47,16 +48,50 @@ public interface DietRepository extends JpaRepository<Diet,Integer> {
 
     List<Diet> findByUserIdAndDietDateAndMealDiv(String userId, Date stringToSqlDateFormat, Character mealDiv);
 
+    /**
+     * 달성 여부, 목표칼로리 update
+     * @param startDate
+     * @param endDate
+     * @param achieve
+     * @param mealDiv
+     * @param targetKcal
+     */
     @Modifying
     @Query(value = "UPDATE diet d " +
-                    "SET d.achieve = :achieve " +
-                    ", d.target_kcal = :targetKcal " +
-                    "WHERE d.meal_div = :mealDiv " +
-                    "AND d.diet_date BETWEEN :startDate AND :endDate"
+            "SET d.target_kcal = :targetKcal " +
+            "WHERE d.meal_div = :mealDiv " +
+            "And d.achieve = :achieve" +
+            "AND d.diet_date BETWEEN :startDate AND :endDate"
             , nativeQuery = true)
     void updateDietSave(@Param("startDate") Date startDate
             , @Param("endDate") Date endDate
             , @Param("achieve") Boolean achieve
             , @Param("mealDiv") Character mealDiv
             , @Param("targetKcal") int targetKcal);
+
+   /* @Modifying
+    @Query(value = "INSERT INTO target " +
+            "VALUES(:userId, :dietDate, :mealDiv, :targetKcal)"
+            , nativeQuery = true)
+    void insertTargetSave(
+            @Param("userId") String userId
+            , @Param("dietDate") Date dietDate
+            , @Param("mealDiv") Character mealDiv
+            , @Param("targetKcal") int targetKcal);*/
+
+    @Modifying
+    @Query(value = "UPDATE target_achieve ta " +
+            "SET ta.achieve = :achieve " +
+            "WHERE ta.user_id = :userId " +
+            "AND ta.diet_date = :dietDate " +
+            "AND ta.meal_div = :mealDiv"
+            , nativeQuery = true)
+    void updateAchieve(
+            @Param("userId") String userId
+            , @Param("dietDate") Date dietDate
+            , @Param("mealDiv") Character mealDiv
+            , @Param("achieve") Boolean achieve
+    );
 }
+
+

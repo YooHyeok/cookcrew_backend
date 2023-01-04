@@ -1,4 +1,4 @@
-package kfq.cookcrew.reciepe;
+package kfq.cookcrew.reciepe.like;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
