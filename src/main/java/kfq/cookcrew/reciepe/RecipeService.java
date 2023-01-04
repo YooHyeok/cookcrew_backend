@@ -125,9 +125,20 @@ public class RecipeService {
                 Sort.by(Sort.Direction.DESC,"rno"));
         Page<Recipe> pages = recipeRepository.findAll(pageRequest);
         int maxPage = pages.getTotalPages();
-        int startPage = pageInfo.getCurPage()/10*10+1;  //1, 11, 21, 31...
-        int endPage = startPage+10 -1;	//10, 20, 30, 40
+        int curPage = pageInfo.getCurPage();
+        System.out.println(curPage);
+        int startPage = 0;
+        int endPage = 0;
+        if (curPage %10 ==0){
+             startPage = pageInfo.getCurPage()/10*10-9;
+             endPage = curPage;	//10, 20, 30, 40
+        }else {
+            startPage = pageInfo.getCurPage()/10*10+1;
+            endPage = startPage+10 -1;	//10, 20, 30, 40
+        }
+          //1, 11, 21, 31...
         if(endPage>maxPage) endPage = maxPage;
+//        System.out.println("page"+(pageInfo.getCurPage()));
 
         pageInfo.setAllPage(maxPage);
         pageInfo.setStartPage(startPage);

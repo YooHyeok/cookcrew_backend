@@ -28,7 +28,7 @@ class LikeSaveTests extends BaseController{
 
     @Test
     public void saveLikeTest() {
-        Like like = new Like(12, "user12", true);
+        Like like = new Like(12, "user12");
         likeRepository.save(like);
     }
 
@@ -40,9 +40,9 @@ class LikeSaveTests extends BaseController{
         LikeID likeID = new LikeID(rno,userId);
         Optional<Like> like = likeRepository.findById(likeID);
         if(like.isEmpty()){
-            likeRepository.save(new Like(rno, userId, true));
+            likeRepository.save(new Like(rno, userId));
         } else {
-              likeRepository.save(new Like(rno, userId, !(like.get().getIsliked())));
+              likeRepository.save(new Like(rno, userId));
 //            Boolean curLike = like.get().getIsliked();
 //            System.out.println(curLike);
 //            like.get().setIsliked(!curLike);

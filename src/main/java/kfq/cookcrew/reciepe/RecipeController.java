@@ -56,7 +56,7 @@ public class RecipeController extends BaseController {
 
     @GetMapping(value={"/recipepage/{page}","/recipes"}) // 전체레시피(최신순) Pagination
     public ResponseEntity<Map<String, Object>> recipePage(@PathVariable(required=false) Integer page,
-                   @RequestParam(defaultValue = "guest", required = false) String userId){
+                   @RequestParam(name = "userId", defaultValue = "guest", required = false) String userId){
         if(page == null) page=1;
         ResponseEntity<Map<String, Object>> res = null;
         try {

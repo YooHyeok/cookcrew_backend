@@ -18,7 +18,12 @@ public class LikeController extends BaseController {
         ResponseEntity<String> res = null;
         try{
              likeService.toggleLike(rno,userId);
-             res = new ResponseEntity<String>("찜 목록에 추가", HttpStatus.OK);
+             if (likeService.isLikePresent(rno,userId)){
+                 res = new ResponseEntity<String>("찜 삭제", HttpStatus.OK);
+             }
+             else {
+                 res = new ResponseEntity<String>("찜 저장", HttpStatus.OK);
+             }
             return res;
         }catch(Exception e) {
             res = new ResponseEntity<String>("찜하기 실패", HttpStatus.BAD_REQUEST);

@@ -13,10 +13,6 @@ public class LikeService {
     @Autowired
     LikeRepository likeRepository;
 
-    public void saveLike(Integer rno, String userId, Boolean isliked) throws Exception{
-        likeRepository.save(new Like(rno, userId));
-    }
-
     public void saveLike(Like like) throws Exception{
         likeRepository.save(like);
     }
@@ -30,15 +26,22 @@ public class LikeService {
     }
 
     public void toggleLike(Integer rno, String userId) throws Exception{
-        LikeService likeService = new LikeService();
         LikeID likeID = new LikeID(rno,userId);
-        Optional<Like> like = likeRepository.findById(likeID);
+        Optional<Like> like = likeRepository.findLike(userId, rno);
         if(like.isEmpty()){
             likeRepository.save(new Like(rno, userId));
         } else {
             likeRepository.delete(like.get());
         }
+    }
 
+    public Boolean isLikePresent(Integer rno, String userId) throws Exception {
+        Optional<Like> like = likeRepository.findLike(userId, rno);
+        if (like.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public List<Boolean> isLikedList(List<Recipe> recipes, String userId) throws Exception {
