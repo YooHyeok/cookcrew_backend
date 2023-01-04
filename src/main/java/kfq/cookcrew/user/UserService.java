@@ -1,22 +1,38 @@
 package kfq.cookcrew.user;
 
+import kfq.cookcrew.reciepe.LikeRepository;
+import kfq.cookcrew.reciepe.Recipe;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Optional;
+
+import static kfq.cookcrew.common.Path.USERPROFILE;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
-
+    @Autowired
     private final UserRepository userRepository;
-
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    LikeRepository likeRepository;
 
     public Boolean userJoin(User user) {
         String encoderPassword = passwordEncoder.encode(user.getPassword());
@@ -34,14 +50,13 @@ public class UserService implements UserDetailsService {
     public Boolean existsById(String id) throws Exception {
 
         boolean checkId = userRepository.existsById(id);
-        System.out.println(checkId);
+//        System.out.println(checkId);
         return checkId;
     }
 
     public Boolean existByNn(String nickname) throws Exception {
 
         boolean checkNn = userRepository.existsByNickname(nickname);
-        System.out.println(checkNn);
 
         return checkNn;
     }
@@ -60,27 +75,28 @@ public class UserService implements UserDetailsService {
 //        Optional<User> userByOptionalList = userRepository.findById(user.getId()); //id에 해당하는 정보의 jpa 반환타입은 Optional이라는 리스트형태의 인터페이스이다.
 //        return userByOptionalList;
 //    }
-    public User myInfo(String id) {return userRepository.findById(id).get();}
+    public User myInfo(String id) {
+        return userRepository.findById(id).get();
+    }
 
 
     public User myInfoMod(User user, MultipartFile file) throws Exception {
         String filename = null;
-        User result = userRepository.save(user);
-        if (result.getId() != user.getId()) { //저장 실패
-            throw new Exception();}
-        // 파일을 첨부하지 않아도 String 변수를 받아서 뿌리고 오류 발생을 예방하기 위해 && IsEmpty 해준거임
-        else if (result.getId() == user.getId()) {
-            if (file != null && !file.isEmpty()) {
-                String path = "D:\\FinishProject\\ImageFile";
-                filename = file.getOriginalFilename();
-                File dFile = new File(path + filename);
-                file.transferTo(dFile);
-//            user = userRepository.findById(user.getId()).get();
-                user.setFilename(filename);
-            }
+        Optional<User> ouser = userRepository.findById(user.getId());
+        if(ouser.isEmpty()) {
+            throw new Exception("회원정보 오류");
         }
-        return user;
+        User orgUser = ouser.get();
+        orgUser.setNickname(user.getNickname());
+        orgUser.setAddress((user.getAddress()));
+        orgUser.setAddrDetail(user.getAddrDetail());
+        orgUser.setPostcode((user.getPostcode()));
+        orgUser.setEmail((user.getEmail()));
+        if(!file.isEmpty()) {
+            orgUser.setThumbnail(file.getBytes());
         }
-//        return userRepository.findById(id).get();
+        userRepository.save(orgUser);
+        return orgUser;
     }
+}
 

@@ -2,18 +2,25 @@ package kfq.cookcrew.user;
 
 import kfq.cookcrew.common.BaseController;
 import kfq.cookcrew.common.security.JwtTokenProvider;
+import kfq.cookcrew.reciepe.Recipe;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.html.parser.Entity;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import static kfq.cookcrew.common.Path.USERPROFILE;
 
 
 /**
@@ -82,14 +89,13 @@ public class UserController extends BaseController {
      * @param nickname
      * @return ResponseEntity 결과 객체
      */
-
     @PostMapping("/existByNn")
     public ResponseEntity<Boolean> isExistByNn(String nickname) {
-        System.out.println(nickname);
+//        System.out.println(nickname);
         ResponseEntity<Boolean> res = null;
         try{
             Boolean result = userService.existByNn(nickname);
-            System.out.println("중복 결과 : "+result);
+//            System.out.println("중복 결과 : "+result);
             res = new ResponseEntity<Boolean>(result, HttpStatus.OK);
         } catch (Exception e){
             res = new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
@@ -113,6 +119,10 @@ public class UserController extends BaseController {
         if(user!=null && pwResult) {
             String accessToken = jwtTokenProvider.createToken(user.getUsername());
             String refreshToken =jwtTokenProvider.refreshToken(user.getUsername());
+            System.out.println("userId :::: "+user.getUsername());
+            System.out.println("accessToken :::: "+accessToken);
+            System.out.println("refreshToken :::: "+refreshToken);
+
             res.put("userId",user.getUsername() );
             res.put("accessToken", accessToken);
             res.put("refreshToken", refreshToken);
@@ -139,13 +149,14 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/mypagemod")
-    public ResponseEntity<User> myInfoMod(@RequestBody User user,
-                                             @RequestParam(name="file", required = false)MultipartFile file)
-    throws Exception{
-        System.out.println(user);
+    public ResponseEntity<User> myInfoMod(@ModelAttribute User user,
+                                          @RequestParam("file") MultipartFile file)
+    {
+        //System.out.println("thumbnail:"+user.getThumnail());
+        System.out.println(file.isEmpty());
         ResponseEntity<User> res = null;
-        User usermod = userService.myInfoMod(user, file);
         try{
+            User usermod = userService.myInfoMod(user, file);
             res = new ResponseEntity<User>(usermod, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
@@ -153,4 +164,5 @@ public class UserController extends BaseController {
         }
         return res;
     }
+
 }
