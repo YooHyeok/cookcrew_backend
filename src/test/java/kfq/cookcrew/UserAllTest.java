@@ -41,7 +41,7 @@ public class UserAllTest {
 	}
 
 
-<<<<<<< HEAD
+
 //	@Test
 //	@DisplayName("회원가입 패스워드 암호화 테스트!")
 //	void userJoinTest() {
@@ -60,25 +60,25 @@ public class UserAllTest {
 //				)
 //		);
 //	}
-=======
-	@Test
-	@DisplayName("회원가입 패스워드 암호화 테스트!")
-	void userJoinTest() {
 
-		userService.userJoin(
-				new User(
-						"user"
-						, "박지혜짱짱걸"
-						, "user1234"
-						, "주소"
-						, null
-						, "상세주소"
-						, "이메일!"
-						, true
-						, new Date(System.currentTimeMillis())
-						, null
-				)
-		);
+//	@Test
+//	@DisplayName("회원가입 패스워드 암호화 테스트!")
+//	void userJoinTest() {
+//
+//		userService.userJoin(
+//				new User(
+//						"user"
+//						, "박지혜짱짱걸"
+//						, "user1234"
+//						, "주소"
+//						, null
+//						, "상세주소"
+//						, "이메일!"
+//						, true
+//						, new Date(System.currentTimeMillis())
+//						, null
+//				)
+//		);
 	}
->>>>>>> webdevyoo
-}
+
+
