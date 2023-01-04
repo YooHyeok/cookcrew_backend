@@ -18,6 +18,8 @@ import java.util.Optional;
 public class RecipeService {
     @Autowired
     RecipeRepository recipeRepository;
+    @Autowired
+    LikeRepository likeRepository;
 
     /**
      * 작성자 : 유재혁
@@ -167,16 +169,65 @@ public class RecipeService {
     public void deleteRecipe(Integer rNo) throws Exception{
         recipeRepository.deleteByRno(rNo);
         }
-    public List<Map<String,Recipe>> myRecipe(String userId) throws Exception {
-        Optional<List<Map<String, Recipe>>> mreipe = recipeRepository.findMyRecipe(userId);
+    public List<Recipe> myRecipe(String userId) throws Exception {
+        List<Recipe> recipe = recipeRepository.findMyRecipe(userId);
 
-        if (mreipe.isEmpty()) {
+        if (recipe == null) {
             throw new Exception("레시피 정보 없음");
         }
-        List<Map<String,Recipe>> recipe = mreipe.get();
 //        System.out.println("왓다팍  :"+recipe);
         return recipe;
     }
+//    public List<Map<String,Recipe>> myLikelist(String userId) throws Exception {
+//        List<Integer> rnoList = recipeRepository.myLike(userId);
+//        List<Map<String,Recipe>> olikelist = null;
+//        if(rnoList.isEmpty()) {
+//            throw new Exception("좋아요 없음");
+//        }
+//        for(int i=0; i < rnoList.size();i++) {
+////            myList를 통해 가져온 rno 리스트를 가지고 하나씩 레시피 조회
+//            Integer rno = rnoList.get(i);
+//            olikelist = recipeRepository.findMyLike(rno);
+//        }
+//        for (Map<String,Recipe> data : olikelist) {
+//            for(String key : data.keySet()) {
+//                String value = data.get(key).toString();
+//                System.out.println("{" + key + " : " + value + "}");
+//            }
+//        }
+////        res = olikelist;
+////        return res;
+//        return olikelist;
+//    }
+    public List<Recipe> likelist(String userId) throws Exception{
+        System.out.println("#########userID########"+userId);
+        List<Like> findRnoList = likeRepository.findByUserId(userId);
+//        System.out.println("############findRnoList############"+findRnoList);
+        List<Recipe> mylikelist = new ArrayList<>();
+        if(findRnoList == null) {
+            throw new Exception("찜목록 없음");
+        }
+        else {
+
+            for(Like like : findRnoList) {
+                System.out.println("############findRnoList############"+like.toString());
+                Optional<Recipe> recipe = recipeRepository.findById(like.getRno());
+                if(recipe.isPresent()) {
+                    mylikelist.add(recipe.get());
+
+                }
+                else {
+                    throw new Exception("mylikelist에 add하지 못함");
+                }
+                System.out.println("####mylikelist###"+recipe.toString());
+            }
+
+            if(mylikelist == null) {
+                throw new Exception("");
+            }
+        }
 
 
+        return mylikelist;
+    }
 }

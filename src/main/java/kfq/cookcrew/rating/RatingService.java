@@ -26,8 +26,8 @@ public class RatingService {
         }
     }
     //별점 뿌리기
-    public List<Integer> requestRatingValue(Integer rNo) throws Exception {
-        List<Integer> orating = ratingRepository.getRatingValue(rNo);
+    public Double requestRatingValue(Integer rNo) throws Exception {
+        Double orating = ratingRepository.getRatingValue(rNo);
         if(orating != null)
             return  orating;
         throw new Exception("별점 정보없음");

@@ -20,16 +20,34 @@ import java.util.Optional;
 class LikeSaveTests extends BaseController{
     @Autowired
     LikeRepository likeRepository;
+
     LikeService likeService;
     @Test
     public void likeTest() {
         log.info(likeRepository.findAll().toString());
     }
 
+//    @Test
+//    public void likeTest() {
+//        log.info(likeRepository.findAll().toString());
+//    }
+//
+//    @Test
+//    public void saveLikeTest() {
+//        Like like = new Like(12, "user12", true);
+//        likeRepository.save(like);
+//    }
+
+
     @Test
+
     public void saveLikeTest() {
         Like like = new Like(12, "user12");
         likeRepository.save(like);
+    }
+    public void userlike() {
+        List<Like>  recipeList = likeRepository.findByUserId("JoHB94");
+        System.out.println("#########test result##########" + recipeList);
     }
 
     @Test
@@ -61,6 +79,5 @@ class LikeSaveTests extends BaseController{
             System.out.println(like.get());
         }
     }
-
 
 }
