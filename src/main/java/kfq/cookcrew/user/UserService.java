@@ -1,7 +1,7 @@
 package kfq.cookcrew.user;
 
-import kfq.cookcrew.reciepe.LikeRepository;
 import kfq.cookcrew.reciepe.Recipe;
+import kfq.cookcrew.reciepe.like.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -66,7 +66,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(username).get();
     }
 
-    //    public User myInfo2(User user) throws Exception{
+//        public User myInfo2(User user) throws Exception{
 //        Optional<User> userByOptionalList = userRepository.findById(user.getId()); //id에 해당하는 정보의 jpa 반환타입은 Optional이라는 리스트형태의 인터페이스이다.
 //        User userObject = userByOptionalList.get(); //리스트 형태에서 .get() 하면 Generic User타입의 객체로 반환을 받는다.
 //        return userObject;
