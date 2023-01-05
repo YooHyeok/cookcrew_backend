@@ -45,7 +45,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     public List<Map<String,Recipe>> findMyLike(@Param("rno") Integer rno);
 
     @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title%") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
-    Page<Recipe> searchByTitleLike(@Param("title") String title, PageRequest pageRequest);
+    Page<Recipe> searchByKeyword(@Param("title") String title, PageRequest pageRequest);
+    @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title%") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
+    List<Recipe> searchByKeyword(@Param("title") String title);
 
 
 }

@@ -243,7 +243,7 @@ public class RecipeService {
     public List<Recipe> searchResultPage(PageInfo pageInfo, String keyword) throws Exception {
         PageRequest pageRequest = PageRequest.of(pageInfo.getCurPage()-1, 12,
                 Sort.by(Sort.Direction.DESC,"rno"));
-        Page<Recipe> pages = recipeRepository.searchByTitleLike(keyword,pageRequest);
+        Page<Recipe> pages = recipeRepository.searchByKeyword(keyword,pageRequest);
         int maxPage = pages.getTotalPages();
         int curPage = pageInfo.getCurPage();
         System.out.println(curPage);
@@ -265,5 +265,8 @@ public class RecipeService {
         pageInfo.setEndPage(endPage);
 
         return pages.getContent();
+    }
+    public List<Recipe> searchByKeyword(String searchParam) {
+        return recipeRepository.searchByKeyword(searchParam);
     }
 }

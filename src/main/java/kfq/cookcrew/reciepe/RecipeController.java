@@ -330,7 +330,7 @@ public class RecipeController extends BaseController {
             try {
                 PageInfo pageInfo = new PageInfo();
                 pageInfo.setCurPage(page);
-                List<Recipe> searchResultList = recipeService.searchByTitleLike(keyword);
+                List<Recipe> searchResultList = recipeService.searchByKeyword(keyword);
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("pageInfo",pageInfo);
                 map.put("recipes",searchResultList);
