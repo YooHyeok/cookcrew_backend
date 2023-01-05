@@ -10,6 +10,6 @@ public interface RatingRepository extends JpaRepository<Rating,Integer> {
     public Optional<Rating> findByUserId(String userId);
     public Optional<Rating> findByUserIdAndRno(String userId, Integer rNo);
 
-    @Query(value = "select r.ratingValue from rating r where rno=:rno")
-    public List<Integer> getRatingValue(@Param("rno") Integer rno);
+    @Query(value = "select round(avg(r.ratingValue),2) from rating r where rno=:rno")
+    public Double getRatingValue(@Param("rno") Integer rno);
 }

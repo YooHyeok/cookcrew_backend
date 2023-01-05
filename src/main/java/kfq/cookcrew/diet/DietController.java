@@ -1,7 +1,8 @@
 package kfq.cookcrew.diet;
 
 import kfq.cookcrew.common.BaseController;
-import kfq.cookcrew.common.DateUtill;
+import kfq.cookcrew.common.util.DateUtill;
+import kfq.cookcrew.diet.targetAchieve.TargetAchieveRepository;
 import kfq.cookcrew.reciepe.Recipe;
 import kfq.cookcrew.reciepe.RecipeService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class DietController extends BaseController {
 
     private final RecipeService recipeService;
     private final DietService dietService;
+    private final TargetAchieveRepository targetAchieveRepository;
 
 
 
@@ -39,43 +41,40 @@ public class DietController extends BaseController {
      * @return List<Map<String,Object>>
      */
     @GetMapping("/dietSearchMonthAll")
-    public ResponseEntity<List<Map<String,Object>>> dietList(String userId) {
+    public ResponseEntity<Map<String,Object>> dietList(String userId) {
 
-        ResponseEntity <List<Map<String,Object>>> result = null;
+        ResponseEntity <Map<String,Object>> result = null;
         try {
             List<Map<String,Object>> dietList = dietService.findDistinctDietDate(userId);
+            Date today = new Date(System.currentTimeMillis());
+            Date startDate = DateUtill.SundayToSqlDate(String.valueOf(today));
+            Date endDate = DateUtill.SaturdayToSqlDate(String.valueOf(today));
+            Map<String, Object> map = new HashMap<>();
+            map.put("dietList",dietList);
+            map.put("startDate",startDate);
+            map.put("endDate",endDate);
 //            for(Map<String,Object> data : dietList) {
 //                for(String key : data.keySet()) {
 //                    String value = data.get(key).toString();
 //                    System.out.println("{" + key + " : " + value+"}");
 //                }
 //            }
-            result = new ResponseEntity<>(dietList, HttpStatus.OK);
+            result = new ResponseEntity<>(map, HttpStatus.OK);
         }catch (Exception e) {
             result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return result;
     }
     @GetMapping("/dietSearch")
-    public ResponseEntity<Map<String, Object>> dietSearchByEvent(String userId, String dietDate, Character mealDiv) throws ParseException {
 //    public ResponseEntity<List<Diet>> dietSearchByEvent(String userId, String dietDate, Character mealDiv) throws ParseException {
-
-//        LOGGER.info("userId : {}, dietDate : {}, mealDiv : {}",userId, dietDate, mealDiv);
-        /* 이번주 시작일자, 종료일자 */
-        Date StringToSqlDateFormat = Date.valueOf(dietDate);
-        Date startDate = DateUtill.SundayToSqlDate(dietDate);
-        Date endDate = DateUtill.SaturdayToSqlDate(dietDate);
-//        ResponseEntity <List<Diet>> result = null;
-        ResponseEntity <Map<String, Object>> result = null;
+    public ResponseEntity<Map<String, Object>> dietSearchByEvent(String userId, String dietDate, Character mealDiv) throws ParseException {
+        Date dietDateSql = Date.valueOf(dietDate);
+        ResponseEntity<Map<String, Object>> result = null;
+        Map<String, Object> resultMap = new HashMap<>();
         try {
-            List<Diet> dietListBy =
-            dietService.findByUserIdAndDietDateAndMealDiv(userId, StringToSqlDateFormat, mealDiv);
-            Map<String, Object> map = new HashMap<>();
-            map.put("dietListBy",dietListBy);
-            map.put("startDate",startDate);
-            map.put("endDate",endDate);
-            result = new ResponseEntity<>(map, HttpStatus.OK);
-//            result = new ResponseEntity<>(dietListBy, HttpStatus.OK);
+            Map<String,Object> dietData = dietService.findDietAndTargetAchieve(userId, dietDateSql, mealDiv);
+            System.out.println(dietData);
+            result = new ResponseEntity<>(dietData, HttpStatus.OK);
         }catch (Exception e) {
             result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
@@ -98,7 +97,7 @@ public class DietController extends BaseController {
                     , dietDate
                     , mealDiv
                     , null
-                    , 0
+                    , null
 //                    , recipe
                     , new Recipe(rno) // 생성자 주입...
             );
@@ -109,17 +108,20 @@ public class DietController extends BaseController {
         }
         return result;
     }
-    @PutMapping("/dietSave")
-    public ResponseEntity<String> dietSave(@RequestBody Map<String,String> param) {
+
+    /**
+     * 목표 칼로리 저장 API
+     * @param param
+     * @return
+     */
+    @PutMapping("/targetKcalSave")
+    public ResponseEntity<String> targetKcalSave(@RequestBody Map<String,String> param) {
         LOGGER.info("saveParameter : {}", param);
         ResponseEntity<String> result = null;
-        System.out.println(param.get("dietDate"));
-        String dietDate = param.get("dietDate");
-
         try {
-            dietService.updateDietSave(
-                    dietDate
-                    , Boolean.parseBoolean(param.get("achieve"))
+            dietService.insertTargetSave(
+                    param.get("userId")
+                    , Date.valueOf(param.get("dietDate")) // 식단일자
                     , param.get("mealDiv").charAt(0)
                     , Integer.parseInt(param.get("targetKcal"))
                 );
@@ -129,6 +131,30 @@ public class DietController extends BaseController {
         }
         return result;
     }
+    @PutMapping("/achieveSave")
+    public ResponseEntity<String> achieveSave(@RequestBody Map<String,String> param) {
+        LOGGER.info("saveParameter : {}", param);
+        ResponseEntity<String> result = null;
+        String dietDate = param.get("dietDate");
+        try {
+            dietService.updateAchieve(
+                    param.get("userId")
+                    , Date.valueOf(param.get("dietDate")) // 식단일자
+                    , Boolean.parseBoolean(param.get("achieve"))
+                    , param.get("mealDiv").charAt(0)
+                );
+            result = new ResponseEntity<>("저장 성공", HttpStatus.OK);
+        }catch (Exception e) {
+            result = new ResponseEntity<>("저장 실패", HttpStatus.BAD_REQUEST);
+        }
+        return result;
+    }
+
+    /**
+     * 식단 레시피 검색 API
+     * @param param
+     * @return
+     */
     @GetMapping("/recipeSearch")
     public ResponseEntity<List<Recipe>> recipeSearchList(String param) {
         System.out.println(param);
@@ -146,10 +172,15 @@ public class DietController extends BaseController {
         return result;
     }
 
+    /**
+     * 식단 삭제 API
+     * @param param
+     * @return
+     */
     @DeleteMapping("/dietDelete")
     public ResponseEntity<String> dietDelete(@RequestBody Map<String, String> param) {
         ResponseEntity<String> res = null;
-//        LOGGER.info("파라미터 값 : {}", param);
+        LOGGER.info("파라미터 값 : {}", param);
         Integer dNo = Integer.parseInt(param.get("dNo"));
         try {
             dietService.deleteById(dNo);
@@ -158,4 +189,5 @@ public class DietController extends BaseController {
         }
         return res;
     }
+
 }

@@ -10,12 +10,30 @@ import java.sql.Date;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public interface DietRankRepository extends JpaRepository<DietRank, Integer> {
+public interface DietRankRepository extends JpaRepository<Challenge, ChallengeId> {
 
-//    @Query(value = "SELECT * FROM diet_rank WHERE reg_date=:regDate",nativeQuery = true)
-    List<DietRank> findByRegDateAndSortAndAchieveRankLessThanEqual(Date regDate, Integer sort, Integer count);
-//    List<DietRank> findByRegDateOrderByAchieveRankAsc(@Param("regDate") Date regDate);
-//    List<DietRank> findByRegDateOrderByAchieveRankDesc(@Param("regDate") Date regDate);
+    /**
+     * 랭킹 조회 메소드.
+     * RankController의 findByRegDateAndSort에 의해 호출된다.
+     * @param regDate
+     * @param sort
+     * @param count
+     * @return
+     */
+    @Query(value = "SELECT * " +
+            "FROM diet_rank dr " +
+            "LEFT OUTER JOIN challenge c " +
+            "ON dr.user_id = c.user_id " +
+            "AND dr.start_date = c.start_date " +
+            "AND dr.end_date = c. end_date " +
+            "AND c.validate = true " +
+            "WHERE dr.reg_date= :regDate " +
+            "AND dr.sort= :sort " +
+            "AND dr.achieve_rank <= :count",nativeQuery = true)
+    List<DietRank> findByRegDateAndSortAndAchieveRankLessThanEqual(
+            @Param("regDate") Date regDate
+            ,@Param("sort") Integer sort
+            ,@Param("count") Integer count);
 
     static final String RankDescState = " ROW_NUMBER() OVER(ORDER BY (count(achieve) / 21 * 100) DESC) as achieve_rank";
     static final String SurveState =

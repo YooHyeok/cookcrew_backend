@@ -1,8 +1,9 @@
 package kfq.cookcrew.rating;
 
+import kfq.cookcrew.reciepe.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +27,23 @@ public class RatingService {
         }
     }
     //별점 뿌리기
-    public List<Integer> requestRatingValue(Integer rNo) throws Exception {
-        List<Integer> orating = ratingRepository.getRatingValue(rNo);
+    public Double requestRatingValue(Integer rNo) throws Exception {
+        Double orating = ratingRepository.getRatingValue(rNo);
         if(orating != null)
             return  orating;
+        else if (orating == null) {
+            return 0d;
+        }
         throw new Exception("별점 정보없음");
+    }
+
+    public List<Double> ratingList(List<Recipe> recipes) throws Exception {
+        List<Double> ratings = new ArrayList<>();
+
+            for(int i=0; i<recipes.size(); i++) {
+                Double score = requestRatingValue((recipes.get(i).getRno()));
+                ratings.add(score);
+        }
+        return ratings;
     }
 }

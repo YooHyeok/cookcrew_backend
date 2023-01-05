@@ -1,14 +1,19 @@
 package kfq.cookcrew.diet;
 
-import kfq.cookcrew.common.DateUtill;
+import kfq.cookcrew.common.util.DateUtill;
+import kfq.cookcrew.diet.targetAchieve.TargetAchieve;
+import kfq.cookcrew.diet.targetAchieve.TargetAchieveId;
+import kfq.cookcrew.diet.targetAchieve.TargetAchieveRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * *****************************************************<p>
@@ -25,15 +30,30 @@ import java.util.Map;
 public class DietService {
 
     private final DietRepository dietRepository;
+    private final TargetAchieveRepository targetAchieveRepository;
+
     public List<Diet> findAll() {
         return dietRepository.findAll();
     }
     public List<Map<String,Object>> findDistinctDietDate(String userId) {
         return dietRepository.findDistinctDietDate(userId);
     }
-    public List<Diet> findByUserIdAndDietDateAndMealDiv(String userId, Date stringToSqlDateFormat, Character mealDiv) {
-        return dietRepository.findByUserIdAndDietDateAndMealDiv(userId, stringToSqlDateFormat, mealDiv);
+    public Map<String,Object> findDietAndTargetAchieve(String userId, Date dietDateSql, Character mealDiv) {
+        Map<String,Object> dietData = null;
+        try{
+            List<Diet> dietList =
+                    dietRepository.findByUserIdAndDietDateAndMealDiv(userId, dietDateSql, mealDiv);
+            Optional<TargetAchieve> achieve =
+                    targetAchieveRepository.findById(new TargetAchieveId(userId, dietDateSql, mealDiv));
+            dietData = new HashMap<>();
+            dietData.put("dietList",dietList);
+            dietData.put("achieve",!achieve.isPresent() ? "null" : achieve.get());
+        } catch (Exception e) {
+            throw e;
+        }
+        return dietData;
     }
+
     @Transactional(readOnly = false)
     public void save(Diet diet) {
         dietRepository.save(diet);
@@ -50,5 +70,22 @@ public class DietService {
         Date startDate = DateUtill.SundayToSqlDate(String.valueOf(dietDate));
         Date endDate = DateUtill.SaturdayToSqlDate(String.valueOf(dietDate));
         dietRepository.updateDietSave(startDate, endDate, achieve, mealDiv, targetKcal);
+    }
+
+    @Transactional(readOnly = false)
+    public void insertTargetSave(String userId, Date dietDate, Character mealDiv, Integer targetKcal) {
+//        dietRepository.insertTargetSave(userId, dietDate, mealDiv, targetKcal);
+        targetAchieveRepository.save(
+                new TargetAchieve(
+                        new TargetAchieveId(userId, dietDate, mealDiv)
+                        ,targetKcal
+                        ,null)
+        );
+    }
+
+    @Transactional(readOnly = false)
+    public void updateAchieve(String userId, Date dietDate, Boolean achieve, Character mealDiv) throws ParseException {
+        dietRepository.updateAchieve(userId, dietDate,mealDiv ,achieve );
+//        targetAchieveRepository.save(userId, dietDate, achieve, mealDiv);
     }
 }

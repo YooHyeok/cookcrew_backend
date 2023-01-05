@@ -1,4 +1,4 @@
-package kfq.cookcrew.common;
+package kfq.cookcrew.common.util;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -17,7 +17,7 @@ public class DateUtill {
      */
     public static Date SundayToSqlDate(String today) throws ParseException {
         String pattern = "yyyy-MM-dd";
-        java.util.Date parseDate= new SimpleDateFormat(pattern).parse(String.valueOf(today));
+        java.util.Date parseDate= new SimpleDateFormat(pattern).parse(today);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);  // 출력용으로 쓸 데이트 포맷
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(parseDate);   // calendar 구조체에 오늘 날짜를 저장함
@@ -31,7 +31,7 @@ public class DateUtill {
      */
     public static Date SaturdayToSqlDate(String today) throws ParseException {
         String pattern = "yyyy-MM-dd";
-        java.util.Date parseDate= new SimpleDateFormat(pattern).parse(String.valueOf(today));
+        java.util.Date parseDate= new SimpleDateFormat(pattern).parse(today);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);  // 출력용으로 쓸 데이트 포맷
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(parseDate);   // calendar 구조체에 오늘 날짜를 저장함
