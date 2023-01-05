@@ -295,15 +295,35 @@ public class RecipeController extends BaseController {
         }
         return res;
     }
-    @GetMapping("mylikelist/{userId}")
-    public ResponseEntity <List<Recipe>> likelist(@PathVariable String userId
-    ) {
-//        System.out.println(userId);
-        ResponseEntity<List<Recipe>> res = null;
-        try {
-            List<Recipe> myLikelist = recipeService.likelist(userId);
 
-            res = new ResponseEntity<>(myLikelist,HttpStatus.OK);
+    /**
+     * 나의 찜목록 조회
+     * @param page
+     * @param userId
+     * @return
+     */
+    @GetMapping(value = {"/mylikelist/{page}", "/mylikelist"})
+    public ResponseEntity <Map<String,Object>> likelist(@PathVariable(required=false) Integer page,
+    @RequestParam(name="userId", defaultValue = "guest", required = false) String userId) {
+        if(page == null) page=1;
+        System.out.println(page);
+        System.out.println(userId);
+        ResponseEntity<Map<String,Object>> res = null;
+        try {
+            PageInfo pageInfo = new PageInfo();
+            pageInfo.setCurPage(page);
+            List<Map<String,Object>> recipes = recipeService.likelist(userId, pageInfo);
+            Map<String, Object> map = new HashMap<String, Object>();
+
+//            List<Boolean> isLikedList = likeService.isLikedList(recipes, userId);
+//            List<Double> scoreList = ratingService.ratingList(recipes);
+//            map.put("isLikeds",isLikedList);
+//            map.put("scoreList",scoreList);
+            map.put("pageInfo",pageInfo);
+            map.put("recipes",recipes);
+            System.out.println(recipes);
+            res = new ResponseEntity<>(map, HttpStatus.OK);
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -311,17 +331,22 @@ public class RecipeController extends BaseController {
         }
         return res;
     }
-//    @GetMapping("mylikelist/{userId}")
-//    public ResponseEntity<Optional<List<Map<Integer,Recipe>>>>myLikelist(@PathVariable String userId){
-//        System.out.println(userId);
-//        ResponseEntity<Optional<List<Map<Integer,Recipe>>>> res = null;
-//        try {
-//            Optional<List<Map<String,Recipe>>>olike = recipeService.myLikelist(userId);
-//            res = new ResponseEntity<>(olike,HttpStatus.OK);
-//            System.out.println(res);
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }return res;
-//    }
+
+    /**
+     * 나의 레시피 조회
+     * @param id
+     * @return
+     */
+    @GetMapping("/myrecipelist")
+    public ResponseEntity<List<Map<String,Object>>> myrecipelist(String id){
+        ResponseEntity<List<Map<String,Object>>> res = null;
+        try{
+            List<Map<String,Object>> recipes = recipeService.myrecipeList(id);
+            res = new ResponseEntity<List<Map<String,Object>>>(recipes, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            res = new ResponseEntity<List<Map<String,Object>>>(HttpStatus.BAD_REQUEST);
+        }
+        return res;
+    }
 }

@@ -96,8 +96,6 @@ public class DietController extends BaseController {
             Diet diet = new Diet(0, userId
                     , dietDate
                     , mealDiv
-                    , null
-                    , null
 //                    , recipe
                     , new Recipe(rno) // 생성자 주입...
             );
@@ -156,11 +154,11 @@ public class DietController extends BaseController {
      * @return
      */
     @GetMapping("/recipeSearch")
-    public ResponseEntity<List<Recipe>> recipeSearchList(String param) {
+    public ResponseEntity<List<Map<String, Object>>> recipeSearchList(String param) {
         System.out.println(param);
-        ResponseEntity <List<Recipe>> result = null;
+        ResponseEntity <List<Map<String, Object>>> result = null;
         try {
-            List<Recipe> recipeSearchList = recipeService.searchByTitleLike(param);
+            List<Map<String, Object>> recipeSearchList = recipeService.searchByTitleLike(param);
 //            for(Recipe recipe : recipeSearchList) {
 //                LOGGER.info(recipe.toString());
 //            }
