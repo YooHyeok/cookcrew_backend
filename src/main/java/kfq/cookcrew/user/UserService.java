@@ -1,7 +1,7 @@
 package kfq.cookcrew.user;
 
-import kfq.cookcrew.reciepe.LikeRepository;
 import kfq.cookcrew.reciepe.Recipe;
+import kfq.cookcrew.reciepe.like.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
