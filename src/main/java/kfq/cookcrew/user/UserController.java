@@ -74,11 +74,8 @@ public class UserController extends BaseController {
             Boolean result = userService.existsById(id);
             System.out.println("중복 결과 : "+result);
             res = new ResponseEntity<Boolean>(result, HttpStatus.OK);
-
-
         } catch (Exception e){
             res = new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
-
         }
         return res;
     }
@@ -99,7 +96,6 @@ public class UserController extends BaseController {
             res = new ResponseEntity<Boolean>(result, HttpStatus.OK);
         } catch (Exception e){
             res = new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
-
         }
         return res;
     }
@@ -113,10 +109,16 @@ public class UserController extends BaseController {
                                                      HttpServletRequest request){
         System.out.println(id);
         System.out.println(password);
+
         Map<String, String> res = new HashMap<>();
         User user = (User)userService.loadUserByUsername(id);
         Boolean pwResult = passwordEncoder.matches(password, user.getPassword());
+//        if(user.getUsername() == null || pwResult == false ){
+//            System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.");
+//        }
+
         if(user!=null && pwResult) {
+
             String accessToken = jwtTokenProvider.createToken(user.getUsername());
             String refreshToken =jwtTokenProvider.refreshToken(user.getUsername());
             System.out.println("userId :::: "+user.getUsername());
@@ -150,10 +152,11 @@ public class UserController extends BaseController {
 
     @PostMapping("/mypagemod")
     public ResponseEntity<User> myInfoMod(@ModelAttribute User user,
-                                          @RequestParam("file") MultipartFile file)
+                                          @RequestParam(name = "file", required = false) MultipartFile file)
     {
+        System.out.println("파일 : "+file);
         //System.out.println("thumbnail:"+user.getThumnail());
-        System.out.println(file.isEmpty());
+//        System.out.println(file.isEmpty());
         ResponseEntity<User> res = null;
         try{
             User usermod = userService.myInfoMod(user, file);
@@ -163,6 +166,17 @@ public class UserController extends BaseController {
             res = new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
         }
         return res;
+    }
+
+    @GetMapping("/profile/{id}")
+    public void profileThumbnail(@PathVariable String id, HttpServletResponse response) {
+        try {
+            byte[] thumbnail = userService.profileThumbnail(id);
+            OutputStream out = response.getOutputStream();
+            out.write(thumbnail);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

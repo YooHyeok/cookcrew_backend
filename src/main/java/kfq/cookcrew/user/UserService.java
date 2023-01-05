@@ -61,6 +61,19 @@ public class UserService implements UserDetailsService {
         return checkNn;
     }
 
+//    public User logincheck(User user) throws Exception{
+//        Optional<User> ouser = userRepository.findById(user.getId());
+//        User orgUser = ouser.get();
+//
+//        if(ouser.isEmpty()) {
+//            throw new Exception("회원 아이디 불일치");
+//        } if else(ouser.isPresent() && orgUser.getPassword().isEmpty() ){
+//            throw new Exception("비밀 번호 불일치");
+//        } else {
+//            return orgUser;
+//        }
+//    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findById(username).get();
@@ -82,21 +95,32 @@ public class UserService implements UserDetailsService {
 
     public User myInfoMod(User user, MultipartFile file) throws Exception {
         String filename = null;
+
         Optional<User> ouser = userRepository.findById(user.getId());
         if(ouser.isEmpty()) {
             throw new Exception("회원정보 오류");
         }
         User orgUser = ouser.get();
         orgUser.setNickname(user.getNickname());
-        orgUser.setAddress((user.getAddress()));
+        orgUser.setAddress(user.getAddress());
         orgUser.setAddrDetail(user.getAddrDetail());
-        orgUser.setPostcode((user.getPostcode()));
-        orgUser.setEmail((user.getEmail()));
-        if(!file.isEmpty()) {
+        orgUser.setPostcode(user.getPostcode());
+        orgUser.setEmail(user.getEmail());
+        if(file != null) {
             orgUser.setThumbnail(file.getBytes());
+            orgUser.setFilename(file.getOriginalFilename());
         }
+
         userRepository.save(orgUser);
+
+
         return orgUser;
+    }
+
+    public byte[] profileThumbnail(String id) throws Exception {
+        Optional<User> ouser = userRepository.findById(id);
+        if(ouser.isEmpty()) throw new Exception("아이디 오류");
+        return ouser.get().getThumbnail();
     }
 }
 
