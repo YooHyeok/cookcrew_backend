@@ -33,8 +33,7 @@ import java.util.*;
 @RestController
 public class RecipeController extends BaseController {
     @Autowired
-        RecipeService recipeService;
-
+    RecipeService recipeService;
     @Autowired
     LikeService likeService;
     @Autowired
@@ -89,19 +88,24 @@ public class RecipeController extends BaseController {
     public ResponseEntity<Map<String, Object>> popRecipePage(@PathVariable(required=false) Integer page,
             @RequestParam(name="userId", defaultValue = "guest", required = false) String userId){
         if(page == null) page=1;
-//        System.out.println(page);
         ResponseEntity<Map<String, Object>> res = null;
         try {
+            System.out.println("userId:"+userId);
             PageInfo pageInfo = new PageInfo();
             pageInfo.setCurPage(page);
             List<Recipe> recipes = recipeService.popRecipePage(pageInfo);
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("pageInfo",pageInfo);
             map.put("recipes",recipes);
-            System.out.println(recipes);
             List<Boolean> isLikedList = likeService.isLikedList(recipes, userId);
-            map.put("isLikeds",isLikedList);
 
+            List<Double> scoreList = ratingService.ratingList(recipes);
+
+            map.put("isLikeds",isLikedList);
+            map.put("scoreList",scoreList);
+
+            System.out.println(isLikedList);
+            System.out.println("scoreList");
             res = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
@@ -167,7 +171,8 @@ public class RecipeController extends BaseController {
 
     @PostMapping("/rcpreg") //레시피 등록
     public ResponseEntity<String> rcpReg(
-            @RequestParam(name = "file", required = false) MultipartFile file,
+            @RequestParam(name = "file", required = false)
+            MultipartFile file,
             String userId,
             String title,
             String sTitle,
@@ -314,17 +319,35 @@ public class RecipeController extends BaseController {
         }
         return res;
     }
-//    @GetMapping("mylikelist/{userId}")
-//    public ResponseEntity<Optional<List<Map<Integer,Recipe>>>>myLikelist(@PathVariable String userId){
-//        System.out.println(userId);
-//        ResponseEntity<Optional<List<Map<Integer,Recipe>>>> res = null;
-//        try {
-//            Optional<List<Map<String,Recipe>>>olike = recipeService.myLikelist(userId);
-//            res = new ResponseEntity<>(olike,HttpStatus.OK);
-//            System.out.println(res);
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }return res;
-//    }
+
+    @GetMapping("recipesearch/{page}")
+    public ResponseEntity <Map<String, Object>> searchlist(@PathVariable(required = false) Integer page,
+                                                    @RequestParam(name="userId", defaultValue = "guest", required = false) String userId,
+                                                    @RequestParam String keyword){
+            if(page == null) page=1;
+        System.out.println(keyword);
+            ResponseEntity<Map<String, Object>> res = null;
+            try {
+                PageInfo pageInfo = new PageInfo();
+                pageInfo.setCurPage(page);
+                List<Recipe> searchResultList = recipeService.searchByTitleLike(keyword);
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("pageInfo",pageInfo);
+                map.put("recipes",searchResultList);
+                List<Boolean> isLikedList = likeService.isLikedList(searchResultList, userId);
+
+                List<Double> scoreList = ratingService.ratingList(searchResultList);
+
+                map.put("isLikeds",isLikedList);
+                map.put("scoreList",scoreList);
+
+                System.out.println(isLikedList);
+                System.out.println("scoreList");
+                res = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+            } catch (Exception e){
+                e.printStackTrace();
+                res = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return res;
+    }
 }

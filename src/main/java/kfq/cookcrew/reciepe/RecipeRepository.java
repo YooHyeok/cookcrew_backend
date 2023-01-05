@@ -1,5 +1,7 @@
 package kfq.cookcrew.reciepe;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -41,6 +43,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
 
     @Query("SELECT r FROM Recipe r WHERE r.rno=:rno")
     public List<Map<String,Recipe>> findMyLike(@Param("rno") Integer rno);
+
+    @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title%") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
+    Page<Recipe> searchByTitleLike(@Param("title") String title, PageRequest pageRequest);
 
 
 }

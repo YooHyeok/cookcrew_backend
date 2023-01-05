@@ -129,22 +129,7 @@ public class DietController extends BaseController {
         }
         return result;
     }
-    @GetMapping("/recipeSearch")
-    public ResponseEntity<List<Recipe>> recipeSearchList(String param) {
-        System.out.println(param);
-        ResponseEntity <List<Recipe>> result = null;
-        try {
-            List<Recipe> recipeSearchList = recipeService.searchByTitleLike(param);
-//            for(Recipe recipe : recipeSearchList) {
-//                LOGGER.info(recipe.toString());
-//            }
-            result = new ResponseEntity<>(recipeSearchList, HttpStatus.OK);
-        }catch (Exception e) {
-            result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        System.out.println(result);
-        return result;
-    }
+
 
     @DeleteMapping("/dietDelete")
     public ResponseEntity<String> dietDelete(@RequestBody Map<String, String> param) {

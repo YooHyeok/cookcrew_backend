@@ -65,7 +65,6 @@ public class RecipeDBController {
                     JsonObject item = itemArray.get(i).getAsJsonObject();
                     String recipeName = item.get("RCP_NM").getAsString(); // 메뉴명
                     String recipePat2 = item.get("RCP_PAT2").getAsString(); // 요리 종류
-                    // String을 float형태로 parse해줘야함.
 
                     String infoWgt1 = item.get("INFO_WGT").getAsString(); // 중량 (1인분)
                     String infoEng1 = item.get("INFO_ENG").getAsString(); // 열량
@@ -137,7 +136,7 @@ public class RecipeDBController {
 //    					manual06+"<br><br><br><br><br>";
                     Date regDate = new Date(System.currentTimeMillis());
 
-                    recipeRepository.save(new Recipe(null,"조리식품의 레시피 DB",recipeName,wholeRecipe,0,true,new Date(System.currentTimeMillis()),null,infoEng,attFileNoMain1,null,mat,null,0d));
+                    recipeRepository.save(new Recipe(null,"식약처 조리식품의 레시피 DB",recipeName,wholeRecipe,0,true,new Date(System.currentTimeMillis()),null,infoEng,attFileNoMain1,null,mat,null,0d));
                     //System.out.println(wholeRecipe1);
                     //System.out.println(attFileNoMain1);
                     //System.out.println(numInfo);

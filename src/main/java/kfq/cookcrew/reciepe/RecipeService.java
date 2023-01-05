@@ -51,13 +51,13 @@ public class RecipeService {
         r.setEnabled(true);
         String filename = null;
 
+        final String PATH = "C:/cookcrew_temp/recipe_thumbnail/";
         if (file != null && !file.isEmpty()) {
-            String path = "C:/cookcrew_temp/recipe_thumbnail/";
             filename = file.getOriginalFilename();
-            File dFile = new File(path + filename);
+            File dFile = new File(PATH + filename);
             file.transferTo(dFile);
         }
-        r.setThumbPath(filename);
+        r.setThumbPath("/img/"+filename);
         r.setKcal(kcal);
         Recipe save = recipeRepository.save(r);
 //        System.out.println("##############"+save+"##############");
@@ -155,8 +155,17 @@ public class RecipeService {
                 Sort.by(Sort.Direction.DESC,"cnt"));
         Page<Recipe> pages = recipeRepository.findAll(pageRequest);
         int maxPage = pages.getTotalPages();
-        int startPage = pageInfo.getCurPage()/10*10+1;  //1, 11, 21, 31...
-        int endPage = startPage+10 -1;	//10, 20, 30, 40
+        int curPage = pageInfo.getCurPage();
+        int startPage = 0;
+        int endPage = 0;
+        if (curPage %10 ==0){
+            startPage = pageInfo.getCurPage()/10*10-9;
+            endPage = curPage;	//10, 20, 30, 40
+        }else {
+            startPage = pageInfo.getCurPage()/10*10+1;
+            endPage = startPage+10 -1;	//10, 20, 30, 40
+        }
+        //1, 11, 21, 31...
         if(endPage>maxPage) endPage = maxPage;
 
         pageInfo.setAllPage(maxPage);
@@ -229,5 +238,32 @@ public class RecipeService {
 
 
         return mylikelist;
+    }
+
+    public List<Recipe> searchResultPage(PageInfo pageInfo, String keyword) throws Exception {
+        PageRequest pageRequest = PageRequest.of(pageInfo.getCurPage()-1, 12,
+                Sort.by(Sort.Direction.DESC,"rno"));
+        Page<Recipe> pages = recipeRepository.searchByTitleLike(keyword,pageRequest);
+        int maxPage = pages.getTotalPages();
+        int curPage = pageInfo.getCurPage();
+        System.out.println(curPage);
+        int startPage = 0;
+        int endPage = 0;
+        if (curPage %10 ==0){
+            startPage = pageInfo.getCurPage()/10*10-9;
+            endPage = curPage;	//10, 20, 30, 40
+        }else {
+            startPage = pageInfo.getCurPage()/10*10+1;
+            endPage = startPage+10 -1;	//10, 20, 30, 40
+        }
+        //1, 11, 21, 31...
+        if(endPage>maxPage) endPage = maxPage;
+//        System.out.println("page"+(pageInfo.getCurPage()));
+
+        pageInfo.setAllPage(maxPage);
+        pageInfo.setStartPage(startPage);
+        pageInfo.setEndPage(endPage);
+
+        return pages.getContent();
     }
 }
