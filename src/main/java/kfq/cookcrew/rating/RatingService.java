@@ -12,12 +12,12 @@ public class RatingService {
     RatingRepository ratingRepository;
 
     //별점 등록
-    public void ratingReg(String id, Integer ratingValue, Integer rNo) throws Exception{
+    public void ratingReg(String userId, Integer ratingValue, Integer rNo) throws Exception{
         Rating r = new Rating();
         r.setRatingValue(ratingValue);
-        r.setUserId(id);
+        r.setUserId(userId);
         r.setRno(rNo);
-        Optional<Rating> search_rating = ratingRepository.findByUserIdAndRno(id, rNo);
+        Optional<Rating> search_rating = ratingRepository.findByUserIdAndRno(userId, rNo);
         if(search_rating.isPresent()) {
             search_rating.get().setRatingValue(ratingValue);
             ratingRepository.save(search_rating.get());
