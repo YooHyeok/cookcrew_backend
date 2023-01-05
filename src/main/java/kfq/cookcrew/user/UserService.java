@@ -61,19 +61,6 @@ public class UserService implements UserDetailsService {
         return checkNn;
     }
 
-//    public User logincheck(User user) throws Exception{
-//        Optional<User> ouser = userRepository.findById(user.getId());
-//        User orgUser = ouser.get();
-//
-//        if(ouser.isEmpty()) {
-//            throw new Exception("회원 아이디 불일치");
-//        } if else(ouser.isPresent() && orgUser.getPassword().isEmpty() ){
-//            throw new Exception("비밀 번호 불일치");
-//        } else {
-//            return orgUser;
-//        }
-//    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findById(username).get();
@@ -106,7 +93,7 @@ public class UserService implements UserDetailsService {
         orgUser.setAddrDetail(user.getAddrDetail());
         orgUser.setPostcode(user.getPostcode());
         orgUser.setEmail(user.getEmail());
-        if(file != null) {
+        if(file != null && !file.isEmpty()) {
             orgUser.setThumbnail(file.getBytes());
             orgUser.setFilename(file.getOriginalFilename());
         }

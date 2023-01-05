@@ -107,6 +107,7 @@ public class UserController extends BaseController {
     public ResponseEntity<Map<String, String>> login(@RequestParam("id") String id,
                                                      @RequestParam("password") String password,
                                                      HttpServletRequest request){
+
         System.out.println(id);
         System.out.println(password);
 
