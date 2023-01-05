@@ -1,4 +1,4 @@
-package kfq.cookcrew.reciepe;
+package kfq.cookcrew.reciepe.like;
 
 import kfq.cookcrew.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;

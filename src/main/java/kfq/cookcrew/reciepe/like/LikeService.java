@@ -1,9 +1,9 @@
-package kfq.cookcrew.reciepe;
+package kfq.cookcrew.reciepe.like;
 
+import kfq.cookcrew.reciepe.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.annotation.WebFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +12,6 @@ import java.util.Optional;
 public class LikeService {
     @Autowired
     LikeRepository likeRepository;
-
-    public void saveLike(Integer rno, String userId, Boolean isliked) throws Exception{
-        likeRepository.save(new Like(rno, userId));
-    }
 
     public void saveLike(Like like) throws Exception{
         likeRepository.save(like);
@@ -30,15 +26,22 @@ public class LikeService {
     }
 
     public void toggleLike(Integer rno, String userId) throws Exception{
-        LikeService likeService = new LikeService();
         LikeID likeID = new LikeID(rno,userId);
-        Optional<Like> like = likeRepository.findById(likeID);
+        Optional<Like> like = likeRepository.findLike(userId, rno);
         if(like.isEmpty()){
             likeRepository.save(new Like(rno, userId));
         } else {
             likeRepository.delete(like.get());
         }
+    }
 
+    public Boolean isLikePresent(Integer rno, String userId) throws Exception {
+        Optional<Like> like = likeRepository.findLike(userId, rno);
+        if (like.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public List<Boolean> isLikedList(List<Recipe> recipes, String userId) throws Exception {
