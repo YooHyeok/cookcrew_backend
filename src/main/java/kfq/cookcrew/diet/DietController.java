@@ -169,7 +169,6 @@ public class DietController extends BaseController {
         System.out.println(result);
         return result;
     }
-
     /**
      * 식단 삭제 API
      * @param param

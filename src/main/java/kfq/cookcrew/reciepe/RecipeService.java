@@ -34,7 +34,7 @@ public class RecipeService {
     //레시피 작성
 
     public void rcpReg( String userId,String title, String sTitle, String mat, String source, Double kcal, String toastHtml, String toastMarkdown,
-                       MultipartFile file)
+                        MultipartFile file)
             throws Exception {
         Recipe r = new Recipe();
 //        System.out.println(r);
@@ -132,13 +132,13 @@ public class RecipeService {
         int startPage = 0;
         int endPage = 0;
         if (curPage %10 ==0){
-             startPage = pageInfo.getCurPage()/10*10-9;
-             endPage = curPage;	//10, 20, 30, 40
+            startPage = pageInfo.getCurPage()/10*10-9;
+            endPage = curPage;   //10, 20, 30, 40
         }else {
             startPage = pageInfo.getCurPage()/10*10+1;
-            endPage = startPage+10 -1;	//10, 20, 30, 40
+            endPage = startPage+10 -1;   //10, 20, 30, 40
         }
-          //1, 11, 21, 31...
+        //1, 11, 21, 31...
         if(endPage>maxPage) endPage = maxPage;
 //        System.out.println("page"+(pageInfo.getCurPage()));
 
@@ -156,7 +156,7 @@ public class RecipeService {
         Page<Recipe> pages = recipeRepository.findAll(pageRequest);
         int maxPage = pages.getTotalPages();
         int startPage = pageInfo.getCurPage()/10*10+1;  //1, 11, 21, 31...
-        int endPage = startPage+10 -1;	//10, 20, 30, 40
+        int endPage = startPage+10 -1;   //10, 20, 30, 40
         if(endPage>maxPage) endPage = maxPage;
 
         pageInfo.setAllPage(maxPage);
@@ -168,7 +168,7 @@ public class RecipeService {
 
     public void deleteRecipe(Integer rNo) throws Exception{
         recipeRepository.deleteByRno(rNo);
-        }
+    }
     public List<Recipe> myRecipe(String userId) throws Exception {
         List<Recipe> recipe = recipeRepository.findMyRecipe(userId);
 
@@ -189,10 +189,10 @@ public class RecipeService {
         int endPage = 0;
         if (curPage %10 ==0){
             startPage = pageInfo.getCurPage()/10*10-9;
-            endPage = curPage;	//10, 20, 30, 40
+            endPage = curPage;   //10, 20, 30, 40
         }else {
             startPage = pageInfo.getCurPage()/10*10+1;
-            endPage = startPage+10 -1;	//10, 20, 30, 40
+            endPage = startPage+10 -1;   //10, 20, 30, 40
         }
         //1, 11, 21, 31...
         if(endPage>maxPage) endPage = maxPage;

@@ -1,5 +1,7 @@
 package kfq.cookcrew.reciepe;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
-//    List<Recipe> findByTitleContaining(String title);
+    //    List<Recipe> findByTitleContaining(String title);
 //    List<Recipe> findByTitleContains(String title);
 //    List<Recipe> findByTitleIsContaining(String title);
 //    List<Recipe> findByTitleLike(String title);
@@ -41,9 +43,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     public List<Recipe> findMyRecipe(@Param("userId") String userId);
 
     @Query(value = "SELECT rno" +
-                    "FROM like_list" +
-                    "WHERE userId=:userId"
-                ,nativeQuery = true)
+            "FROM like_list" +
+            "WHERE userId=:userId"
+            ,nativeQuery = true)
     public List<Integer> myLike(@Param("userId") String userId);
 
     @Query("SELECT r FROM Recipe r WHERE r.rno=:rno")
@@ -65,4 +67,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
             "FROM recipe rep " +
             "WHERE rep.reg_id =:userId ORDER BY rep.rno DESC", nativeQuery = true)
     List<Map<String,Object>> findByUserId(@Param("userId") String id);
+    @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title%") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
+    Page<Recipe> searchByKeyword(@Param("title") String title, PageRequest pageRequest);
+    @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title%") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
+    List<Recipe> searchByKeyword(@Param("title") String title);
 }
