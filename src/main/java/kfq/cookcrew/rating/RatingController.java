@@ -20,10 +20,10 @@ public class RatingController {
 
     //별점 등록
     @PostMapping("/ratingreg")
-    public ResponseEntity<String> ratingReg(String id, Integer ratingValue, Integer rNo) {
+    public ResponseEntity<String> ratingReg(String userId, Integer ratingValue, Integer rNo) {
         ResponseEntity<String> res = null;
         try {
-            ratingService.ratingReg(id, ratingValue, rNo);
+            ratingService.ratingReg(userId, ratingValue, rNo);
             res = new ResponseEntity<String>("별점 저장성공", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

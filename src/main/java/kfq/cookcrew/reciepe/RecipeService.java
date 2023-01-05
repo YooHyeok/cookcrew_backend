@@ -170,15 +170,15 @@ public class RecipeService {
     public void deleteRecipe(Integer rNo) throws Exception{
         recipeRepository.deleteByRno(rNo);
         }
-    public List<Recipe> myRecipe(String userId) throws Exception {
-        List<Recipe> recipe = recipeRepository.findMyRecipe(userId);
-
-        if (recipe == null) {
-            throw new Exception("레시피 정보 없음");
-        }
-//        System.out.println("왓다팍  :"+recipe);
-        return recipe;
-    }
+//    public List<Recipe> myRecipe(String userId) throws Exception {
+//        List<Recipe> recipe = recipeRepository.findMyRecipe(userId);
+//
+//        if (recipe == null) {
+//            throw new Exception("레시피 정보 없음");
+//        }
+////        System.out.println("왓다팍  :"+recipe);
+//        return recipe;
+//    }
 //    public List<Map<String,Recipe>> myLikelist(String userId) throws Exception {
 //        List<Integer> rnoList = recipeRepository.myLike(userId);
 //        List<Map<String,Recipe>> olikelist = null;
@@ -200,35 +200,35 @@ public class RecipeService {
 ////        return res;
 //        return olikelist;
 //    }
-    public List<Recipe> likelist(String userId) throws Exception{
-        System.out.println("#########userID########"+userId);
-        List<Like> findRnoList = likeRepository.findByUserId(userId);
-//        System.out.println("############findRnoList############"+findRnoList);
-        List<Recipe> mylikelist = new ArrayList<>();
-        if(findRnoList == null) {
-            throw new Exception("찜목록 없음");
-        }
-        else {
-
-            for(Like like : findRnoList) {
-                System.out.println("############findRnoList############"+like.toString());
-                Optional<Recipe> recipe = recipeRepository.findById(like.getRno());
-                if(recipe.isPresent()) {
-                    mylikelist.add(recipe.get());
-
-                }
-                else {
-                    throw new Exception("mylikelist에 add하지 못함");
-                }
-                System.out.println("####mylikelist###"+recipe.toString());
-            }
-
-            if(mylikelist == null) {
-                throw new Exception("");
-            }
-        }
-
-
-        return mylikelist;
-    }
+//    public List<Recipe> likelist(String userId) throws Exception{
+//        System.out.println("#########userID########"+userId);
+//        List<Like> findRnoList = likeRepository.findByUserId(userId);
+////        System.out.println("############findRnoList############"+findRnoList);
+//        List<Recipe> mylikelist = new ArrayList<>();
+//        if(findRnoList == null) {
+//            throw new Exception("찜목록 없음");
+//        }
+//        else {
+//
+//            for(Like like : findRnoList) {
+//                System.out.println("############findRnoList############"+like.toString());
+//                Optional<Recipe> recipe = recipeRepository.findById(like.getRno());
+//                if(recipe.isPresent()) {
+//                    mylikelist.add(recipe.get());
+//
+//                }
+//                else {
+//                    throw new Exception("mylikelist에 add하지 못함");
+//                }
+//                System.out.println("####mylikelist###"+recipe.toString());
+//            }
+//
+//            if(mylikelist == null) {
+//                throw new Exception("");
+//            }
+//        }
+//
+//
+//        return mylikelist;
+//    }
 }
