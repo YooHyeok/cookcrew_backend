@@ -1,6 +1,5 @@
 package kfq.cookcrew.reciepe;
 
-import kfq.cookcrew.reciepe.like.Like;
 import kfq.cookcrew.reciepe.like.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,8 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -28,7 +27,7 @@ public class RecipeService {
      * @param searchParam
      * @return
      */
-    public List<Recipe> searchByTitleLike(String searchParam) {
+    public List<Map<String, Object>> searchByTitleLike(String searchParam) {
         return recipeRepository.searchByTitleLike(searchParam);
     }
 
@@ -170,65 +169,44 @@ public class RecipeService {
     public void deleteRecipe(Integer rNo) throws Exception{
         recipeRepository.deleteByRno(rNo);
         }
-//    public List<Recipe> myRecipe(String userId) throws Exception {
-//        List<Recipe> recipe = recipeRepository.findMyRecipe(userId);
-//
-//        if (recipe == null) {
-//            throw new Exception("레시피 정보 없음");
-//        }
-////        System.out.println("왓다팍  :"+recipe);
-//        return recipe;
-//    }
-//    public List<Map<String,Recipe>> myLikelist(String userId) throws Exception {
-//        List<Integer> rnoList = recipeRepository.myLike(userId);
-//        List<Map<String,Recipe>> olikelist = null;
-//        if(rnoList.isEmpty()) {
-//            throw new Exception("좋아요 없음");
-//        }
-//        for(int i=0; i < rnoList.size();i++) {
-////            myList를 통해 가져온 rno 리스트를 가지고 하나씩 레시피 조회
-//            Integer rno = rnoList.get(i);
-//            olikelist = recipeRepository.findMyLike(rno);
-//        }
-//        for (Map<String,Recipe> data : olikelist) {
-//            for(String key : data.keySet()) {
-//                String value = data.get(key).toString();
-//                System.out.println("{" + key + " : " + value + "}");
-//            }
-//        }
-////        res = olikelist;
-////        return res;
-//        return olikelist;
-//    }
-//    public List<Recipe> likelist(String userId) throws Exception{
-//        System.out.println("#########userID########"+userId);
-//        List<Like> findRnoList = likeRepository.findByUserId(userId);
-////        System.out.println("############findRnoList############"+findRnoList);
-//        List<Recipe> mylikelist = new ArrayList<>();
-//        if(findRnoList == null) {
-//            throw new Exception("찜목록 없음");
-//        }
-//        else {
-//
-//            for(Like like : findRnoList) {
-//                System.out.println("############findRnoList############"+like.toString());
-//                Optional<Recipe> recipe = recipeRepository.findById(like.getRno());
-//                if(recipe.isPresent()) {
-//                    mylikelist.add(recipe.get());
-//
-//                }
-//                else {
-//                    throw new Exception("mylikelist에 add하지 못함");
-//                }
-//                System.out.println("####mylikelist###"+recipe.toString());
-//            }
-//
-//            if(mylikelist == null) {
-//                throw new Exception("");
-//            }
-//        }
-//
-//
-//        return mylikelist;
-//    }
+    public List<Recipe> myRecipe(String userId) throws Exception {
+        List<Recipe> recipe = recipeRepository.findMyRecipe(userId);
+
+        if (recipe == null) {
+            throw new Exception("레시피 정보 없음");
+        }
+//        System.out.println("왓다팍  :"+recipe);
+        return recipe;
+    }
+    public List<Map<String, Object>> likelist(String userId, PageInfo pageInfo) throws Exception{
+        PageRequest pageRequest = PageRequest.of(pageInfo.getCurPage()-1, 12,
+                Sort.by(Sort.Direction.DESC,"rno"));
+        Page<Map<String,Object>> pages = likeRepository.findByUserId(userId, pageRequest);
+        int maxPage = pages.getTotalPages();
+        int curPage = pageInfo.getCurPage();
+        System.out.println(curPage);
+        int startPage = 0;
+        int endPage = 0;
+        if (curPage %10 ==0){
+            startPage = pageInfo.getCurPage()/10*10-9;
+            endPage = curPage;	//10, 20, 30, 40
+        }else {
+            startPage = pageInfo.getCurPage()/10*10+1;
+            endPage = startPage+10 -1;	//10, 20, 30, 40
+        }
+        //1, 11, 21, 31...
+        if(endPage>maxPage) endPage = maxPage;
+//        System.out.println("page"+(pageInfo.getCurPage()));
+
+        pageInfo.setAllPage(maxPage);
+        pageInfo.setStartPage(startPage);
+        pageInfo.setEndPage(endPage);
+        System.out.println(pages.getContent());
+        return pages.getContent();
+//        return null;
+    }
+
+    public List<Map<String,Object>> myrecipeList(String id) {
+        return recipeRepository.findByUserId(id);
+    }
 }

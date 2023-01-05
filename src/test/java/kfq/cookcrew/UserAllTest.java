@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 package kfq.cookcrew;
 
-import kfq.cookcrew.user.User;
 import kfq.cookcrew.user.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,9 +38,7 @@ public class UserAllTest {
 	}
 
 
-
-=======
-//package kfq.cookcrew;
+	//package kfq.cookcrew;
 //
 //import kfq.cookcrew.user.User;
 //import kfq.cookcrew.user.UserService;
@@ -107,7 +101,6 @@ public class UserAllTest {
 ////		);
 ////	}
 //
->>>>>>> JoHB94
 //	@Test
 //	@DisplayName("회원가입 패스워드 암호화 테스트!")
 //	void userJoinTest() {
@@ -127,7 +120,6 @@ public class UserAllTest {
 //				)
 //		);
 //	}
-<<<<<<< HEAD
 
 //	@Test
 //	@DisplayName("회원가입 패스워드 암호화 테스트!")
@@ -147,10 +139,5 @@ public class UserAllTest {
 //						, null
 //				)
 //		);
-	}
+}
 
-
-=======
-//>>>>>>> webdevyoo
-//}
->>>>>>> JoHB94

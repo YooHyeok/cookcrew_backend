@@ -22,7 +22,7 @@ public class Challenge {
     @EmbeddedId //복합키
     private ChallengeId challengeId;
 
-    @Column
+    @Column(columnDefinition = "Boolean default false constraint validate check(validate in(true,false))")
     private Boolean validate;
 
 }

@@ -1,6 +1,7 @@
 package kfq.cookcrew;
 
 import kfq.cookcrew.common.BaseController;
+import kfq.cookcrew.reciepe.PageInfo;
 import kfq.cookcrew.reciepe.like.Like;
 import kfq.cookcrew.reciepe.like.LikeID;
 import kfq.cookcrew.reciepe.like.LikeRepository;
@@ -10,9 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
@@ -21,10 +25,6 @@ import java.util.Optional;
 class LikeSaveTests extends BaseController{
     @Autowired
     LikeRepository likeRepository;
-<<<<<<< HEAD
-=======
-
->>>>>>> webdevyoo
     @Autowired
     LikeService likeService;
     @Test
@@ -51,8 +51,8 @@ class LikeSaveTests extends BaseController{
         likeRepository.save(like);
     }
     public void userlike() {
-        List<Like> recipeList = likeRepository.findByUserId("JoHB94");
-        System.out.println("#########test result##########" + recipeList);
+//        List<Like> recipeList = likeRepository.findByUserId("JoHB94");
+//        System.out.println("#########test result##########" + recipeList);
     }
 
     @Test
@@ -83,6 +83,36 @@ class LikeSaveTests extends BaseController{
         } else {
             System.out.println(like.get());
         }
+    }
+
+    @Test
+    public void likeRecipeList() {
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setCurPage(1);
+        PageRequest pageRequest = PageRequest.of(pageInfo.getCurPage()-1, 12,
+                Sort.by(Sort.Direction.DESC,"rno"));
+
+        Page<Map<String,Object>> pages = likeRepository.findByUserId("yjk7454", pageRequest);
+        int maxPage = pages.getTotalPages();
+        int curPage = pageInfo.getCurPage();
+        int startPage = 0;
+        int endPage = 0;
+        if (curPage % 10 == 0) {
+            startPage = pageInfo.getCurPage()/10*10-9;
+            endPage = curPage;	//10, 20, 30, 40
+        }else {
+            startPage = pageInfo.getCurPage()/10*10+1;
+            endPage = startPage+10 -1;	//10, 20, 30, 40
+        }
+        //1, 11, 21, 31...
+        if(endPage>maxPage) endPage = maxPage;
+//        System.out.println("page"+(pageInfo.getCurPage()));
+
+        pageInfo.setAllPage(maxPage);
+        pageInfo.setStartPage(startPage);
+        pageInfo.setEndPage(endPage);
+
+        System.out.println(pages.getContent());
     }
 
 }

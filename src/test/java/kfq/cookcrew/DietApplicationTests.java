@@ -80,8 +80,6 @@ class DietApplicationTests extends BaseController {
 				,"user"
 				, Date.valueOf("2022-12-15")
 				,'2'
-				,null
-				, 400
 				,recipe);
 		dietRepository.save(diet);
 	}
@@ -113,8 +111,6 @@ class DietApplicationTests extends BaseController {
 								,"user"
 								, Date.valueOf("2022-12-15")
 								,'2'
-								,null
-								, 400
 								,recipe);
 			dietRepository.save(diet);
 		}
@@ -131,15 +127,8 @@ class DietApplicationTests extends BaseController {
 //		for(Recipe searchRecipe:byTitleLikeList) {
 //			LOGGER.info("검색 결과 : {}",searchRecipe);
 //		}
-		List<Recipe> byTitleLikeList = recipeRepository.searchByTitleLike(resultParam);
+		List<Map<String, Object>> byTitleLikeList = recipeRepository.searchByTitleLike(resultParam);
 		System.out.println(byTitleLikeList);
-		for(Recipe searchRecipe: byTitleLikeList) {
-//			LOGGER.info("검색 결과 : {}, {}",searchRecipe.getRno(),searchRecipe.getTitle());
-			System.out.println(searchRecipe);
-		}
-
-
-
 	}
 }
 

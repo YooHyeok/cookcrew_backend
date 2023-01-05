@@ -14,8 +14,17 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
 //    List<Recipe> findByTitleContains(String title);
 //    List<Recipe> findByTitleIsContaining(String title);
 //    List<Recipe> findByTitleLike(String title);
-    @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title% ORDER BY r.rno DESC") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
-    List<Recipe> searchByTitleLike(@Param("title") String title);
+    @Query(value = "SELECT " +
+            "rep.rno" +
+            ", rep.reg_id" +
+            ", rep.title" +
+            ", rep.cnt" +
+            ", rep.kcal" +
+            ", (select count(rtg.user_id) from rating rtg where rno = rep.rno) as score " +
+            ", (select count(ll.user_id) from like_list ll where ll.rno = rep.rno) as likeValue " +
+            "FROM recipe rep " +
+            "WHERE rep.title LIKE %:title% ORDER BY rep.rno DESC", nativeQuery = true) // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
+    List<Map<String, Object>> searchByTitleLike(@Param("title") String title);
 
 //    @Query(value = "update recipe r set r.cnt = r.cnt+1 where rno=:rNo")
 //    public Integer incrementCnt(@Param("rno") Integer rNo);
@@ -40,5 +49,20 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     @Query("SELECT r FROM Recipe r WHERE r.rno=:rno")
     public List<Map<String,Recipe>> findMyLike(@Param("rno") Integer rno);
 
-
+    /**
+     * 나의 레시피 조회
+     * @param id
+     * @return
+     */
+    @Query(value = "SELECT " +
+            "rep.rno" +
+            ", rep.title" +
+            ", rep.reg_date" +
+            ", rep.kcal" +
+            ", rep.cnt" +
+            ", (select count(rtg.user_id) from rating rtg where rno = rep.rno) as score " +
+            ", (select count(ll.user_id) from like_list ll where ll.rno = rep.rno) as likeValue " +
+            "FROM recipe rep " +
+            "WHERE rep.reg_id =:userId ORDER BY rep.rno DESC", nativeQuery = true)
+    List<Map<String,Object>> findByUserId(@Param("userId") String id);
 }
