@@ -82,21 +82,32 @@ public class UserService implements UserDetailsService {
 
     public User myInfoMod(User user, MultipartFile file) throws Exception {
         String filename = null;
+
         Optional<User> ouser = userRepository.findById(user.getId());
         if(ouser.isEmpty()) {
             throw new Exception("회원정보 오류");
         }
         User orgUser = ouser.get();
         orgUser.setNickname(user.getNickname());
-        orgUser.setAddress((user.getAddress()));
+        orgUser.setAddress(user.getAddress());
         orgUser.setAddrDetail(user.getAddrDetail());
-        orgUser.setPostcode((user.getPostcode()));
-        orgUser.setEmail((user.getEmail()));
-        if(!file.isEmpty()) {
+        orgUser.setPostcode(user.getPostcode());
+        orgUser.setEmail(user.getEmail());
+        if(file != null && !file.isEmpty()) {
             orgUser.setThumbnail(file.getBytes());
+            orgUser.setFilename(file.getOriginalFilename());
         }
+
         userRepository.save(orgUser);
+
+
         return orgUser;
+    }
+
+    public byte[] profileThumbnail(String id) throws Exception {
+        Optional<User> ouser = userRepository.findById(id);
+        if(ouser.isEmpty()) throw new Exception("아이디 오류");
+        return ouser.get().getThumbnail();
     }
 }
 

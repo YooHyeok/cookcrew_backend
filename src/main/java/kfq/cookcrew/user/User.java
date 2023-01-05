@@ -55,7 +55,7 @@ public class User implements UserDetails{
     private byte[] thumbnail;
 
     @Column
-    private String Filename;
+    private String filename;
 
 
     @Override
