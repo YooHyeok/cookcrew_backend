@@ -71,4 +71,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     Page<Recipe> searchByKeyword(@Param("title") String title, PageRequest pageRequest);
     @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title%") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
     List<Recipe> searchByKeyword(@Param("title") String title);
+
+
 }
