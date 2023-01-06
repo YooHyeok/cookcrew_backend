@@ -95,12 +95,14 @@ public class RecipeService {
     //페이징처리 추가 필요
     public List<Recipe> recipeList() throws Exception {
         List<Recipe> recipes = recipeRepository.findAll(Sort.by(Sort.Direction.DESC, "rno"));
-        return recipes;
+        List<Recipe> enabled = recipeRepository.findEnabledRno(recipes);
+        return enabled;
     }
 
     public List<Recipe> popRecipes() throws  Exception {
         List<Recipe> popRecipes = recipeRepository.findAll(Sort.by(Sort.Direction.DESC, "cnt"));
-        return popRecipes;
+        List<Recipe> enabled = recipeRepository.findEnabledCnt(popRecipes);
+        return enabled;
     }
 
     public Integer updateCnt(Integer rNo) throws Exception {
@@ -125,7 +127,7 @@ public class RecipeService {
     public List<Recipe> recipePage(PageInfo pageInfo) throws Exception {
         PageRequest pageRequest = PageRequest.of(pageInfo.getCurPage()-1, 12,
                 Sort.by(Sort.Direction.DESC,"rno"));
-        Page<Recipe> pages = recipeRepository.findAll(pageRequest);
+        Page<Recipe> pages = recipeRepository.findEnabled(pageRequest);
         int maxPage = pages.getTotalPages();
         int curPage = pageInfo.getCurPage();
         System.out.println(curPage);
@@ -153,7 +155,7 @@ public class RecipeService {
     public List<Recipe> popRecipePage(PageInfo pageInfo) throws Exception {
         PageRequest pageRequest = PageRequest.of(pageInfo.getCurPage()-1, 12,
                 Sort.by(Sort.Direction.DESC,"cnt"));
-        Page<Recipe> pages = recipeRepository.findAll(pageRequest);
+        Page<Recipe> pages = recipeRepository.findEnabled(pageRequest);
         int maxPage = pages.getTotalPages();
         int curPage = pageInfo.getCurPage();
         int startPage = 0;
@@ -247,4 +249,5 @@ public class RecipeService {
     public List<Recipe> searchByKeyword(String searchParam) {
         return recipeRepository.searchByKeyword(searchParam);
     }
+
 }
