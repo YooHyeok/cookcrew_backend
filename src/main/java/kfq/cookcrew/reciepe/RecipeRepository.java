@@ -2,7 +2,6 @@ package kfq.cookcrew.reciepe;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,7 +25,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
             ", (select count(rtg.user_id) from rating rtg where rno = rep.rno) as score " +
             ", (select count(ll.user_id) from like_list ll where ll.rno = rep.rno) as likeValue " +
             "FROM recipe rep " +
-            "WHERE rep.title LIKE %:title% ORDER BY rep.rno DESC", nativeQuery = true) // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
+            "WHERE rep.title LIKE %:title% AND rep.enabled=true ORDER BY rep.rno DESC", nativeQuery = true) // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
     List<Map<String, Object>> searchByTitleLike(@Param("title") String title);
 
 //    @Query(value = "update recipe r set r.cnt = r.cnt+1 where rno=:rNo")
@@ -66,7 +65,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
             ", (select count(rtg.user_id) from rating rtg where rno = rep.rno) as score " +
             ", (select count(ll.user_id) from like_list ll where ll.rno = rep.rno) as likeValue " +
             "FROM recipe rep " +
-            "WHERE rep.reg_id =:userId ORDER BY rep.rno DESC", nativeQuery = true)
+            "WHERE rep.reg_id =:userId AND rep.enabled = true ORDER BY rep.rno DESC", nativeQuery = true)
     List<Map<String,Object>> findByUserId(@Param("userId") String id);
     @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title%") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
     Page<Recipe> searchByKeyword(@Param("title") String title, PageRequest pageRequest);

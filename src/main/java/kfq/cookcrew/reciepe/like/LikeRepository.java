@@ -20,7 +20,7 @@ public interface LikeRepository extends JpaRepository<Like, LikeID> {
             " from like_list l " +
             "left outer join recipe r " +
             "ON l.rno = r.rno " +
-            "WHERE l.user_id =:userId"
+            "WHERE l.user_id =:userId AND r.enabled = true "
             ,nativeQuery = true)
     public Page<Map<String,Object>> findByUserId(@Param("userId") String userId, PageRequest pageRequest);
 
