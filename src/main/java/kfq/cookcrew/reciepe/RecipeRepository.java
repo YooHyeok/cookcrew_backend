@@ -67,9 +67,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
             "FROM recipe rep " +
             "WHERE rep.reg_id =:userId AND rep.enabled = true ORDER BY rep.rno DESC", nativeQuery = true)
     List<Map<String,Object>> findByUserId(@Param("userId") String id);
-    @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title%") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
+    @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title% and enabled = true") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
     Page<Recipe> searchByKeyword(@Param("title") String title, PageRequest pageRequest);
-    @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title%") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
+    @Query("SELECT r FROM Recipe r WHERE r.title LIKE %:title% and enabled = true") // 쿼리 테이블명은 Entity클래스명과 동일한 첫글자 대문자
     List<Recipe> searchByKeyword(@Param("title") String title);
 
     @Query("select r from Recipe r where enabled = true")

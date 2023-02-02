@@ -1,4 +1,4 @@
-package kfq.cookcrew.reciepe;
+package kfq.cookcrew.common.page;
 
 import lombok.*;
 @Getter

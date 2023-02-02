@@ -1,7 +1,7 @@
 package kfq.cookcrew.diet;
 
 import kfq.cookcrew.common.BaseController;
-import kfq.cookcrew.common.util.DateUtill;
+import kfq.cookcrew.common.util.DateUtil;
 import kfq.cookcrew.diet.targetAchieve.TargetAchieveRepository;
 import kfq.cookcrew.reciepe.Recipe;
 import kfq.cookcrew.reciepe.RecipeService;
@@ -47,8 +47,8 @@ public class DietController extends BaseController {
         try {
             List<Map<String,Object>> dietList = dietService.findDistinctDietDate(userId);
             Date today = new Date(System.currentTimeMillis());
-            Date startDate = DateUtill.SundayToSqlDate(String.valueOf(today));
-            Date endDate = DateUtill.SaturdayToSqlDate(String.valueOf(today));
+            Date startDate = DateUtil.SundayToSqlDate(String.valueOf(today));
+            Date endDate = DateUtil.SaturdayToSqlDate(String.valueOf(today));
             Map<String, Object> map = new HashMap<>();
             map.put("dietList",dietList);
             map.put("startDate",startDate);

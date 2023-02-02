@@ -9,7 +9,7 @@ import java.util.Calendar;
  * 일 월 화 오늘 목 금 토
  * 일 월 화 수 오늘 금 토
  */
-public class DateUtill {
+public class DateUtil {
 
     /**
      * 반환타입 : Sql.Date<br/>

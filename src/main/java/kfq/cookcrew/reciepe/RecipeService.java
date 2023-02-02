@@ -1,5 +1,6 @@
 package kfq.cookcrew.reciepe;
 
+import kfq.cookcrew.common.page.PageInfo;
 import kfq.cookcrew.reciepe.like.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -133,7 +134,7 @@ public class RecipeService {
         System.out.println(curPage);
         int startPage = 0;
         int endPage = 0;
-        if (curPage %10 ==0){
+        if (curPage % 10 == 0){ //현재 페이지가 10으로 나눴을때 나머지가 0인 경우는 10의 배수이기 때문.
             startPage = pageInfo.getCurPage()/10*10-9;
             endPage = curPage;   //10, 20, 30, 40
         }else {

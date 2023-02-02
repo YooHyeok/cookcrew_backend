@@ -1,7 +1,7 @@
 package kfq.cookcrew;
 
 import kfq.cookcrew.common.BaseController;
-import kfq.cookcrew.reciepe.PageInfo;
+import kfq.cookcrew.common.page.PageInfo;
 import kfq.cookcrew.reciepe.like.Like;
 import kfq.cookcrew.reciepe.like.LikeID;
 import kfq.cookcrew.reciepe.like.LikeRepository;

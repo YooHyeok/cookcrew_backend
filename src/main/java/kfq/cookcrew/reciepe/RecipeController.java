@@ -1,6 +1,7 @@
 package kfq.cookcrew.reciepe;
 
 import kfq.cookcrew.common.BaseController;
+import kfq.cookcrew.common.page.PageInfo;
 import kfq.cookcrew.rating.RatingService;
 import kfq.cookcrew.reciepe.like.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -365,7 +366,8 @@ public class RecipeController extends BaseController {
             try {
                 PageInfo pageInfo = new PageInfo();
                 pageInfo.setCurPage(page);
-                List<Recipe> searchResultList = recipeService.searchByKeyword(keyword);
+//                List<Recipe> searchResultList = recipeService.searchByKeyword(keyword);
+                List<Recipe> searchResultList = recipeService.searchResultPage(pageInfo, keyword);
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("pageInfo",pageInfo);
                 map.put("recipes",searchResultList);

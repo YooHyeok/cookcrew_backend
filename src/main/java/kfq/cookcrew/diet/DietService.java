@@ -1,6 +1,6 @@
 package kfq.cookcrew.diet;
 
-import kfq.cookcrew.common.util.DateUtill;
+import kfq.cookcrew.common.util.DateUtil;
 import kfq.cookcrew.diet.targetAchieve.TargetAchieve;
 import kfq.cookcrew.diet.targetAchieve.TargetAchieveId;
 import kfq.cookcrew.diet.targetAchieve.TargetAchieveRepository;
@@ -67,8 +67,8 @@ public class DietService {
     @Transactional(readOnly = false)
     public void updateDietSave(String dietDate, Boolean achieve, Character mealDiv, Integer targetKcal) throws ParseException {
         // dietDate 날짜를 기준으로 이번주의 일요일, 토요일 값을 계산하는 로직 구현.
-        Date startDate = DateUtill.SundayToSqlDate(String.valueOf(dietDate));
-        Date endDate = DateUtill.SaturdayToSqlDate(String.valueOf(dietDate));
+        Date startDate = DateUtil.SundayToSqlDate(String.valueOf(dietDate));
+        Date endDate = DateUtil.SaturdayToSqlDate(String.valueOf(dietDate));
         dietRepository.updateDietSave(startDate, endDate, achieve, mealDiv, targetKcal);
     }
 

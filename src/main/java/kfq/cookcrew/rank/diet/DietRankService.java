@@ -1,6 +1,6 @@
 package kfq.cookcrew.rank.diet;
 
-import kfq.cookcrew.common.util.DateUtill;
+import kfq.cookcrew.common.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ public class DietRankService {
 
         // 등록일자 : 매주 일요일 로직 구현.
         Date today = new Date(System.currentTimeMillis()); // 등록일자(오늘)
-        Date regDate = DateUtill.SundayToSqlDate(String.valueOf(today));
+        Date regDate = DateUtil.SundayToSqlDate(String.valueOf(today));
         List<DietRank> dietRankList = null;
             dietRankList = dietRankRepository.findByRegDateAndSortAndAchieveRankLessThanEqual(regDate, sort, 3);
 //        if(CollectionUtils.isEmpty(dietRankList)) {
@@ -35,8 +35,8 @@ public class DietRankService {
 
     public void saveValidate(Boolean challenge, String userId) throws ParseException {
         Date today = new Date(System.currentTimeMillis());
-        Date startDate = DateUtill.SundayToSqlDate(String.valueOf(today));
-        Date endDate = DateUtill.SaturdayToSqlDate(String.valueOf(today));
+        Date startDate = DateUtil.SundayToSqlDate(String.valueOf(today));
+        Date endDate = DateUtil.SaturdayToSqlDate(String.valueOf(today));
         dietRankRepository.save(
                 new Challenge(
                         new ChallengeId(userId, startDate, endDate)
@@ -46,8 +46,8 @@ public class DietRankService {
     }
     public Challenge searchValidate(String userId) throws Exception {
         Date today = new Date(System.currentTimeMillis());
-        Date startDate = DateUtill.SundayToSqlDate(String.valueOf(today));
-        Date endDate = DateUtill.SaturdayToSqlDate(String.valueOf(today));
+        Date startDate = DateUtil.SundayToSqlDate(String.valueOf(today));
+        Date endDate = DateUtil.SaturdayToSqlDate(String.valueOf(today));
         Optional<Challenge> byId = dietRankRepository.findById(
                 new ChallengeId(userId, startDate, endDate));
             if(!byId.isPresent()) {
