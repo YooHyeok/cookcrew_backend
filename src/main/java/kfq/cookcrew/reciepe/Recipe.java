@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Map;
 
 /**
  * *****************************************************<p>
@@ -28,7 +27,7 @@ public class Recipe {
     private String regId; // 작성자 아이디
     @Column
     private String title; //레시피 제목
-    @Column
+    @Column(columnDefinition = "longtext")
     private String content; //레시피 내용
     @Column(columnDefinition = "int default 0") //default 0
     private Integer cnt; // 조회수
@@ -38,7 +37,7 @@ public class Recipe {
     private Date regDate; // 등록일자
     @Column
     private Date modDate; // 수정일자
-    @Column
+    @Column(columnDefinition = "int")
     private Double kcal; //칼로리
     @Column
     private String thumbPath; //썸네일경로

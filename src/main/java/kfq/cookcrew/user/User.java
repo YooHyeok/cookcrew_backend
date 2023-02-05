@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.sql.Blob;
 import java.sql.Date;
 import java.util.Collection;
 
@@ -50,7 +49,7 @@ public class User implements UserDetails{
     @Column
     private Date regDate;
 
-    @Column
+    @Column(columnDefinition = "mediumblob")
     @Nullable
     private byte[] thumbnail;
 
