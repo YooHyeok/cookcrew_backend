@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>kfq.cookcrew.diet.targetAchieve.TargetAchieveRepository</OriginalElement>
+  <nodes>
+    <node x="-276.4900468384076" y="541.320843091335">kfq.cookcrew.diet.targetAchieve.TargetAchieveId</node>
+    <node x="-305.4900468384076" y="297.32084309133495">kfq.cookcrew.diet.targetAchieve.TargetAchieve</node>
+    <node x="-9.25" y="581.0">kfq.cookcrew.diet.DietService</node>
+    <node x="708.8173302107728" y="405.5">kfq.cookcrew.diet.targetAchieve.TargetAchieveRepository</node>
+    <node x="462.6601288056206" y="631.884074941452">kfq.cookcrew.diet.DietController</node>
+    <node x="174.0" y="287.5">kfq.cookcrew.diet.DietRepository</node>
+    <node x="977.128805620609" y="326.4285714285715">kfq.cookcrew.diet.Diet</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="kfq.cookcrew.diet.DietController" target="kfq.cookcrew.diet.DietService" relationship="TO_ONE">
+      <point x="-126.0" y="-131.5" />
+      <point x="588.6601288056206" y="944.0" />
+      <point x="441.375" y="944.0" />
+      <point x="441.375" y="934.0" />
+      <point x="211.25" y="934.0" />
+      <point x="0.0" y="131.5" />
+    </edge>
+    <edge source="kfq.cookcrew.diet.targetAchieve.TargetAchieve" target="kfq.cookcrew.diet.targetAchieve.TargetAchieveId" relationship="TO_ONE">
+      <point x="-0.0" y="97.0" />
+      <point x="-0.0" y="-131.5" />
+    </edge>
+    <edge source="kfq.cookcrew.diet.DietService" target="kfq.cookcrew.diet.targetAchieve.TargetAchieveRepository" relationship="TO_ONE">
+      <point x="220.5" y="-0.0" />
+      <point x="431.75" y="601.4613583138173" />
+      <point x="635.0" y="601.4613583138173" />
+      <point x="635.0" y="420.0" />
+      <point x="107.5" y="-0.0" />
+    </edge>
+    <edge source="kfq.cookcrew.diet.DietController" target="kfq.cookcrew.diet.Diet" relationship="CREATE">
+      <point x="126.0" y="-131.5" />
+      <point x="840.6601288056206" y="944.0" />
+      <point x="1075.128805620609" y="944.0" />
+      <point x="0.0" y="200.5" />
+    </edge>
+    <edge source="kfq.cookcrew.diet.DietService" target="kfq.cookcrew.diet.DietRepository" relationship="TO_ONE">
+      <point x="110.25" y="-131.5" />
+      <point x="321.5" y="490.0" />
+      <point x="396.5" y="490.0" />
+      <point x="0.0" y="73.5" />
+    </edge>
+    <edge source="kfq.cookcrew.diet.DietService" target="kfq.cookcrew.diet.targetAchieve.TargetAchieve" relationship="CREATE">
+      <point x="-72.5" y="-131.5" />
+      <point x="138.75" y="380.25" />
+      <point x="-58.99004683840758" y="380.25" />
+      <point x="119.5" y="97.0" />
+    </edge>
+    <edge source="kfq.cookcrew.diet.DietController" target="kfq.cookcrew.diet.targetAchieve.TargetAchieveRepository" relationship="TO_ONE">
+      <point x="-0.0" y="-131.5" />
+      <point x="714.6601288056206" y="727.5" />
+      <point x="635.0" y="727.5" />
+      <point x="635.0" y="420.0" />
+      <point x="107.5" y="-0.0" />
+    </edge>
+    <edge source="kfq.cookcrew.diet.DietService" target="kfq.cookcrew.diet.targetAchieve.TargetAchieveId" relationship="CREATE">
+      <point x="-192.0" y="-131.5" />
+      <point x="19.25" y="536.75" />
+      <point x="-178.49004683840758" y="536.75" />
+      <point x="-0.0" y="131.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.657428791377983" showDependencies="true" x="429.0" y="634.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>kfq.cookcrew.common.security.JwtAuthenticationIntercepter</OriginalElement>
+  <nodes>
+    <node x="252.6428571428571" y="430.0">kfq.cookcrew.user.UserController</node>
+    <node x="753.6428571428571" y="533.5">kfq.cookcrew.common.security.JwtAuthenticationIntercepter</node>
+    <node x="830.1428571428571" y="-7.7129629629629335">kfq.cookcrew.common.security.SecurityConfig</node>
+    <node x="346.07142857142856" y="-15.0">kfq.cookcrew.user.UserRepository</node>
+    <node x="-121.0" y="-15.0">kfq.cookcrew.user.User</node>
+    <node x="224.0" y="115.0">kfq.cookcrew.user.UserService</node>
+    <node x="834.6428571428571" y="115.0">kfq.cookcrew.common.security.JwtTokenProvider</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="kfq.cookcrew.user.UserService" target="kfq.cookcrew.user.UserRepository" relationship="TO_ONE">
+      <point x="0.0" y="-131.5" />
+      <point x="358.5" y="89.0" />
+      <point x="462.07142857142856" y="89.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="kfq.cookcrew.user.UserController" target="kfq.cookcrew.user.UserRepository" relationship="TO_ONE">
+      <point x="0.0" y="-143.0" />
+      <point x="493.1428571428571" y="399.0" />
+      <point x="503.5" y="399.0" />
+      <point x="503.5" y="89.0" />
+      <point x="462.07142857142856" y="89.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="kfq.cookcrew.user.UserController" target="kfq.cookcrew.common.security.JwtTokenProvider" relationship="TO_ONE">
+      <point x="0.0" y="-143.0" />
+      <point x="493.1428571428571" y="409.0" />
+      <point x="969.1428571428571" y="409.0" />
+      <point x="0.0" y="131.5" />
+    </edge>
+    <edge source="kfq.cookcrew.user.UserController" target="kfq.cookcrew.user.UserService" relationship="TO_ONE">
+      <point x="0.0" y="-143.0" />
+      <point x="493.1428571428571" y="399.0" />
+      <point x="358.5" y="399.0" />
+      <point x="0.0" y="131.5" />
+    </edge>
+    <edge source="kfq.cookcrew.common.security.JwtAuthenticationIntercepter" target="kfq.cookcrew.common.security.JwtTokenProvider" relationship="TO_ONE">
+      <point x="0.0" y="-39.5" />
+      <point x="0.0" y="131.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.7883211678832117" showDependencies="true" x="542.0000000000001" y="452.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>kfq.cookcrew.rank.diet.Challenge</OriginalElement>
+  <nodes>
+    <node x="509.516393442623" y="250.12295081967216">kfq.cookcrew.common.quartz.JobSetting</node>
+    <node x="-196.48360655737702" y="621.1229508196722">kfq.cookcrew.rank.diet.ChallengeId</node>
+    <node x="-22.483606557377016" y="144.12295081967216">kfq.cookcrew.rank.diet.DietRankRepository</node>
+    <node x="-210.98360655737702" y="418.62295081967216">kfq.cookcrew.rank.diet.Challenge</node>
+    <node x="412.516393442623" y="441.62295081967216">kfq.cookcrew.common.quartz.DietJob</node>
+    <node x="386.27868852459017" y="580.622950819672">kfq.cookcrew.common.quartz.QuartzConfig</node>
+    <node x="58.016393442622984" y="418.62295081967216">kfq.cookcrew.rank.diet.DietRankService</node>
+    <node x="27.016393442622984" y="790.1229508196722">kfq.cookcrew.rank.RankController</node>
+    <node x="780.5409836065573" y="238.12295081967216">kfq.cookcrew.rank.diet.DietRank</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="kfq.cookcrew.rank.diet.DietRankService" target="kfq.cookcrew.rank.diet.ChallengeId" relationship="CREATE">
+      <point x="-5.0" y="74.0" />
+      <point x="207.01639344262298" y="752.6229508196722" />
+      <point x="88.5" y="0.0" />
+    </edge>
+    <edge source="kfq.cookcrew.rank.diet.Challenge" target="kfq.cookcrew.rank.diet.ChallengeId" relationship="TO_ONE">
+      <point x="0.0" y="74.0" />
+      <point x="0.0" y="-131.5" />
+    </edge>
+    <edge source="kfq.cookcrew.rank.diet.DietRankService" target="kfq.cookcrew.rank.diet.Challenge" relationship="CREATE">
+      <point x="-154.0" y="0.0" />
+      <point x="103.0" y="0.0" />
+    </edge>
+    <edge source="kfq.cookcrew.rank.RankController" target="kfq.cookcrew.rank.diet.DietRankService" relationship="TO_ONE">
+      <point x="5.0" y="-62.5" />
+      <point x="5.0" y="74.0" />
+    </edge>
+    <edge source="kfq.cookcrew.common.quartz.DietJob" target="kfq.cookcrew.rank.diet.DietRankService" relationship="TO_ONE">
+      <point x="-139.5" y="0.0" />
+      <point x="154.0" y="0.0" />
+    </edge>
+    <edge source="kfq.cookcrew.rank.diet.DietRankService" target="kfq.cookcrew.rank.diet.DietRankRepository" relationship="TO_ONE">
+      <point x="0.0" y="-74.0" />
+      <point x="0.0" y="108.5" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="0.7439024390243902" showDependencies="true" x="403.0000000000001" y="559.0000000000001" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

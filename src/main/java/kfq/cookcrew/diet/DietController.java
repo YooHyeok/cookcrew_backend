@@ -73,7 +73,6 @@ public class DietController extends BaseController {
         Map<String, Object> resultMap = new HashMap<>();
         try {
             Map<String,Object> dietData = dietService.findDietAndTargetAchieve(userId, dietDateSql, mealDiv);
-            System.out.println(dietData);
             result = new ResponseEntity<>(dietData, HttpStatus.OK);
         }catch (Exception e) {
             result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);

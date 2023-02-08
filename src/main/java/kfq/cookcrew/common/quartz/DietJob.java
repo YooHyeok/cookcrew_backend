@@ -7,9 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 
+@Component
 public class DietJob extends QuartzJobBean {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

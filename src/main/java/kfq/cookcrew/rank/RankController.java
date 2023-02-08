@@ -96,6 +96,7 @@ public class RankController extends BaseController {
         }catch (Exception e) {
 
         }
+        System.out.println(res);
         return res;
     }
 }

@@ -47,7 +47,8 @@ public class Diet {
     /**
      * 쿼리 : LEFT OUTER JOIN diet_recipe dr ON d.d_no = dr.d_no ;
      */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+//    @OneToOne
     @JoinColumn(name = "rno")
     private Recipe recipe; //getter메소드 롬복처리
 }
