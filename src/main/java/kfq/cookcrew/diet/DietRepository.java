@@ -1,5 +1,6 @@
 package kfq.cookcrew.diet;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -45,6 +46,7 @@ public interface DietRepository extends JpaRepository<Diet,Integer> {
      * @return 식단 테이블로 부터 닐짜, 아침, user 조건을 갖는 레코드행 반환
      */
 
+    @EntityGraph(attributePaths = "recipe")
     List<Diet> findByUserIdAndDietDateAndMealDiv(String userId, Date stringToSqlDateFormat, Character mealDiv);
 
     /**
