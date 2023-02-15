@@ -52,7 +52,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
-
+	/* 출처 : https://www.raegon.com/p6spy-query-log
+	 * 특징 : 하이버네이트 로그에서는 개행이 되지만 nativeQuery는 한줄로 출력된다.
+	 * */
 
 	/* Quartz 라이브러리 */
 //	implementation 'org.quartz-scheduler:quartz:2.3.2'

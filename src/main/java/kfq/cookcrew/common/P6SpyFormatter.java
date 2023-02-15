@@ -46,7 +46,10 @@ public class P6SpyFormatter extends JdbcEventListener implements MessageFormatti
     }
 
     private boolean isBasic(String sql) {
-        return sql.startsWith("select") || sql.startsWith("insert") || sql.startsWith("update") || sql.startsWith("delete");
+        return sql.startsWith("select") || sql.startsWith("SELECT") ||
+                sql.startsWith("insert") || sql.startsWith("INSERT") ||
+                sql.startsWith("update") || sql.startsWith("UPDATE") ||
+                sql.startsWith("delete") || sql.startsWith("DELETE");
     }
 
 }
