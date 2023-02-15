@@ -58,11 +58,4 @@ public class Recipe {
     public Recipe(Integer rno) {
         this.rno = rno;
     }
-
-
-
-
-
-//    @OneToOne -- Diet테이블과 양방향으로 지정
-//    private Diet diet;
 }

@@ -187,7 +187,6 @@ public class RecipeService {
         if (recipe == null) {
             throw new Exception("레시피 정보 없음");
         }
-//        System.out.println("왓다팍  :"+recipe);
         return recipe;
     }
     public List<Map<String, Object>> likelist(String userId, PageInfo pageInfo) throws Exception{
@@ -215,7 +214,6 @@ public class RecipeService {
         pageInfo.setEndPage(endPage);
         System.out.println(pages.getContent());
         return pages.getContent();
-//        return null;
     }
 
     public List<Map<String,Object>> myrecipeList(String id) {

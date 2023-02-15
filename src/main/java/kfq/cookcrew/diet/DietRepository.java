@@ -44,7 +44,6 @@ public interface DietRepository extends JpaRepository<Diet,Integer> {
      * @param date
      * @return 식단 테이블로 부터 닐짜, 아침, user 조건을 갖는 레코드행 반환
      */
-    List<Diet> findByMealDivAndUserIdAndDietDate(char mealDiv, String id, Date date);
 
     List<Diet> findByUserIdAndDietDateAndMealDiv(String userId, Date stringToSqlDateFormat, Character mealDiv);
 

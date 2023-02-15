@@ -51,7 +51,7 @@ class DietApplicationTests extends BaseController {
 	 */
 	@Test
 	void recipeConditionJoin() {
-		List<Diet> diets = dietRepository.findByMealDivAndUserIdAndDietDate('2', "user", Date.valueOf("2022-12-15"));
+		List<Diet> diets = dietRepository.findByUserIdAndDietDateAndMealDiv("yjk7454", Date.valueOf("2023-02-15"), '1');
 		for (Diet diet : diets) {
 			System.out.println("음 : "+diet);
 		}
