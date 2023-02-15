@@ -18,7 +18,6 @@ import java.sql.Date;
 @Setter
 @ToString
 @Entity
-@Table
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
