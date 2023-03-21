@@ -40,6 +40,7 @@ public class Diet {
      * 쿼리 : LEFT OUTER JOIN diet_recipe dr ON d.d_no = dr.d_no ;
      */
     @OneToOne(fetch = FetchType.LAZY) //하나의 식단번호는 하나의 레시피를 갖는다.
+//    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rno")
     private Recipe recipe; //getter메소드 롬복처리
 }
