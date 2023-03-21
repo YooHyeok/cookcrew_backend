@@ -34,12 +34,12 @@ public class Diet {
     private Character mealDiv; //식사분류 (default 1 도메인 : 아침,점심,저녁 = 1,2,3)
 
 //    OneToOne을 할때 (create든 update든) 해당 매핑을 기준으로 컬럼을 Diet 엔티티에 인식(생성)시킨다.
-//    @OneToOne(mappedBy = "diet", targetEntity = Recipe.class, fetch = FetchType.LAZY) //양방향일경우에 사용
+//    @OneToOne(mappedBy = "recipe", targetEntity = Recipe.class, fetch = FetchType.LAZY) //양방향일경우에 사용
 
     /**
      * 쿼리 : LEFT OUTER JOIN diet_recipe dr ON d.d_no = dr.d_no ;
      */
-    @OneToOne //하나의 식단번호는 하나의 레시피를 갖는다.
+    @OneToOne(fetch = FetchType.LAZY) //하나의 식단번호는 하나의 레시피를 갖는다.
     @JoinColumn(name = "rno")
     private Recipe recipe; //getter메소드 롬복처리
 }
