@@ -41,8 +41,7 @@ public interface DietRankRepository extends JpaRepository<Challenge, ChallengeId
                     "WHERE diet_date BETWEEN :startDate AND :endDate " +
                     " AND achieve = true " +
                     " GROUP BY user_id " +
-                    ") as temp";
-    //                                ") as temp WHERE temp.achieve_rank <= 3";
+                    ") as temp) as temp WHERE temp.achieve_rank <= 3";
     static final String INSERTDietRankDESC = "INSERT INTO diet_rank (user_id, achieve_cnt, achieve_percentage, achieve_rank, start_date, end_date, reg_date, sort) VALUES (" +
             " (SELECT user_id FROM ( SELECT user_id," + RankDescState + SurveState +")" +
             ", (SELECT achieve_cnt FROM ( SELECT achieve_cnt," + RankDescState + ")" +
