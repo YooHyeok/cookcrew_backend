@@ -1,7 +1,6 @@
 package kfq.cookcrew.diet.targetAchieve;
 
 import lombok.*;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;

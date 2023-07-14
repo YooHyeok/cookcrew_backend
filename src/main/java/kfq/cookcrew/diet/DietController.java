@@ -53,12 +53,7 @@ public class DietController extends BaseController {
             map.put("dietList",dietList);
             map.put("startDate",startDate);
             map.put("endDate",endDate);
-//            for(Map<String,Object> data : dietList) {
-//                for(String key : data.keySet()) {
-//                    String value = data.get(key).toString();
-//                    System.out.println("{" + key + " : " + value+"}");
-//                }
-//            }
+
             result = new ResponseEntity<>(map, HttpStatus.OK);
         }catch (Exception e) {
             result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -66,7 +61,6 @@ public class DietController extends BaseController {
         return result;
     }
     @GetMapping("/dietSearch")
-//    public ResponseEntity<List<Diet>> dietSearchByEvent(String userId, String dietDate, Character mealDiv) throws ParseException {
     public ResponseEntity<Map<String, Object>> dietSearchByEvent(String userId, String dietDate, Character mealDiv) throws ParseException {
         Date dietDateSql = Date.valueOf(dietDate);
         ResponseEntity<Map<String, Object>> result = null;
@@ -154,7 +148,6 @@ public class DietController extends BaseController {
      */
     @GetMapping("/recipeSearch")
     public ResponseEntity<List<Map<String, Object>>> recipeSearchList(String param) {
-        System.out.println(param);
         ResponseEntity <List<Map<String, Object>>> result = null;
         try {
             List<Map<String, Object>> recipeSearchList = recipeService.searchByTitleLike(param);
@@ -165,7 +158,6 @@ public class DietController extends BaseController {
         }catch (Exception e) {
             result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        System.out.println(result);
         return result;
     }
     /**

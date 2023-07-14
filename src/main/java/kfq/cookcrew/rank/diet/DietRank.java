@@ -1,7 +1,6 @@
 package kfq.cookcrew.rank.diet;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.sql.Date;
 

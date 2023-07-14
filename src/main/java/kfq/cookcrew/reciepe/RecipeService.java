@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.sql.Date;
 import java.util.List;
@@ -38,7 +37,6 @@ public class RecipeService {
                         MultipartFile file)
             throws Exception {
         Recipe r = new Recipe();
-//        System.out.println(r);
         r.setTitle(title);
         r.setRegId(userId);
         r.setContent(toastHtml);
@@ -61,8 +59,7 @@ public class RecipeService {
         r.setThumbPath("/img/"+filename);
         r.setKcal(kcal);
         Recipe save = recipeRepository.save(r);
-//        System.out.println("##############"+save+"##############");
-//        System.out.println(filename);
+
     }
     public void rcpModReg(MultipartFile file, Recipe recipe)
             throws Exception {
@@ -84,7 +81,6 @@ public class RecipeService {
     //레시피 상세보기
     public Recipe rcpRef(Integer rNo) throws Exception {
         Optional<Recipe> orecipe = recipeRepository.findById(rNo);
-//        System.out.println(orecipe.get());
 
         if(!orecipe.isPresent() && !orecipe.get().getEnabled()) {
             throw new Exception("삭제된 글입니다.");
@@ -118,7 +114,6 @@ public class RecipeService {
             throw new Exception("레시프 조회 오류");
         }
         Recipe recipe = orecipe.get();
-//        System.out.println(recipe.getCnt());
         recipe.incrementCnt();
         recipeRepository.save(recipe);
         return recipe.getCnt();
@@ -131,7 +126,6 @@ public class RecipeService {
         Page<Recipe> pages = recipeRepository.findEnabled(pageRequest);
         int maxPage = pages.getTotalPages();
         int curPage = pageInfo.getCurPage();
-        System.out.println(curPage);
         int startPage = 0;
         int endPage = 0;
         if (curPage % 10 == 0){ //현재 페이지가 10으로 나눴을때 나머지가 0인 경우는 10의 배수이기 때문.
@@ -143,7 +137,6 @@ public class RecipeService {
         }
         //1, 11, 21, 31...
         if(endPage>maxPage) endPage = maxPage;
-//        System.out.println("page"+(pageInfo.getCurPage()));
 
         pageInfo.setAllPage(maxPage);
         pageInfo.setStartPage(startPage);
@@ -195,7 +188,6 @@ public class RecipeService {
         Page<Map<String,Object>> pages = likeRepository.findByUserId(userId, pageRequest);
         int maxPage = pages.getTotalPages();
         int curPage = pageInfo.getCurPage();
-        System.out.println(curPage);
         int startPage = 0;
         int endPage = 0;
         if (curPage %10 ==0){
@@ -207,12 +199,10 @@ public class RecipeService {
         }
         //1, 11, 21, 31...
         if(endPage>maxPage) endPage = maxPage;
-//        System.out.println("page"+(pageInfo.getCurPage()));
 
         pageInfo.setAllPage(maxPage);
         pageInfo.setStartPage(startPage);
         pageInfo.setEndPage(endPage);
-        System.out.println(pages.getContent());
         return pages.getContent();
     }
 
@@ -225,7 +215,6 @@ public class RecipeService {
         Page<Recipe> pages = recipeRepository.searchByKeyword(keyword,pageRequest);
         int maxPage = pages.getTotalPages();
         int curPage = pageInfo.getCurPage();
-        System.out.println(curPage);
         int startPage = 0;
         int endPage = 0;
         if (curPage %10 ==0){
@@ -237,7 +226,6 @@ public class RecipeService {
         }
         //1, 11, 21, 31...
         if(endPage>maxPage) endPage = maxPage;
-//        System.out.println("page"+(pageInfo.getCurPage()));
 
         pageInfo.setAllPage(maxPage);
         pageInfo.setStartPage(startPage);

@@ -1,6 +1,5 @@
 package kfq.cookcrew.user;
 
-import kfq.cookcrew.reciepe.Recipe;
 import kfq.cookcrew.reciepe.like.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,20 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.sql.rowset.serial.SerialBlob;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
-import java.util.List;
 import java.util.Optional;
-
-import static kfq.cookcrew.common.Path.USERPROFILE;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +37,6 @@ public class UserService implements UserDetailsService {
     public Boolean existsById(String id) throws Exception {
 
         boolean checkId = userRepository.existsById(id);
-//        System.out.println(checkId);
         return checkId;
     }
 

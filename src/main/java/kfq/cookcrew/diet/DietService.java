@@ -7,7 +7,6 @@ import kfq.cookcrew.diet.targetAchieve.TargetAchieveRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -43,9 +42,7 @@ public class DietService {
         try{
             List<Diet> dietList =
                     dietRepository.findByUserIdAndDietDateAndMealDiv(userId, dietDateSql, mealDiv);
-            for (Diet diet :dietList) {
-                System.out.println("diet값 ::::> "+diet.toString());
-            }
+
             Optional<TargetAchieve> achieve =
                     targetAchieveRepository.findById(new TargetAchieveId(userId, dietDateSql, mealDiv));
             dietData = new HashMap<>();

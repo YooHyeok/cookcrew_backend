@@ -7,7 +7,6 @@ import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
 import org.hibernate.engine.jdbc.internal.FormatStyle;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
 import java.sql.SQLException;
 
 @Component  // 1

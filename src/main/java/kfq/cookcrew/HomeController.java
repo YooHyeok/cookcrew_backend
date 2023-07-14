@@ -1,8 +1,6 @@
 package kfq.cookcrew;
 
 import kfq.cookcrew.common.BaseController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +32,6 @@ public class HomeController extends BaseController {
         LOGGER.info("로그 테스트 : "+ mainAlert);
         LOGGER.info("로그 테스트 : {}, 패스워드 : {}, 이름 : {}", mainAlert, "바보", "메롱");
         ResponseEntity<String> res = new ResponseEntity<String>(mainAlert, HttpStatus.OK);
-        System.out.println(res);
         return res;
     }
 }

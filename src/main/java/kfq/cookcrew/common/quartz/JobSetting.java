@@ -3,11 +3,9 @@ package kfq.cookcrew.common.quartz;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
-
 import static org.quartz.JobBuilder.newJob;
 
 @Configuration

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +67,6 @@ public class RankController extends BaseController {
         ResponseEntity<Object> res = null;
         try {
             Challenge challenge = dietRankService.searchValidate(userId);
-            System.out.println(challenge);
             res = new ResponseEntity<>(challenge, HttpStatus.OK);
         }catch (Exception e) {
             if (e.getMessage() == "null") {
@@ -86,8 +84,6 @@ public class RankController extends BaseController {
     @PutMapping("/saveValidate")
     public ResponseEntity<String> saveValidate(@RequestBody Map<String,String> param) {
         ResponseEntity<String> res = null;
-        System.out.println(param);
-        System.out.println(param.get("challenge"));
         try {
             dietRankService.saveValidate(
                     Boolean.parseBoolean(param.get("challenge"))
@@ -96,7 +92,6 @@ public class RankController extends BaseController {
         }catch (Exception e) {
 
         }
-        System.out.println(res);
         return res;
     }
 }
